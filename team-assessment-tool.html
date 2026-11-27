@@ -106,7 +106,12 @@
   .bar > i { display: block; height: 100%; background: var(--text); border-radius: 99px; }
   .bar.over > i { background: var(--red); }
   .bar.thin > i { background: var(--amber); }
-  .act { border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 10px; background: var(--bg2); }
+  .act { border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 10px; background: var(--bg2); scroll-margin: 16px; }
+  .act.flash { animation: actFlash 1.6s var(--ease); }
+  @keyframes actFlash {
+    0%, 40% { outline: 2px solid var(--accent); background: #F8EBE9; }
+    100% { outline: 2px solid transparent; background: var(--bg2); }
+  }
   .act-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
   .act-head input { font-weight: 600; }
   .assign { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(96px, 0.7fr) 84px 36px; gap: 6px; align-items: center; margin-bottom: 6px; }
@@ -138,6 +143,19 @@
   .seg button.on.replace { background: var(--red-bg); color: var(--red); border-color: transparent; }
   .check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
   .check input { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
+  .duty-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 6px 0 4px; font-variant-numeric: tabular-nums; }
+  .duty-table th, .duty-table td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .duty-table th { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text2); font-weight: 600; }
+  .duty-table .pct-col { text-align: right; white-space: nowrap; padding-right: 0; width: 88px; }
+  .duty-table .role-col { white-space: nowrap; width: 90px; padding-left: 12px; }
+  .duty-table .role-tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--bg4); color: var(--text); }
+  .duty-table .role-tag.owner { background: var(--green-bg); color: var(--green); }
+  .duty-table tfoot td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--text); }
+  .duty-table tfoot tr.over td { color: var(--red); background: var(--red-bg); }
+  .duty-table tfoot tr.over td:first-child { padding-left: 8px; }
+  .duty-table a.act-link { color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .duty-table a.act-link:hover { color: var(--accent); }
+  .paper .duty-table { font-size: 13.5px; }
   .paper { background: #fff; border: 1px solid var(--card-border); border-radius: 16px; box-shadow: var(--shadow); padding: 28px 28px 22px; max-width: 760px; margin: 0 auto 16px; }
   .paper-logo { height: 22px; width: auto; }
   .paper-kicker { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text2); font-weight: 600; }
@@ -164,6 +182,11 @@
     * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
   }
   @media print {
+    .duty-table { page-break-inside: avoid; break-inside: avoid; }
+    .duty-table tr, .duty-table th, .duty-table td { break-inside: avoid; page-break-inside: avoid; }
+    .duty-table thead { display: table-header-group; }
+    .duty-table .role-tag, .duty-table tfoot tr.over td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .duty-table a.act-link { color: inherit; font-weight: inherit; text-decoration: none; }
     @page { margin: 12mm 14mm; size: letter; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     body { background: #fff !important; }
@@ -630,6 +653,51 @@
     return bits.join('. ') + '.';
   }
   function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function openActivity(activityId) {
+    show.keep = true;
+    show('map');
+    var node = document.getElementById('act-' + activityId);
+    if (!node) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    node.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    node.classList.remove('flash');
+    void node.offsetWidth;
+    node.classList.add('flash');
+  }
+  function dutyTable(items) {
+    var list = (items || []).slice().sort(function (x, y) {
+      var rx = x.role === 'owner' ? 0 : 1, ry = y.role === 'owner' ? 0 : 1;
+      if (rx !== ry) return rx - ry;
+      return (Number(y.pct) || 0) - (Number(x.pct) || 0);
+    });
+    var total = list.reduce(function (sum, item) { return sum + (Number(item.pct) || 0); }, 0);
+    var body = h('tbody');
+    list.forEach(function (item) {
+      var label = item.name || 'Unnamed activity';
+      var nameCell = item.activityId
+        ? h('td', {}, h('a', {
+            class: 'act-link',
+            href: '#act-' + item.activityId,
+            onclick: function (e) { e.preventDefault(); openActivity(item.activityId); }
+          }, label))
+        : h('td', { text: label });
+      body.appendChild(h('tr', {},
+        nameCell,
+        h('td', { class: 'role-col' }, h('span', { class: 'role-tag ' + (item.role === 'owner' ? 'owner' : 'helper'), text: item.role === 'owner' ? 'Owner' : 'Helper' })),
+        h('td', { class: 'pct-col', text: item.pct ? item.pct + '%' : '—' })
+      ));
+    });
+    var over = total > 100;
+    return h('table', { class: 'duty-table' },
+      h('thead', {}, h('tr', {}, h('th', { text: 'Activity' }), h('th', { class: 'role-col', text: 'Role' }), h('th', { class: 'pct-col', text: '% of week' }))),
+      body,
+      h('tfoot', {}, h('tr', { class: over ? 'over' : '' },
+        h('td', { text: over ? 'Total · over 100%' : 'Total' }),
+        h('td', { class: 'role-col', text: '' }),
+        h('td', { class: 'pct-col', text: total + '%' })
+      ))
+    );
+  }
   function dutyLine(items, role) {
     var list = items.filter(function (item) { return item.role === role; });
     if (!list.length) return '';
@@ -899,7 +967,7 @@
       flag === 'many' ? h('span', { class: 'pill many', text: (row.owners.length) + ' owners' }) : null,
       h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove activity', onclick: function () { removeActivity(act.id); } }, '×')
     );
-    var card = h('div', { class: 'act', 'data-act': act.id }, head);
+    var card = h('div', { class: 'act', id: 'act-' + act.id, 'data-act': act.id }, head);
     if (!act.assignments.length) card.appendChild(h('p', { class: 'hint', text: 'Nobody is on this yet.' }));
     act.assignments.forEach(function (as, index) {
       card.appendChild(h('div', { class: 'assign' },
@@ -1052,10 +1120,7 @@
     var work = h('div', { class: 'card narrow' }, h('h3', { text: 'What the map says' }));
     if (!stat || !stat.items.length) work.appendChild(h('p', { class: 'hint', text: 'This person is not on an activity yet. Assign them on the activity map.' }));
     else {
-      var own = dutyLine(stat.items, 'owner');
-      var help = dutyLine(stat.items, 'helper');
-      if (own) work.appendChild(h('p', { text: 'Owns: ' + own + '.' }));
-      if (help) work.appendChild(h('p', { text: 'Helps with: ' + help + '.' }));
+      work.appendChild(dutyTable(stat.items));
       var flags = [];
       if (stat.overloaded) flags.push('Over 100% (' + stat.total + '%).');
       if (stat.thin) flags.push('Spread across ' + stat.count + ' activities, with no main focus.');
@@ -1398,8 +1463,7 @@
     paper.appendChild(h('hr', { class: 'rule' }));
     paper.appendChild(h('h3', { text: 'Your role and responsibilities' }));
     if (!own && !help) paper.appendChild(h('p', { text: 'Nothing on the activity map is assigned yet.' }));
-    if (own) paper.appendChild(h('p', { text: 'You own: ' + own + '.' }));
-    if (help) paper.appendChild(h('p', { text: 'You help with: ' + help + '.' }));
+    if (own || help) paper.appendChild(dutyTable(stat.items));
     if (!own && help) paper.appendChild(h('p', { text: 'You do not own a seat yet.' }));
     var sentence = ratingSentence(p);
     if (sentence) paper.appendChild(blockText('Where the work stands', sentence, ''));
