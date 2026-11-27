@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Assessment · structure</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 29 32'%3E%3Crect x='-5' y='-5' width='29' height='32' rx='7' fill='%23F6F1E8'/%3E%3Crect x='0' y='0' width='19' height='5' rx='1.4' fill='%23292D30'/%3E%3Crect x='0' y='8.5' width='15' height='5' rx='1.4' fill='%23A33A32'/%3E%3Crect x='0' y='17' width='19' height='5' rx='1.4' fill='%23292D30'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F6F1E8; --bg2: #FFFFFF; --bg3: #F6F1E8; --bg4: #ECE3D4;
+    --border: #E3D9CA; --card-border: #DDD5C6;
+    --text: #292D30; --text2: #6B6560; --accent: #A33A32;
+    --green: #2E6B4E; --green-bg: #E6EFE7;
+    --amber: #8F5E17; --amber-bg: #F5EAD6;
+    --red: #A33A32; --red-bg: #F4E4E1;
+    --radius: 18px; --radius-sm: 10px;
+    --shadow: 0 24px 48px -32px rgba(41,45,48,.25);
+    --ease: cubic-bezier(.22,.75,.22,1);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', Arial, sans-serif; font-size: 16px; line-height: 1.5; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font-family: inherit; color: inherit; }
+  button { cursor: pointer; }
+  img { max-width: 100%; }
+  .site-header { padding: 28px 24px 0; max-width: 1100px; margin: 0 auto; }
+  .logo { display: block; height: 28px; width: auto; }
+  .toprow { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-top: 22px; }
+  .eyebrow { font-size: 13px; font-weight: 500; color: var(--text2); }
+  .company-btn { background: none; border: none; padding: 0; text-align: left; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+  .company-btn:hover { color: var(--accent); }
+  .save-pill { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 4px 10px; background: var(--green-bg); color: var(--green); white-space: nowrap; }
+  .save-pill.saving { background: var(--bg4); color: var(--text2); }
+  .save-pill.error { background: var(--red-bg); color: var(--red); }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+  .nav-btn { border: 1px solid var(--card-border); background: var(--bg2); color: var(--text); border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 500; }
+  .nav-btn:hover { border-color: var(--text); }
+  .nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .nav-btn:focus-visible, .btn-primary:focus-visible, .btn-secondary:focus-visible, .company-btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .main { max-width: 1100px; margin: 0 auto; padding: 12px 24px 72px; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .narrow { max-width: 720px; }
+  h1 { font-size: clamp(36px, 6vw, 56px); font-weight: 500; letter-spacing: -0.04em; line-height: 1.02; margin: 8px 0 16px; }
+  h1 em, h2 em { font-style: normal; color: var(--accent); }
+  h2 { font-size: clamp(28px, 4vw, 36px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 8px; }
+  .lede { font-size: 17px; color: var(--text2); max-width: 560px; margin-bottom: 24px; }
+  .card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px; }
+  .card h3, .card-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hint { font-size: 14px; color: var(--text2); line-height: 1.5; }
+  .hint + .hint { margin-top: 6px; }
+  .btn-primary, .btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; font-size: 15px; font-weight: 600; padding: 12px 18px; min-height: 44px; }
+  .btn-primary { background: var(--accent); color: #fff; border: none; }
+  .btn-primary:hover { filter: brightness(0.92); }
+  .btn-secondary { background: var(--bg2); color: var(--text); border: 1px solid var(--card-border); }
+  .btn-secondary:hover { border-color: var(--text); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 8px 0 20px; }
+    .btn-row input { flex: 1; min-width: 160px; }
+  .steps { display: grid; gap: 8px; margin: 8px 0 20px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .num { width: 26px; height: 26px; border-radius: 50%; background: var(--bg4); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+  .saved-item, .who-card { width: 100%; text-align: left; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-top: 8px; }
+  .saved-item:hover, .who-card:hover { border-color: var(--text); }
+  .saved-item strong, .who-card strong { display: block; font-size: 15px; }
+  .saved-item span, .muted { display: block; font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .saved-item.current { border-color: var(--text); background: var(--bg2); }
+  .fields { display: grid; gap: 12px; }
+  .fields.two { grid-template-columns: 1fr 1fr; }
+  .fields.three { grid-template-columns: 1fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .field > span, .lbl { font-size: 13px; font-weight: 500; color: var(--text2); }
+  input[type=text], input[type=number], input[type=date], textarea, select {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 16px; padding: 10px 12px; width: 100%; outline: none;
+  }
+  textarea { min-height: 88px; resize: vertical; line-height: 1.45; }
+  input:focus, textarea:focus, select:focus { border-color: var(--text); }
+  .file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  .msg { font-size: 14px; color: var(--text); margin-top: 10px; min-height: 1.2em; }
+  .person-card { border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px; background: var(--bg2); }
+  .person-card .top { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; background: var(--bg4); color: var(--text2); white-space: nowrap; }
+  .pill.well, .pill.keep, .pill.done { background: var(--green-bg); color: var(--green); }
+  .pill.mixed, .pill.coach, .pill.progress, .pill.many, .pill.thin { background: var(--amber-bg); color: var(--amber); }
+  .pill.risk, .pill.replace, .pill.none, .pill.over { background: var(--red-bg); color: var(--red); }
+  .pill.reassign { background: var(--bg4); color: var(--text); }
+  .linkish { background: none; border: none; padding: 0; font-weight: 600; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+  .remove-btn { background: none; border: none; font-size: 20px; line-height: 1; color: var(--text2); padding: 4px 8px; min-width: 36px; min-height: 36px; }
+  .remove-btn:hover { color: var(--text); }
+  .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+  .stat { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 14px; }
+  .stat .n { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .stat .k { font-size: 13px; color: var(--text2); margin-top: 4px; }
+  .stat.bad { background: var(--red-bg); border-color: transparent; }
+  .stat.warn { background: var(--amber-bg); border-color: transparent; }
+  .stat.ok { background: var(--green-bg); border-color: transparent; }
+  .map-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.8fr); gap: 16px; align-items: start; }
+  .load-panel { position: sticky; top: 12px; }
+  .load-row { margin-bottom: 12px; }
+  .load-row .line { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+  .load-row .line strong { font-weight: 600; }
+  .bar { height: 8px; background: var(--bg4); border-radius: 99px; margin-top: 6px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--text); border-radius: 99px; }
+  .bar.over > i { background: var(--red); }
+  .bar.thin > i { background: var(--amber); }
+  .act { border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 10px; background: var(--bg2); }
+  .act-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .act-head input { font-weight: 600; }
+  .assign { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(96px, 0.7fr) 84px 36px; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .pct-wrap { display: flex; align-items: center; gap: 4px; }
+  .pct-wrap input { text-align: right; }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+  .jump a { color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--border); }
+  .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .who-card .who-top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+  .matrix-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--bg2); }
+  table.matrix { border-collapse: collapse; min-width: 720px; width: 100%; font-size: 13px; }
+  .matrix th, .matrix td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .matrix th { font-weight: 600; background: var(--bg3); position: sticky; top: 0; }
+  .matrix th:first-child, .matrix td:first-child { position: sticky; left: 0; background: var(--bg2); min-width: 160px; z-index: 1; }
+  .matrix th:first-child { z-index: 2; background: var(--bg3); }
+  .matrix td.owner { background: var(--bg4); }
+  .matrix td.helper { background: #F8F4EC; }
+  .finding { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .finding:last-child { border-bottom: 0; }
+  .pay-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .pay-table th, .pay-table td { text-align: left; padding: 8px 8px 8px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .rate { display: flex; flex-wrap: wrap; gap: 6px; }
+  .rate button, .seg button { min-width: 44px; min-height: 40px; border-radius: 10px; border: 1px solid var(--card-border); background: var(--bg2); font-weight: 600; padding: 6px 10px; }
+  .rate button.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .seg { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seg button.on.keep { background: var(--green-bg); color: var(--green); border-color: transparent; }
+  .seg button.on.coach { background: var(--amber-bg); color: var(--amber); border-color: transparent; }
+  .seg button.on.reassign { background: var(--bg4); border-color: var(--text); }
+  .seg button.on.replace { background: var(--red-bg); color: var(--red); border-color: transparent; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
+  .check input { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
+  .paper { background: #fff; border: 1px solid var(--card-border); border-radius: 16px; box-shadow: var(--shadow); padding: 28px 28px 22px; max-width: 760px; margin: 0 auto 16px; }
+  .paper-logo { height: 22px; width: auto; }
+  .paper-kicker { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text2); font-weight: 600; }
+  .paper h2 { font-size: 32px; margin: 8px 0 4px; }
+  .paper h3 { font-size: 15px; margin: 16px 0 4px; }
+  .paper p { font-size: 14.5px; }
+  .paper .rule { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+  .paper-foot { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--text2); margin-top: 18px; }
+  .internal-block { background: var(--red-bg); border-radius: 12px; padding: 12px 14px; margin-top: 14px; }
+  .internal-block h3 { margin-top: 8px; }
+  .footer-note { max-width: 1100px; margin: 0 auto; padding: 8px 24px 28px; font-size: 13px; color: var(--text2); }
+  #printMount { display: none; }
+  @media (max-width: 800px) {
+    .site-header, .main, .footer-note { padding-left: 16px; padding-right: 16px; }
+    .fields.two, .fields.three, .groups, .stat-strip, .map-grid { grid-template-columns: 1fr; }
+    .load-panel { position: static; }
+    .assign { grid-template-columns: 1fr 1fr; }
+    .assign .pct-wrap { grid-column: 1; }
+    .toprow { flex-direction: column; }
+    .paper { padding: 18px 16px; }
+    .btn-row .btn-primary, .btn-row .btn-secondary { flex: 1 1 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  }
+  @media print {
+    @page { margin: 12mm 14mm; size: letter; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { background: #fff !important; }
+    .no-print { display: none !important; }
+    .main { display: none !important; }
+    #printMount { display: block !important; }
+    .paper { box-shadow: none; border: none; border-radius: 0; max-width: none; margin: 0; padding: 0 0 8px; page-break-after: always; }
+    .paper:last-child { page-break-after: auto; }
+    .avoid { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header no-print">
+  <a href="index.html"><img class="logo" id="brandLogo" alt="structure" src="data:image/png;base64,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"></a>
+  <div class="toprow">
+    <div>
+      <div class="eyebrow">Internal tool · for the structure team</div>
+      <button type="button" class="company-btn" id="companyBtn" onclick="show('setup')">No client yet</button>
+    </div>
+    <span class="save-pill" id="savePill">Saved in this browser</span>
+  </div>
+  <nav class="nav" id="nav" aria-label="Assessment steps"></nav>
+</header>
+<main class="main">
+  <section class="view active" id="view-home">
+    <div class="narrow">
+      <div class="eyebrow">Client team</div>
+      <h1>See the team<br><em>clearly.</em></h1>
+      <p class="lede">Use this when you are assessing a client’s people. Map who owns the work, decide who stays, and leave with a page for each person and a summary for the owner.</p>
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="startBtn" onclick="startAssessment()">Start an assessment</button>
+        <button type="button" class="btn-secondary" id="loadSampleBtn" onclick="loadSample()">Load a sample client</button>
+        <button type="button" class="btn-secondary" onclick="document.getElementById('openFile').click()">Open a saved file</button>
+      </div>
+      <div class="card" id="savedCard">
+        <h3>Pick up where you left off</h3>
+        <p class="hint">Each client stays on this browser. Open one to continue, or download a copy if you want it on another computer.</p>
+        <div id="savedList"></div>
+      </div>
+      <div class="card">
+        <h3>How a visit usually goes</h3>
+        <div class="steps" id="howSteps"></div>
+      </div>
+    </div>
+  </section>
+  <section class="view" id="view-setup"></section>
+  <section class="view" id="view-people"></section>
+  <section class="view" id="view-map"></section>
+  <section class="view" id="view-person"></section>
+  <section class="view" id="view-analysis"></section>
+  <section class="view" id="view-recs"></section>
+  <section class="view" id="view-export"></section>
+</main>
+<p class="footer-note no-print">Privacy: what you type stays in this browser. It is not sent to structure or to anyone else. Download a file if you want a copy. Remove the assessment when you are done on a shared computer.</p>
+<div id="printMount"></div>
+<input class="file-input" type="file" id="openFile" accept="application/json,.json" onchange="onOpenFile(this)">
+<script>
+(function () {
+  var STORE_KEY = 'structure.teamAssessment.v1';
+  var saveTimer = null;
+  var loading = true;
+  var xlsxPromise = null;
+  var printIntent = { kind: 'summary', personId: null, hideInternal: true, all: false };
+  var DB = { version: 1, activeId: null, assessments: [] };
+
+  var NAV = [
+    ['home', 'Home'],
+    ['setup', 'Setup'],
+    ['people', 'People'],
+    ['map', 'Activity map'],
+    ['person', 'Assess'],
+    ['analysis', 'Analysis'],
+    ['recs', 'Recommendations'],
+    ['export', 'Export']
+  ];
+  var HOW = [
+    ['1', 'Name the client, the date, and who from structure is in the room.'],
+    ['2', 'Add the people, or bring them in from a spreadsheet.'],
+    ['3', 'List the work and mark an owner and helpers, with a rough share of the week.'],
+    ['4', 'Assess each person: results, clarity, fit, and what is in the way.'],
+    ['5', 'Read who is doing well, who is at risk, and where the work has gaps.'],
+    ['6', 'Choose keep, coach, reassign, or replace, and say why.'],
+    ['7', 'Print a one-pager per person, and a summary for the owner.']
+  ];
+  var STARTER = [
+    'Sales', 'Estimating', 'Scheduling', 'Dispatch', 'Purchasing',
+    'Accounts receivable', 'Accounts payable', 'Payroll', 'Hiring',
+    'Customer service', 'Field supervision', 'Quality assurance', 'Marketing',
+    'Job costing', 'Safety', 'Invoicing', 'Warranty and callbacks'
+  ];
+  var RATINGS = [
+    ['quality', 'Quality of the work'],
+    ['reliability', 'Reliability'],
+    ['communication', 'Communication'],
+    ['ownership', 'Ownership'],
+    ['teamwork', 'Working with others']
+  ];
+  var RATING_SHORT = { quality: 'quality', reliability: 'reliability', communication: 'communication', ownership: 'ownership', teamwork: 'working with others' };
+  var CLARITY = [
+    ['', 'Not set yet'],
+    ['yes', 'Yes, they understand the role'],
+    ['partial', 'Partly, some of it is fuzzy'],
+    ['no', 'No, they do not have a clear role']
+  ];
+  var FITS = [
+    ['', 'Not set yet'],
+    ['strong', 'Strong fit'],
+    ['workable', 'Workable, with changes'],
+    ['poor', 'Poor fit']
+  ];
+  var RECS = [
+    ['keep', 'Keep', 'Right person, right seat.'],
+    ['coach', 'Coach', 'The seat can work. The work needs a plan.'],
+    ['reassign', 'Reassign', 'They can contribute. This seat is wrong or too wide.'],
+    ['replace', 'Replace', 'The seat needs someone else.']
+  ];
+
+  function h(tag, attrs) {
+    var node = document.createElement(tag);
+    var key, val, kid, i;
+    attrs = attrs || {};
+    for (key in attrs) {
+      if (!Object.prototype.hasOwnProperty.call(attrs, key)) continue;
+      val = attrs[key];
+      if (key === 'class') node.className = val;
+      else if (key === 'text') node.textContent = val == null ? '' : String(val);
+      else if (key.indexOf('on') === 0 && typeof val === 'function') node.addEventListener(key.slice(2), val);
+      else if (key === 'selected') node.selected = !!val;
+      else if ((key === 'disabled' || key === 'checked') && val) node[key] = true;
+      else if (val != null && val !== false) node.setAttribute(key, val === true ? '' : String(val));
+    }
+    for (i = 2; i < arguments.length; i++) {
+      kid = arguments[i];
+      if (kid == null || kid === false) continue;
+      if (Array.isArray(kid)) {
+        kid.forEach(function (item) {
+          if (item == null || item === false) return;
+          node.appendChild(item.nodeType ? item : document.createTextNode(String(item)));
+        });
+      } else if (kid.nodeType) node.appendChild(kid);
+      else node.appendChild(document.createTextNode(String(kid)));
+    }
+    return node;
+  }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+  function uid(prefix) { return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function pad(n) { n = String(n); return n.length < 2 ? '0' + n : n; }
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+  function money(n) {
+    if (n == null || n === '' || isNaN(Number(n))) return '';
+    return '$' + Math.round(Number(n)).toLocaleString('en-US');
+  }
+  function parsePay(v) {
+    if (v == null) return null;
+    var s = String(v).trim().toLowerCase().replace(/[$,\s]/g, '');
+    if (!s) return null;
+    var mult = 1;
+    if (s.charAt(s.length - 1) === 'k') { mult = 1000; s = s.slice(0, -1); }
+    var n = Number(s);
+    if (isNaN(n) || n < 0) return null;
+    return Math.round(n * mult);
+  }
+  function parsePct(v) {
+    if (v == null || String(v).trim() === '') return 0;
+    var n = Number(String(v).replace('%', '').trim());
+    if (isNaN(n) || n < 0) return 0;
+    if (n > 100) return 100;
+    return Math.round(n);
+  }
+  function normalizeDate(v) {
+    if (!v) return '';
+    v = String(v).trim();
+    var iso = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (iso) return iso[1] + '-' + pad(iso[2]) + '-' + pad(iso[3]);
+    var us = v.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+    if (us) {
+      var year = us[3].length === 2 ? '20' + us[3] : us[3];
+      return year + '-' + pad(us[1]) + '-' + pad(us[2]);
+    }
+    return v;
+  }
+  function formatDate(iso) {
+    if (!iso) return '';
+    var p = String(iso).slice(0, 10).split('-');
+    if (p.length !== 3 || p[0].length !== 4) return String(iso);
+    var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+    if (isNaN(d.getTime())) return String(iso);
+    return d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+  function slug(s) {
+    return String(s || 'assessment').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'assessment';
+  }
+  function personName(p) { return String((p && p.name) || '').trim() || 'Unnamed person'; }
+  function companyName(a) { return String((a && a.companyName) || '').trim() || 'Untitled assessment'; }
+  function blankRatings() { return { quality: null, reliability: null, communication: null, ownership: null, teamwork: null }; }
+  function blankPerson(partial) {
+    partial = partial || {};
+    var ratings = blankRatings();
+    var src = partial.ratings || {};
+    RATINGS.forEach(function (pair) {
+      var n = Number(src[pair[0]]);
+      ratings[pair[0]] = n >= 1 && n <= 5 ? n : null;
+    });
+    return {
+      id: partial.id || uid('p'),
+      name: partial.name || '',
+      role: partial.role || '',
+      department: partial.department || '',
+      manager: partial.manager || '',
+      pay: partial.pay == null || partial.pay === '' ? null : Number(partial.pay),
+      startDate: normalizeDate(partial.startDate || ''),
+      ratings: ratings,
+      strengths: partial.strengths || '',
+      issues: partial.issues || '',
+      roleClarity: partial.roleClarity || '',
+      fit: partial.fit || '',
+      notes: partial.notes || '',
+      recommendation: partial.recommendation || '',
+      reasoning: partial.reasoning || '',
+      roleAdjustments: partial.roleAdjustments || '',
+      actionPlan: partial.actionPlan || ''
+    };
+  }
+  function blankActivity(name) { return { id: uid('act'), name: name || '', assignments: [] }; }
+  function starterActivities() { return STARTER.map(function (name) { return blankActivity(name); }); }
+  function normalizeAssessment(raw) {
+    raw = raw || {};
+    var people = (raw.people || []).filter(function (p) { return p && typeof p === 'object'; }).map(blankPerson);
+    var ids = {};
+    people.forEach(function (p) { ids[p.id] = true; });
+    var activities = (raw.activities || []).filter(function (a) { return a && typeof a === 'object'; }).map(function (act) {
+      var assignments = (act.assignments || []).filter(function (as) {
+        return as && ids[as.personId];
+      }).map(function (as) {
+        return { personId: as.personId, role: as.role === 'owner' ? 'owner' : 'helper', pct: parsePct(as.pct) };
+      });
+      return { id: act.id || uid('act'), name: act.name || '', assignments: assignments };
+    });
+    return {
+      id: raw.id || uid('s'),
+      sampleKey: raw.sampleKey || '',
+      companyName: raw.companyName || '',
+      assessmentDate: normalizeDate(raw.assessmentDate || '') || todayISO(),
+      consultantName: raw.consultantName || '',
+      createdAt: raw.createdAt || new Date().toISOString(),
+      updatedAt: raw.updatedAt || raw.createdAt || new Date().toISOString(),
+      view: raw.view || 'setup',
+      activePersonId: raw.activePersonId && ids[raw.activePersonId] ? raw.activePersonId : (people[0] ? people[0].id : null),
+      people: people,
+      activities: activities
+    };
+  }
+  function active() {
+    for (var i = 0; i < DB.assessments.length; i++) if (DB.assessments[i].id === DB.activeId) return DB.assessments[i];
+    return null;
+  }
+  function personById(id) {
+    var a = active();
+    if (!a) return null;
+    for (var i = 0; i < a.people.length; i++) if (a.people[i].id === id) return a.people[i];
+    return null;
+  }
+  function activityById(id) {
+    var a = active();
+    if (!a) return null;
+    for (var i = 0; i < a.activities.length; i++) if (a.activities[i].id === id) return a.activities[i];
+    return null;
+  }
+  function touch(a) { if (a) a.updatedAt = new Date().toISOString(); }
+  function setSavePill(text, kind) {
+    var pill = document.getElementById('savePill');
+    if (!pill) return;
+    pill.textContent = text;
+    pill.className = 'save-pill' + (kind && kind !== 'saved' ? ' ' + kind : '');
+  }
+  function loadDB() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      var data = JSON.parse(raw);
+      if (!data || !Array.isArray(data.assessments)) return;
+      DB.assessments = data.assessments.map(normalizeAssessment);
+      DB.activeId = data.activeId || (DB.assessments[0] && DB.assessments[0].id) || null;
+      if (DB.activeId && !active()) DB.activeId = DB.assessments[0] ? DB.assessments[0].id : null;
+      DB.version = 1;
+    } catch (e) {}
+  }
+  function persistNow() {
+    if (loading) return;
+    clearTimeout(saveTimer);
+    saveTimer = null;
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(DB));
+      setSavePill('Saved', 'saved');
+    } catch (e) {
+      setSavePill('Not saved in this browser', 'error');
+    }
+  }
+  function scheduleSave() {
+    if (loading) return;
+    setSavePill('Saving…', 'saving');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(persistNow, 400);
+  }
+  function ratingAvg(p) {
+    var vals = [];
+    RATINGS.forEach(function (pair) {
+      var n = Number(p.ratings && p.ratings[pair[0]]);
+      if (n >= 1 && n <= 5) vals.push(n);
+    });
+    if (!vals.length) return null;
+    return vals.reduce(function (s, n) { return s + n; }, 0) / vals.length;
+  }
+  function formatAvg(n) { return n == null ? '' : (Math.round(n * 10) / 10).toFixed(1); }
+  function standing(p) {
+    var avg = ratingAvg(p);
+    var any = avg != null || p.fit || p.roleClarity || p.recommendation || String(p.strengths || '').trim() || String(p.issues || '').trim();
+    if (!any) return 'none';
+    if ((avg != null && avg < 3) || p.fit === 'poor' || p.recommendation === 'replace' || p.roleClarity === 'no') return 'risk';
+    if (avg != null && avg >= 4 && p.fit !== 'poor' && p.recommendation !== 'replace') return 'well';
+    return 'mixed';
+  }
+  function standingLabel(key) {
+    return key === 'well' ? 'Doing well' : key === 'risk' ? 'At risk' : key === 'mixed' ? 'Mixed' : 'Not assessed';
+  }
+  function recMeta(id) {
+    for (var i = 0; i < RECS.length; i++) if (RECS[i][0] === id) return RECS[i];
+    return null;
+  }
+  function recLabel(id) { var m = recMeta(id); return m ? m[1] : ''; }
+  function clarityShort(id) {
+    return id === 'yes' ? 'Understands the role' : id === 'partial' ? 'Role is partly clear' : id === 'no' ? 'No clear role' : '';
+  }
+  function fitShort(id) {
+    return id === 'strong' ? 'Strong fit' : id === 'workable' ? 'Workable with changes' : id === 'poor' ? 'Poor fit' : '';
+  }
+  function personStatus(p) {
+    var avg = ratingAvg(p);
+    var filled = 0;
+    RATINGS.forEach(function (pair) { if (p.ratings && p.ratings[pair[0]]) filled++; });
+    if (filled === 5 && p.recommendation) return { key: 'done', label: 'Ready' };
+    if (filled || p.recommendation || String(p.strengths || '').trim() || String(p.issues || '').trim() || p.fit || p.roleClarity) return { key: 'progress', label: 'In progress' };
+    return { key: 'notstarted', label: 'Not started' };
+  }
+  function readyCount(a) {
+    var n = 0;
+    (a.people || []).forEach(function (p) { if (personStatus(p).key === 'done') n++; });
+    return n;
+  }
+  function savedWhen(iso) {
+    if (!iso) return 'Saved on this browser';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return 'Saved on this browser';
+    if (d.toDateString() === new Date().toDateString()) return 'Saved today';
+    return 'Saved ' + d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  function derive(a) {
+    var byId = {};
+    a.people.forEach(function (p) { byId[p.id] = p; });
+    var load = {};
+    a.people.forEach(function (p) { load[p.id] = { total: 0, count: 0, max: 0, owned: 0, items: [] }; });
+    var rows = a.activities.map(function (act) {
+      var owners = [], helpers = [];
+      (act.assignments || []).forEach(function (as) {
+        var p = byId[as.personId];
+        if (!p) return;
+        var pct = Number(as.pct) || 0;
+        var bucket = load[p.id];
+        bucket.total += pct;
+        bucket.count += 1;
+        if (pct > bucket.max) bucket.max = pct;
+        if (as.role === 'owner') bucket.owned += 1;
+        bucket.items.push({ name: act.name, role: as.role, pct: pct, activityId: act.id });
+        (as.role === 'owner' ? owners : helpers).push({ person: p, pct: pct });
+      });
+      return { activity: act, owners: owners, helpers: helpers, flag: !owners.length ? 'none' : owners.length >= 2 ? 'many' : '' };
+    });
+    var people = a.people.map(function (p) {
+      var L = load[p.id];
+      return {
+        person: p, total: L.total, count: L.count, max: L.max, owned: L.owned, items: L.items,
+        overloaded: L.total > 100, thin: L.count >= 5 && L.max < 40, avg: ratingAvg(p), standing: standing(p)
+      };
+    });
+    return { byId: byId, rows: rows, people: people };
+  }
+  function listNames(items) { return items.join(', '); }
+  function findings(a) {
+    var d = derive(a);
+    var gaps = d.rows.filter(function (r) { return r.flag === 'none'; });
+    var many = d.rows.filter(function (r) { return r.flag === 'many'; });
+    var over = d.people.filter(function (s) { return s.overloaded; });
+    var thin = d.people.filter(function (s) { return s.thin; });
+    var noSeat = d.people.filter(function (s) { return s.owned === 0 && s.count >= 1; });
+    var side = [];
+    d.rows.forEach(function (r) {
+      if (r.owners.length !== 1) return;
+      var pct = r.owners[0].pct;
+      var stat = null;
+      d.people.forEach(function (s) { if (s.person.id === r.owners[0].person.id) stat = s; });
+      if (pct < 25 && stat && stat.owned >= 2 && stat.max >= 40) side.push({ activity: r.activity.name, person: personName(r.owners[0].person), pct: pct });
+    });
+    var pairs = [];
+    for (var i = 0; i < d.people.length; i++) {
+      for (var j = i + 1; j < d.people.length; j++) {
+        var shared = [];
+        d.rows.forEach(function (r) {
+          var ids = {};
+          r.owners.concat(r.helpers).forEach(function (x) { ids[x.person.id] = true; });
+          if (ids[d.people[i].person.id] && ids[d.people[j].person.id]) shared.push(r.activity.name);
+        });
+        if (shared.length >= 3) pairs.push({ a: personName(d.people[i].person), b: personName(d.people[j].person), shared: shared });
+      }
+    }
+    return { d: d, rows: d.rows, gaps: gaps, many: many, over: over, thin: thin, noSeat: noSeat, side: side, pairs: pairs };
+  }
+  function payReads(a) {
+    var d = derive(a);
+    var nums = [];
+    d.people.forEach(function (s) { if (s.person.pay != null && s.person.pay !== '') nums.push(Number(s.person.pay)); });
+    nums.sort(function (x, y) { return x - y; });
+    var median = null;
+    if (nums.length) {
+      var mid = Math.floor(nums.length / 2);
+      median = nums.length % 2 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    }
+    var rows = d.people.map(function (s) {
+      var pay = s.person.pay == null || s.person.pay === '' ? null : Number(s.person.pay);
+      var read = 'Pay not entered, so this person is left out of the comparison.';
+      if (pay != null && median != null) {
+        var band = pay < median * 0.85 ? 'low' : pay > median * 1.15 ? 'high' : 'mid';
+        if (s.avg == null) read = 'Pay is on file. There is no performance rating yet, so there is no value read.';
+        else if (band === 'high' && s.avg < 3) read = 'Pay is high for the results.';
+        else if (band === 'high' && s.avg >= 4) read = 'Pay is high, and the results match it.';
+        else if (band === 'high') read = 'Pay is on the high side for this team. Check that the seat is worth it.';
+        else if (band === 'low' && s.avg >= 4) read = 'Results are ahead of pay.';
+        else if (band === 'low' && s.avg < 3) read = 'Pay is modest. The results are the issue, not the paycheck.';
+        else if (band === 'low') read = 'Pay is modest. Settle the role before you change pay.';
+        else read = 'Pay and results are in a normal range for this team.';
+      }
+      return { stat: s, pay: pay, read: read };
+    });
+    return { median: median, rows: rows };
+  }
+  function ratingSentence(p) {
+    var high = [], low = [], mid = [];
+    RATINGS.forEach(function (pair) {
+      var n = Number(p.ratings && p.ratings[pair[0]]);
+      if (!(n >= 1)) return;
+      var label = RATING_SHORT[pair[0]];
+      if (n >= 4) high.push(label);
+      else if (n <= 2) low.push(label);
+      else mid.push(label);
+    });
+    if (!high.length && !low.length && !mid.length) return '';
+    var bits = [];
+    if (high.length) bits.push(cap(high.join(', ')) + (high.length > 1 ? ' are strong' : ' is strong'));
+    if (mid.length) bits.push(cap(mid.join(', ')) + (mid.length > 1 ? ' meet the role' : ' meets the role'));
+    if (low.length) bits.push(cap(low.join(', ')) + (low.length > 1 ? ' are below what the role needs' : ' is below what the role needs'));
+    return bits.join('. ') + '.';
+  }
+  function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function dutyLine(items, role) {
+    var list = items.filter(function (item) { return item.role === role; });
+    if (!list.length) return '';
+    return list.map(function (item) {
+      return item.name + (item.pct ? ' (about ' + item.pct + '% of the week)' : '');
+    }).join('; ');
+  }
+
+  function show(view) {
+    var a = active();
+    if (!a && view !== 'home') view = 'home';
+    if (a) a.view = view;
+    document.querySelectorAll('.view').forEach(function (el) { el.classList.toggle('active', el.id === 'view-' + view); });
+    if (view === 'home') renderHome();
+    if (view === 'setup') renderSetup();
+    if (view === 'people') renderPeople();
+    if (view === 'map') renderMap();
+    if (view === 'person') renderPerson();
+    if (view === 'analysis') renderAnalysis();
+    if (view === 'recs') renderRecs();
+    if (view === 'export') renderExport();
+    updateChrome();
+    if (!loading) scheduleSave();
+    if (!show.keep) window.scrollTo({ top: 0, behavior: loading ? 'auto' : 'smooth' });
+    show.keep = false;
+  }
+  function updateChrome() {
+    var a = active();
+    var btn = document.getElementById('companyBtn');
+    if (btn) btn.textContent = a ? companyName(a) : 'No client yet';
+    document.title = (a ? companyName(a) + ' · ' : '') + 'Team assessment · structure';
+    var nav = document.getElementById('nav');
+    clear(nav);
+    NAV.forEach(function (item) {
+      var current = a ? a.view : 'home';
+      if (!a && item[0] !== 'home') current = 'home';
+      var b = h('button', {
+        type: 'button', class: 'nav-btn' + (current === item[0] ? ' active' : ''),
+        'aria-current': current === item[0] ? 'page' : false,
+        onclick: function () { show(item[0]); }
+      }, item[1]);
+      nav.appendChild(b);
+    });
+  }
+  function renderHome() {
+    var list = document.getElementById('savedList');
+    var steps = document.getElementById('howSteps');
+    if (steps && !steps.childNodes.length) {
+      HOW.forEach(function (step) {
+        steps.appendChild(h('div', { class: 'step' }, h('div', { class: 'num', text: step[0] }), h('div', { text: step[1] })));
+      });
+    }
+    clear(list);
+    var rows = DB.assessments.slice().sort(function (a, b) { return String(b.updatedAt).localeCompare(String(a.updatedAt)); });
+    if (!rows.length) {
+      list.appendChild(h('p', { class: 'hint', text: 'Nothing saved on this browser yet.' }));
+      return;
+    }
+    rows.forEach(function (a) {
+      var meta = readyCount(a) + ' of ' + a.people.length + ' assessed · ' + savedWhen(a.updatedAt);
+      var item = h('button', { type: 'button', class: 'saved-item' + (a.id === DB.activeId ? ' current' : ''), onclick: function () { resume(a.id); } },
+        h('strong', { text: companyName(a) }),
+        h('span', { text: meta + (a.consultantName ? ' · ' + a.consultantName : '') })
+      );
+      list.appendChild(item);
+    });
+  }
+  function resume(id) {
+    DB.activeId = id;
+    var a = active();
+    show(a && a.view && a.view !== 'home' ? a.view : 'map');
+  }
+  function field(label, input) { return h('label', { class: 'field' }, h('span', { text: label }), input); }
+  function textInput(value, placeholder, oninput) {
+    return h('input', { type: 'text', value: value || '', placeholder: placeholder || '', autocomplete: 'off', oninput: oninput });
+  }
+  function renderSetup() {
+    var root = document.getElementById('view-setup');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    root.appendChild(h('div', { class: 'narrow' },
+      h('div', { class: 'eyebrow', text: 'Step 1 · Engagement' }),
+      h('h2', null, 'Who is this ', h('em', { text: 'for?' })),
+      h('p', { class: 'lede', text: 'One assessment per client. You can keep several on this browser and come back to any of them.' }),
+      h('div', { class: 'card' },
+        h('div', { class: 'fields' },
+          field('Client company', textInput(a.companyName, 'Harbor & Pine Remodeling', function (e) { a.companyName = e.target.value; touch(a); updateChrome(); scheduleSave(); })),
+          h('div', { class: 'fields two' },
+            field('Assessment date', h('input', { type: 'date', value: /^\d{4}-\d{2}-\d{2}$/.test(a.assessmentDate) ? a.assessmentDate : '', oninput: function (e) { a.assessmentDate = e.target.value; touch(a); scheduleSave(); } })),
+            field('Consultant', textInput(a.consultantName, 'Your name', function (e) { a.consultantName = e.target.value; touch(a); scheduleSave(); }))
+          )
+        )
+      ),
+      h('div', { class: 'card' },
+        h('h3', { text: 'A copy of this assessment' }),
+        h('p', { class: 'hint', text: 'Download a file to move this client to another computer, or to keep a copy outside the browser. Open that file later and it will come back here.' }),
+        h('div', { class: 'btn-row' },
+          h('button', { type: 'button', class: 'btn-secondary', onclick: exportAssessment }, 'Download this assessment'),
+          h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('openFile').click(); } }, 'Open a file'),
+          h('button', { type: 'button', class: 'btn-secondary', onclick: function () { deleteAssessment(a.id); } }, 'Remove from this browser')
+        ),
+        h('p', { class: 'msg', id: 'fileMsg' })
+      ),
+      h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('people'); } }, 'People →'))
+    ));
+  }
+  function renderPeople() {
+    var root = document.getElementById('view-people');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    var d = derive(a);
+    root.appendChild(h('div', { class: 'eyebrow', text: 'Step 2 · People' }));
+    root.appendChild(h('h2', null, 'Who is on ', h('em', { text: 'this team?' })));
+    root.appendChild(h('p', { class: 'lede', text: 'Add people one by one, or bring in a spreadsheet. Pay and start date can wait.' }));
+    root.appendChild(h('div', { class: 'card' },
+      h('h3', { text: 'Add one person' }),
+      h('div', { class: 'btn-row' },
+        textInput('', 'Full name', function (e) { e.target.dataset.name = e.target.value; }),
+        h('button', { type: 'button', class: 'btn-primary', id: 'addPersonBtn', onclick: function (e) {
+          var input = e.target.parentNode.querySelector('input');
+          addPerson(input.value);
+          input.value = '';
+          input.focus();
+        } }, 'Add')
+      ),
+      h('p', { class: 'hint', text: readyCount(a) + ' of ' + a.people.length + ' have a full assessment and a recommendation.' })
+    ));
+    var importCard = h('div', { class: 'card' },
+      h('h3', { text: 'Bring in a list' }),
+      h('p', { class: 'hint', text: 'Use columns for name, role, department, manager, pay, and start date. A header row helps. You can also paste one name per line.' }),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-secondary', onclick: downloadTemplate }, 'Download a blank template'),
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('peopleFile').click(); } }, 'Upload CSV or Excel')
+      ),
+      h('label', { class: 'field' }, h('span', { text: 'Or paste from a spreadsheet' }), h('textarea', { id: 'peoplePaste', placeholder: 'Name, Role, Department, Manager, Pay, Start date' })),
+      h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn-secondary', onclick: function () { importPeopleText(document.getElementById('peoplePaste').value, true); } }, 'Add the pasted people')),
+      h('p', { class: 'msg', id: 'importMsg' }),
+      h('input', { class: 'file-input', type: 'file', id: 'peopleFile', accept: '.csv,.txt,.xlsx,.xls,text/csv,text/plain', onchange: onPeopleFile })
+    );
+    root.appendChild(importCard);
+    var roster = h('div', { id: 'roster' });
+    if (!a.people.length) roster.appendChild(h('p', { class: 'hint', text: 'No one is on this assessment yet.' }));
+    a.people.forEach(function (p) {
+      var stat = null;
+      d.people.forEach(function (s) { if (s.person.id === p.id) stat = s; });
+      var status = personStatus(p);
+      var loadBits = [];
+      if (stat && stat.count) loadBits.push(stat.total + '% of the week');
+      if (stat && stat.overloaded) loadBits.push('Over 100%');
+      if (stat && stat.thin) loadBits.push('Spread too thin');
+      var card = h('div', { class: 'person-card' },
+        h('div', { class: 'top' },
+          h('span', { class: 'pill ' + (status.key === 'done' ? 'done' : status.key === 'progress' ? 'progress' : ''), text: status.label }),
+          h('span', {},
+            h('button', { type: 'button', class: 'linkish', onclick: function () { a.activePersonId = p.id; show('person'); } }, 'Assess'),
+            ' ',
+            h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove ' + personName(p), onclick: function () { removePerson(p.id); } }, '×')
+          )
+        ),
+        h('div', { class: 'fields two' },
+          field('Name', textInput(p.name, 'Full name', function (e) { p.name = e.target.value; touch(a); scheduleSave(); })),
+          field('Role / title', textInput(p.role, 'Estimator', function (e) { p.role = e.target.value; touch(a); scheduleSave(); }))
+        ),
+        h('div', { class: 'fields three', style: 'margin-top:10px' },
+          field('Department', textInput(p.department, 'Field', function (e) { p.department = e.target.value; touch(a); scheduleSave(); })),
+          field('Manager', textInput(p.manager, 'Who they report to', function (e) { p.manager = e.target.value; touch(a); scheduleSave(); })),
+          field('Pay / annual cost', h('input', { type: 'text', inputmode: 'decimal', value: p.pay == null ? '' : String(p.pay), placeholder: 'Optional', autocomplete: 'off', oninput: function (e) { p.pay = parsePay(e.target.value); touch(a); scheduleSave(); } })),
+          field('Start date', textInput(p.startDate, 'YYYY-MM-DD', function (e) { p.startDate = e.target.value; touch(a); scheduleSave(); }))
+        ),
+        loadBits.length ? h('p', { class: 'hint', style: 'margin-top:8px', text: loadBits.join(' · ') }) : null
+      );
+      roster.appendChild(card);
+    });
+    root.appendChild(roster);
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('setup'); } }, '← Setup'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('map'); } }, 'Activity map →')
+    ));
+  }
+  function addPerson(name) {
+    var a = active();
+    if (!a) return;
+    name = String(name || '').trim();
+    if (!name) { setImportMsg('Type a name, then add them.'); return; }
+    var dup = a.people.some(function (p) { return p.name.trim().toLowerCase() === name.toLowerCase(); });
+    if (dup) { setImportMsg(name + ' is already on this team.'); return; }
+    var person = blankPerson({ name: name });
+    a.people.push(person);
+    a.activePersonId = person.id;
+    touch(a);
+    setImportMsg('');
+    renderPeople();
+    persistNow();
+  }
+  function removePerson(id) {
+    var a = active();
+    var p = personById(id);
+    if (!a || !p) return;
+    if (!window.confirm('Remove ' + personName(p) + ' from this assessment? Their activity assignments go too.')) return;
+    a.people = a.people.filter(function (x) { return x.id !== id; });
+    a.activities.forEach(function (act) { act.assignments = act.assignments.filter(function (as) { return as.personId !== id; }); });
+    if (a.activePersonId === id) a.activePersonId = a.people[0] ? a.people[0].id : null;
+    touch(a);
+    renderPeople();
+    persistNow();
+  }
+  function setImportMsg(text) { var el = document.getElementById('importMsg'); if (el) el.textContent = text || ''; }
+  function setFileMsg(text) { var el = document.getElementById('fileMsg'); if (el) el.textContent = text || ''; }
+  function renderMap() {
+    var root = document.getElementById('view-map');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    var f = findings(a);
+    root.appendChild(h('div', { class: 'eyebrow', text: 'Step 3 · Activity map' }));
+    root.appendChild(h('h2', null, 'Who owns the ', h('em', { text: 'work?' })));
+    root.appendChild(h('p', { class: 'lede', text: 'Owner means this person is accountable. Helper means they do some of the work. The percent is a rough share of that person’s week, not a share of the activity.' }));
+    root.appendChild(flagStrip(f));
+    root.appendChild(h('div', { class: 'card', id: 'flagSentences' }, sentencesFor(f)));
+    var grid = h('div', { class: 'map-grid', id: 'mapGrid' });
+    var left = h('div', { id: 'activityList' });
+    if (!a.activities.length) left.appendChild(h('p', { class: 'hint', text: 'No activities yet. Add one, or bring back the usual list for a construction or service company.' }));
+    a.activities.forEach(function (act) { left.appendChild(activityCard(a, act)); });
+    left.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { a.activities.push(blankActivity('New activity')); touch(a); renderMap(); scheduleSave(); } }, 'Add an activity'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: addMissingStarter }, 'Add the usual activities')
+    ));
+    left.appendChild(h('p', { class: 'msg', id: 'mapMsg' }));
+    grid.appendChild(left);
+    grid.appendChild(loadPanel(f));
+    root.appendChild(grid);
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('people'); } }, '← People'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('person'); } }, 'Assess people →')
+    ));
+  }
+  function flagStrip(f) {
+    function tile(n, label, kind) { return h('div', { class: 'stat ' + kind }, h('div', { class: 'n', text: String(n) }), h('div', { class: 'k', text: label })); }
+    var none = f.gaps.length, many = f.many.length, over = f.over.length, thin = f.thin.length;
+    return h('div', { class: 'stat-strip', id: 'flagStrip' },
+      tile(none, none === 1 ? 'Activity with no owner' : 'Activities with no owner', none ? 'bad' : 'ok'),
+      tile(many, many === 1 ? 'Activity with too many owners' : 'Activities with too many owners', many ? 'warn' : 'ok'),
+      tile(over, over === 1 ? 'Person over 100%' : 'People over 100%', over ? 'bad' : 'ok'),
+      tile(thin, thin === 1 ? 'Person spread too thin' : 'People spread too thin', thin ? 'warn' : 'ok')
+    );
+  }
+  function sentencesFor(f) {
+    var nodes = [];
+    function line(text) { nodes.push(h('p', { class: 'hint', text: text })); }
+    if (f.gaps.length) line('No owner: ' + f.gaps.map(function (r) { return r.activity.name || 'Untitled activity'; }).join(', ') + '.');
+    else line('Every activity has an owner.');
+    if (f.many.length) line('More than one owner: ' + f.many.map(function (r) { return (r.activity.name || 'Untitled') + ' (' + r.owners.map(function (o) { return personName(o.person); }).join(' and ') + ')'; }).join('; ') + '.');
+    if (f.over.length) line('Over 100% of a week: ' + f.over.map(function (s) { return personName(s.person) + ' (' + s.total + '%)'; }).join(', ') + '.');
+    if (f.thin.length) line('Spread too thin (five or more activities, and none is 40% or more of the week): ' + f.thin.map(function (s) { return personName(s.person); }).join(', ') + '.');
+    if (!f.gaps.length && !f.many.length && !f.over.length && !f.thin.length) line('Nothing on this map is flagged. Still check that the percents feel true.');
+    return nodes;
+  }
+  function activityCard(a, act) {
+    var row = null;
+    findings(a).rows.forEach(function (r) { if (r.activity.id === act.id) row = r; });
+    var flag = row ? row.flag : '';
+    var head = h('div', { class: 'act-head' },
+      h('input', { type: 'text', value: act.name, 'aria-label': 'Activity name', oninput: function (e) { act.name = e.target.value; touch(a); scheduleSave(); refreshFlagCopy(); } }),
+      flag === 'none' ? h('span', { class: 'pill none', text: 'No owner' }) : null,
+      flag === 'many' ? h('span', { class: 'pill many', text: (row.owners.length) + ' owners' }) : null,
+      h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove activity', onclick: function () { removeActivity(act.id); } }, '×')
+    );
+    var card = h('div', { class: 'act', 'data-act': act.id }, head);
+    if (!act.assignments.length) card.appendChild(h('p', { class: 'hint', text: 'Nobody is on this yet.' }));
+    act.assignments.forEach(function (as, index) {
+      card.appendChild(h('div', { class: 'assign' },
+        personSelect(a, as.personId, function (e) { retargetAssignment(act, index, e.target.value); }),
+        h('select', { 'aria-label': 'Owner or helper', onchange: function (e) { as.role = e.target.value === 'owner' ? 'owner' : 'helper'; touch(a); renderMap(); scheduleSave(); } },
+          h('option', { value: 'owner', selected: as.role === 'owner' ? 'selected' : false, text: 'Owner' }),
+          h('option', { value: 'helper', selected: as.role !== 'owner' ? 'selected' : false, text: 'Helper' })
+        ),
+        h('div', { class: 'pct-wrap' },
+          h('input', { type: 'number', min: '0', max: '100', step: '5', value: String(as.pct || 0), 'aria-label': 'Percent of their week', oninput: function (e) {
+            as.pct = parsePct(e.target.value);
+            if (Number(e.target.value) > 100) e.target.value = '100';
+            touch(a);
+            scheduleSave();
+            refreshLoadOnly();
+          } }),
+          h('span', { text: '%' })
+        ),
+        h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove assignment', onclick: function () { act.assignments.splice(index, 1); touch(a); renderMap(); scheduleSave(); } }, '×')
+      ));
+    });
+    card.appendChild(h('button', { type: 'button', class: 'linkish', onclick: function () { addAssignment(act.id); } }, '+ Add a person'));
+    return card;
+  }
+  function personSelect(a, selected, onchange) {
+    var sel = h('select', { 'aria-label': 'Person', onchange: onchange });
+    a.people.forEach(function (p) {
+      sel.appendChild(h('option', { value: p.id, selected: p.id === selected ? 'selected' : false, text: personName(p) }));
+    });
+    if (!a.people.length) sel.appendChild(h('option', { value: '', text: 'Add a person first' }));
+    return sel;
+  }
+  function retargetAssignment(act, index, personId) {
+    var a = active();
+    if (!a || !personId) return;
+    var clash = act.assignments.some(function (as, i) { return i !== index && as.personId === personId; });
+    if (clash) { setMapMsg('That person is already on this activity.'); renderMap(); return; }
+    act.assignments[index].personId = personId;
+    touch(a);
+    renderMap();
+    scheduleSave();
+  }
+  function addAssignment(actId) {
+    var a = active();
+    var act = activityById(actId);
+    if (!a || !act) return;
+    if (!a.people.length) { setMapMsg('Add the client’s people first, then assign them here.'); return; }
+    var used = {};
+    act.assignments.forEach(function (as) { used[as.personId] = true; });
+    var person = null;
+    a.people.forEach(function (p) { if (!person && !used[p.id]) person = p; });
+    if (!person) { setMapMsg('Everyone is already on this activity.'); return; }
+    var hasOwner = act.assignments.some(function (as) { return as.role === 'owner'; });
+    act.assignments.push({ personId: person.id, role: hasOwner ? 'helper' : 'owner', pct: 10 });
+    touch(a);
+    renderMap();
+    scheduleSave();
+  }
+  function removeActivity(id) {
+    var a = active();
+    var act = activityById(id);
+    if (!a || !act) return;
+    if (act.assignments.length && !window.confirm('Remove ' + (act.name || 'this activity') + '? The assignments on it go too.')) return;
+    a.activities = a.activities.filter(function (x) { return x.id !== id; });
+    touch(a);
+    renderMap();
+    scheduleSave();
+  }
+  function addMissingStarter() {
+    var a = active();
+    if (!a) return;
+    var have = {};
+    a.activities.forEach(function (act) { have[act.name.trim().toLowerCase()] = true; });
+    var added = 0;
+    STARTER.forEach(function (name) {
+      if (!have[name.toLowerCase()]) { a.activities.push(blankActivity(name)); added++; }
+    });
+    touch(a);
+    renderMap();
+    setMapMsg(added ? 'Added ' + added + (added === 1 ? ' activity.' : ' activities.') : 'The usual activities are already on the list.');
+    scheduleSave();
+  }
+  function setMapMsg(text) { var el = document.getElementById('mapMsg'); if (el) el.textContent = text || ''; }
+  function refreshFlagCopy() {
+    var a = active();
+    if (!a) return;
+    var f = findings(a);
+    var strip = document.getElementById('flagStrip');
+    var copy = document.getElementById('flagSentences');
+    if (strip && strip.parentNode) strip.parentNode.replaceChild(flagStrip(f), strip);
+    if (copy) { clear(copy); sentencesFor(f).forEach(function (n) { copy.appendChild(n); }); }
+    var panel = document.getElementById('loadPanel');
+    if (panel && panel.parentNode) panel.parentNode.replaceChild(loadPanel(f), panel);
+  }
+  function refreshLoadOnly() { refreshFlagCopy(); }
+  function loadPanel(f) {
+    var panel = h('div', { class: 'card load-panel', id: 'loadPanel' },
+      h('h3', { text: 'Share of the week' }),
+      h('p', { class: 'hint', text: 'Over 100% means the week does not fit. Spread too thin means five or more activities, and none is 40% or more of the week.' })
+    );
+    if (!f.d.people.length) panel.appendChild(h('p', { class: 'hint', style: 'margin-top:8px', text: 'Add people to see the load.' }));
+    f.d.people.forEach(function (s) {
+      var tags = [];
+      if (!s.count) tags.push('Not on the map');
+      if (s.overloaded) tags.push('Over 100%');
+      if (s.thin) tags.push('Spread too thin');
+      var width = Math.min(s.total, 100);
+      panel.appendChild(h('div', { class: 'load-row' },
+        h('div', { class: 'line' }, h('strong', { text: personName(s.person) }), h('span', { text: (s.count ? s.total + '%' : '—') })),
+        h('div', { class: 'bar' + (s.overloaded ? ' over' : s.thin ? ' thin' : '') }, h('i', { style: 'width:' + width + '%' })),
+        tags.length ? h('div', { class: 'hint', text: tags.join(' · ') }) : null
+      ));
+    });
+    return panel;
+  }
+  function renderPerson() {
+    var root = document.getElementById('view-person');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    root.appendChild(h('div', { class: 'narrow' },
+      h('div', { class: 'eyebrow', text: 'Step 4 · Person' }),
+      h('h2', null, 'How is this person ', h('em', { text: 'actually doing?' })),
+      h('p', { class: 'lede', text: 'This is for the structure team. Be specific. The one-pager can hide pay, the keep-or-replace call, and your private notes.' })
+    ));
+    if (!a.people.length) {
+      root.appendChild(h('p', { class: 'hint', text: 'Add people first.' }));
+      return;
+    }
+    if (!personById(a.activePersonId)) a.activePersonId = a.people[0].id;
+    var p = personById(a.activePersonId);
+    var idx = 0;
+    a.people.forEach(function (person, i) { if (person.id === p.id) idx = i; });
+    var picker = h('div', { class: 'card narrow' },
+      h('div', { class: 'fields' },
+        field('Assessing', (function () {
+          var sel = h('select', { id: 'personPicker', onchange: function (e) { a.activePersonId = e.target.value; renderPerson(); scheduleSave(); } });
+          a.people.forEach(function (person) { sel.appendChild(h('option', { value: person.id, selected: person.id === p.id ? 'selected' : false, text: personName(person) })); });
+          return sel;
+        })())
+      ),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-secondary', disabled: idx === 0, onclick: function () { shiftPerson(-1); } }, 'Previous'),
+        h('button', { type: 'button', class: 'btn-secondary', disabled: idx >= a.people.length - 1, onclick: function () { shiftPerson(1); } }, 'Next')
+      )
+    );
+    root.appendChild(picker);
+    var stat = null;
+    derive(a).people.forEach(function (s) { if (s.person.id === p.id) stat = s; });
+    var work = h('div', { class: 'card narrow' }, h('h3', { text: 'What the map says' }));
+    if (!stat || !stat.items.length) work.appendChild(h('p', { class: 'hint', text: 'This person is not on an activity yet. Assign them on the activity map.' }));
+    else {
+      var own = dutyLine(stat.items, 'owner');
+      var help = dutyLine(stat.items, 'helper');
+      if (own) work.appendChild(h('p', { text: 'Owns: ' + own + '.' }));
+      if (help) work.appendChild(h('p', { text: 'Helps with: ' + help + '.' }));
+      var flags = [];
+      if (stat.overloaded) flags.push('Over 100% (' + stat.total + '%).');
+      if (stat.thin) flags.push('Spread across ' + stat.count + ' activities, with no main focus.');
+      if (!stat.owned) flags.push('Does not own a seat.');
+      if (flags.length) work.appendChild(h('p', { class: 'hint', style: 'margin-top:8px', text: flags.join(' ') }));
+    }
+    root.appendChild(work);
+    var rateCard = h('div', { class: 'card narrow' },
+      h('h3', { text: 'Performance' }),
+      h('p', { class: 'hint', text: '1 is below the role. 3 meets it. 5 is exceptional. Score what you have actually seen.' })
+    );
+    RATINGS.forEach(function (pair) {
+      var row = h('div', { class: 'field', style: 'margin-top:12px' }, h('span', { text: pair[1] }));
+      var buttons = h('div', { class: 'rate' });
+      for (var n = 1; n <= 5; n++) {
+        (function (score) {
+          buttons.appendChild(h('button', {
+            type: 'button', 'data-rate': pair[0], 'data-val': String(score),
+            class: Number(p.ratings[pair[0]]) === score ? 'on' : '',
+            'aria-pressed': Number(p.ratings[pair[0]]) === score ? 'true' : 'false',
+            'aria-label': pair[1] + ' ' + score,
+            onclick: function () { p.ratings[pair[0]] = score; touch(a); paintRatings(p); scheduleSave(); }
+          }, String(score)));
+        })(n);
+      }
+      row.appendChild(buttons);
+      rateCard.appendChild(row);
+    });
+    rateCard.appendChild(h('p', { class: 'hint', id: 'ratingLine', style: 'margin-top:12px', text: ratingSentence(p) }));
+    root.appendChild(rateCard);
+    root.appendChild(h('div', { class: 'card narrow' },
+      h('div', { class: 'fields' },
+        field('Strengths', h('textarea', { text: p.strengths, placeholder: 'What is working, in plain words.', oninput: function (e) { p.strengths = e.target.value; touch(a); scheduleSave(); } })),
+        field('Issues and challenges', h('textarea', { text: p.issues, placeholder: 'What is in the way. Name the behavior or the missing result.', oninput: function (e) { p.issues = e.target.value; touch(a); scheduleSave(); } })),
+        h('div', { class: 'fields two' },
+          field('Role clarity', selectFrom(CLARITY, p.roleClarity, function (e) { p.roleClarity = e.target.value; touch(a); scheduleSave(); })),
+          field('Fit for this role', selectFrom(FITS, p.fit, function (e) { p.fit = e.target.value; touch(a); scheduleSave(); }))
+        ),
+        field('Consultant notes (internal)', h('textarea', { text: p.notes, placeholder: 'Private to structure. Hidden on the employee page and on the owner summary.', oninput: function (e) { p.notes = e.target.value; touch(a); scheduleSave(); } }))
+      ),
+      h('p', { class: 'hint', style: 'margin-top:8px', text: 'Pay stays on the People step' + (p.pay != null ? ' (' + money(p.pay) + ').' : '. It is optional.') })
+    ));
+    root.appendChild(h('div', { class: 'btn-row narrow' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('map'); } }, '← Activity map'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show.keep = true; show('recs'); var node = document.getElementById('rec-' + p.id); if (node) node.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }, 'Recommendation for ' + personName(p) + ' →')
+    ));
+  }
+  function selectFrom(options, value, onchange) {
+    var sel = h('select', { onchange: onchange });
+    options.forEach(function (opt) { sel.appendChild(h('option', { value: opt[0], selected: opt[0] === (value || '') ? 'selected' : false, text: opt[1] })); });
+    return sel;
+  }
+  function paintRatings(p) {
+    RATINGS.forEach(function (pair) {
+      var val = Number(p.ratings[pair[0]]) || 0;
+      document.querySelectorAll('[data-rate="' + pair[0] + '"]').forEach(function (btn) {
+        var on = Number(btn.getAttribute('data-val')) === val;
+        btn.classList.toggle('on', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    });
+    var line = document.getElementById('ratingLine');
+    if (line) line.textContent = ratingSentence(p);
+  }
+  function shiftPerson(delta) {
+    var a = active();
+    if (!a) return;
+    var idx = 0;
+    a.people.forEach(function (p, i) { if (p.id === a.activePersonId) idx = i; });
+    var next = a.people[idx + delta];
+    if (!next) return;
+    a.activePersonId = next.id;
+    renderPerson();
+    scheduleSave();
+  }
+  function renderAnalysis() {
+    var root = document.getElementById('view-analysis');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    var f = findings(a);
+    var pay = payReads(a);
+    root.appendChild(h('div', { class: 'eyebrow', text: 'Step 5 · Analysis' }));
+    root.appendChild(h('h2', null, 'What the team is ', h('em', { text: 'telling you.' })));
+    root.appendChild(h('div', { class: 'jump' },
+      h('a', { href: '#overview', text: 'Overview' }),
+      h('a', { href: '#matrix', text: 'Responsibility matrix' }),
+      h('a', { href: '#overlap', text: 'Overlap and roles' }),
+      h('a', { href: '#gaps', text: 'Gaps' }),
+      h('a', { href: '#pay', text: 'Pay and value' })
+    ));
+    root.appendChild(overviewBlock(a, f));
+    root.appendChild(matrixBlock(a, f));
+    root.appendChild(overlapBlock(f));
+    root.appendChild(gapsBlock(f));
+    root.appendChild(payBlock(pay));
+  }
+  function overviewBlock(a, f) {
+    var block = h('div', { class: 'card', id: 'overview' },
+      h('h3', { text: 'Who is doing well, and who is at risk' }),
+      h('p', { class: 'hint', text: 'Doing well means an average of 4 or higher, and the person is not a poor fit or a replace. At risk means the average is under 3, the fit is poor, the role is not clear, or the call is replace. A person can do the work well and still need a different seat. Read the tag on the card.' })
+    );
+    if (!a.people.length) { block.appendChild(h('p', { class: 'hint', text: 'Add people before this view can sort them.' })); return block; }
+    var order = ['risk', 'well', 'mixed', 'none'];
+    var grid = h('div', { class: 'groups' });
+    order.forEach(function (key) {
+      var group = f.d.people.filter(function (s) { return s.standing === key; });
+      if (!group.length) return;
+      var col = h('div', {}, h('h3', { text: standingLabel(key) + ' · ' + group.length }));
+      group.forEach(function (s) { col.appendChild(whoCard(a, s)); });
+      grid.appendChild(col);
+    });
+    block.appendChild(grid);
+    return block;
+  }
+  function whoCard(a, s) {
+    var bits = [];
+    if (s.avg != null) bits.push('Average ' + formatAvg(s.avg));
+    if (fitShort(s.person.fit)) bits.push(fitShort(s.person.fit));
+    if (clarityShort(s.person.roleClarity)) bits.push(clarityShort(s.person.roleClarity));
+    if (s.count) bits.push(s.total + '% of the week');
+    if (s.overloaded) bits.push('Over 100%');
+    if (s.thin) bits.push('Spread too thin');
+    return h('button', { type: 'button', class: 'who-card', onclick: function () { a.activePersonId = s.person.id; show('person'); } },
+      h('div', { class: 'who-top' },
+        h('strong', { text: personName(s.person) }),
+        h('span', { class: 'pill ' + (s.person.recommendation || 'none'), text: recLabel(s.person.recommendation) || 'No decision' })
+      ),
+      h('span', { class: 'muted', text: [s.person.role, s.person.department].filter(Boolean).join(' · ') || 'Role not set' }),
+      h('span', { class: 'muted', text: bits.join(' · ') })
+    );
+  }
+  function matrixBlock(a, f) {
+    var block = h('div', { class: 'card', id: 'matrix' },
+      h('h3', { text: 'Responsibility matrix' }),
+      h('p', { class: 'hint', text: 'Rows are activities. Columns are people. “Owns” is accountability. “Helps” is support. Scroll sideways if the team is wide.' })
+    );
+    if (!a.people.length || !a.activities.length) {
+      block.appendChild(h('p', { class: 'hint', text: 'Add people and activities to fill the matrix.' }));
+      return block;
+    }
+    var table = h('table', { class: 'matrix' });
+    var head = h('tr', {}, h('th', { text: 'Activity' }));
+    f.d.people.forEach(function (s) {
+      head.appendChild(h('th', { text: personName(s.person) + (s.count ? ' · ' + s.total + '%' : '') }));
+    });
+    table.appendChild(h('thead', {}, head));
+    var body = h('tbody');
+    f.rows.forEach(function (r) {
+      var label = r.activity.name || 'Untitled';
+      if (r.flag === 'none') label += ' · No owner';
+      if (r.flag === 'many') label += ' · ' + r.owners.length + ' owners';
+      var tr = h('tr', {}, h('th', { text: label }));
+      f.d.people.forEach(function (s) {
+        var hit = null;
+        r.owners.concat(r.helpers).forEach(function (x) { if (x.person.id === s.person.id) hit = x; });
+        var onOwner = r.owners.some(function (x) { return x.person.id === s.person.id; });
+        var text = '—';
+        if (hit) text = (onOwner ? 'Owns ' : 'Helps ') + (hit.pct ? hit.pct + '%' : '');
+        tr.appendChild(h('td', { class: hit ? (onOwner ? 'owner' : 'helper') : '', text: text }));
+      });
+      body.appendChild(tr);
+    });
+    table.appendChild(body);
+    block.appendChild(h('div', { class: 'matrix-wrap' }, table));
+    return block;
+  }
+  function overlapBlock(f) {
+    var block = h('div', { class: 'card', id: 'overlap' },
+      h('h3', { text: 'Overlap, and roles to combine or split' }),
+      h('p', { class: 'hint', text: 'Two owners means nobody is accountable. A person on many small tasks does not have a role yet. A thin slice on top of a big seat is easy to drop.' })
+    );
+    var any = false;
+    function add(text) { any = true; block.appendChild(h('div', { class: 'finding', text: text })); }
+    f.many.forEach(function (r) {
+      add((r.activity.name || 'Untitled') + ' has ' + r.owners.length + ' owners: ' + r.owners.map(function (o) { return personName(o.person) + ' (' + o.pct + '%)'; }).join(' and ') + '. Pick one owner.');
+    });
+    f.pairs.forEach(function (pair) {
+      add(pair.a + ' and ' + pair.b + ' are both in ' + pair.shared.join(', ') + '. Give each of those a single owner.');
+    });
+    f.noSeat.forEach(function (s) {
+      add(personName(s.person) + ' only helps, on ' + s.items.map(function (item) { return item.name; }).join(', ') + '. Give them one seat to own, or fold the time into someone else’s role.');
+    });
+    if (f.side.length) {
+      add('These are owned, but only as a sliver of a bigger seat: ' + f.side.map(function (s) { return s.activity + ' (' + s.person + ', ' + s.pct + '%)'; }).join('; ') + '. A sliver is not real ownership. Give it a home or stop listing it.');
+    }
+    if (!any) block.appendChild(h('p', { class: 'hint', text: 'No overlap to act on yet. Assign owners and the picture will show up here.' }));
+    return block;
+  }
+  function gapsBlock(f) {
+    var block = h('div', { class: 'card', id: 'gaps' },
+      h('h3', { text: 'Gaps' }),
+      h('p', { class: 'hint', text: 'A gap is an activity with nobody accountable. Helpers do not close a gap.' })
+    );
+    if (!f.gaps.length) block.appendChild(h('p', { text: 'Every activity has one owner.' }));
+    f.gaps.forEach(function (r) {
+      var help = r.helpers.length ? ' Helpers: ' + r.helpers.map(function (x) { return personName(x.person) + ' (' + x.pct + '%)'; }).join(', ') + '.' : ' Nobody is on it at all.';
+      block.appendChild(h('div', { class: 'finding', text: (r.activity.name || 'Untitled activity') + ' has no owner.' + help }));
+    });
+    return block;
+  }
+  function payBlock(pay) {
+    var block = h('div', { class: 'card', id: 'pay' },
+      h('h3', { text: 'Pay and value' }),
+      h('p', { class: 'hint', text: pay.median == null ? 'Enter pay on the People step to compare cost with results. Until then, this stays blank.' : 'Compared with the middle pay on this team (' + money(pay.median) + '). High means more than about 15% above that middle. Low means more than about 15% below. This is a read inside this team, not a market study.' })
+    );
+    if (pay.median == null) return block;
+    var table = h('table', { class: 'pay-table' }, h('thead', {}, h('tr', {}, h('th', { text: 'Person' }), h('th', { text: 'Pay' }), h('th', { text: 'Results' }), h('th', { text: 'Read' }))));
+    var body = h('tbody');
+    pay.rows.forEach(function (row) {
+      body.appendChild(h('tr', {},
+        h('td', { text: personName(row.stat.person) }),
+        h('td', { text: row.pay == null ? '—' : money(row.pay) }),
+        h('td', { text: row.stat.avg == null ? '—' : formatAvg(row.stat.avg) }),
+        h('td', { text: row.read })
+      ));
+    });
+    table.appendChild(body);
+    block.appendChild(table);
+    return block;
+  }
+  function renderRecs() {
+    var root = document.getElementById('view-recs');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    root.appendChild(h('div', { class: 'narrow' },
+      h('div', { class: 'eyebrow', text: 'Step 6 · Recommendations' }),
+      h('h2', null, 'What should the owner ', h('em', { text: 'do?' })),
+      h('p', { class: 'lede', text: 'One call per person. The reasoning can be direct. Role adjustments and the action plan can go on the page you hand the employee, so write those in words you would say out loud.' })
+    ));
+    if (!a.people.length) { root.appendChild(h('p', { class: 'hint', text: 'Add people first.' })); return; }
+    a.people.forEach(function (p) {
+      var card = h('div', { class: 'card narrow', id: 'rec-' + p.id },
+        h('h3', { text: personName(p) }),
+        h('p', { class: 'hint', text: [p.role, standingLabel(standing(p)), ratingAvg(p) != null ? 'Average ' + formatAvg(ratingAvg(p)) : ''].filter(Boolean).join(' · ') }),
+        h('div', { class: 'seg', style: 'margin:12px 0' })
+      );
+      var seg = card.querySelector('.seg');
+      RECS.forEach(function (rec) {
+        seg.appendChild(h('button', {
+          type: 'button', class: rec[0] + (p.recommendation === rec[0] ? ' on' : ''),
+          onclick: function () {
+            p.recommendation = rec[0]; touch(a); scheduleSave();
+            seg.querySelectorAll('button').forEach(function (btn, i) { btn.className = RECS[i][0] + (p.recommendation === RECS[i][0] ? ' on' : ''); });
+            var hint = document.getElementById('recHint-' + p.id);
+            if (hint) hint.textContent = rec[2];
+          }
+        }, rec[1]));
+      });
+      card.appendChild(h('p', { class: 'hint', id: 'recHint-' + p.id, text: (recMeta(p.recommendation) || ['', '', 'Choose one. You can change it.'])[2] }));
+      card.appendChild(h('div', { class: 'fields', style: 'margin-top:12px' },
+        field('Why', h('textarea', { text: p.reasoning, placeholder: 'The reason for this call. This stays off the employee page unless you choose to show internal fields.', oninput: function (e) { p.reasoning = e.target.value; touch(a); scheduleSave(); } })),
+        field('Role adjustments', h('textarea', { text: p.roleAdjustments, placeholder: 'What changes in the seat. Safe to say to the person.', oninput: function (e) { p.roleAdjustments = e.target.value; touch(a); scheduleSave(); } })),
+        field('Development or action plan', h('textarea', { text: p.actionPlan, placeholder: 'The next steps, with a when. Safe to say to the person.', oninput: function (e) { p.actionPlan = e.target.value; touch(a); scheduleSave(); } }))
+      ));
+      root.appendChild(card);
+    });
+    root.appendChild(h('div', { class: 'btn-row narrow' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('analysis'); } }, '← Analysis'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('export'); } }, 'Export →')
+    ));
+  }
+  function renderExport() {
+    var root = document.getElementById('view-export');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    if (!personById(a.activePersonId) && a.people[0]) a.activePersonId = a.people[0].id;
+    printIntent.kind = 'one';
+    printIntent.personId = a.activePersonId;
+    printIntent.all = false;
+    root.appendChild(h('div', { class: 'narrow' },
+      h('div', { class: 'eyebrow', text: 'Step 7 · Export' }),
+      h('h2', null, 'Hand something ', h('em', { text: 'over.' })),
+      h('p', { class: 'lede', text: 'The one-pager is for a role conversation or to give the employee. The owner summary is for the client who has to decide. Print uses your browser’s print dialog, so you can save a PDF.' })
+    ));
+    var controls = h('div', { class: 'card' },
+      h('div', { class: 'fields two' },
+        field('One-pager for', (function () {
+          var sel = h('select', { id: 'exportPerson', onchange: function (e) { a.activePersonId = e.target.value; printIntent.personId = e.target.value; renderPreview(); scheduleSave(); } });
+          a.people.forEach(function (p) { sel.appendChild(h('option', { value: p.id, selected: p.id === a.activePersonId ? 'selected' : false, text: personName(p) })); });
+          if (!a.people.length) sel.appendChild(h('option', { value: '', text: 'No people yet' }));
+          return sel;
+        })())
+      ),
+      h('label', { class: 'check', style: 'margin-top:12px' },
+        h('input', { type: 'checkbox', id: 'hideInternal', checked: printIntent.hideInternal, onchange: function (e) { printIntent.hideInternal = e.target.checked; renderPreview(); } }),
+        h('span', { text: 'Hide internal fields (pay, keep / coach / reassign / replace, and consultant notes) so this page is safe to hand to the employee.' })
+      ),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-primary', id: 'printOne', onclick: function () { printIntent.kind = 'one'; printIntent.all = false; printIntent.personId = a.activePersonId; doPrint(personName(personById(a.activePersonId) || { name: 'One-pager' })); } }, 'Print this one-pager'),
+        h('button', { type: 'button', class: 'btn-secondary', id: 'printAll', onclick: function () { printIntent.kind = 'one'; printIntent.all = true; doPrint(companyName(a) + ' one-pagers'); } }, 'Print all one-pagers'),
+        h('button', { type: 'button', class: 'btn-secondary', id: 'printSummary', onclick: function () { printIntent.kind = 'summary'; printIntent.all = false; doPrint(companyName(a) + ' summary'); } }, 'Print owner summary')
+      ),
+      h('p', { class: 'hint', text: 'The owner summary includes the overview, the activity map, the findings, the recommendations, and pay where you entered it. Consultant notes stay off that report.' }),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-secondary', onclick: exportAssessment }, 'Download this assessment'),
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('openFile').click(); } }, 'Open a file')
+      ),
+      h('p', { class: 'msg', id: 'fileMsg' })
+    );
+    root.appendChild(controls);
+    root.appendChild(h('div', { id: 'preview' }));
+    renderPreview();
+  }
+  function renderPreview() {
+    var slot = document.getElementById('preview');
+    var a = active();
+    if (!slot || !a) return;
+    clear(slot);
+    var p = personById(a.activePersonId) || a.people[0];
+    if (!p) { slot.appendChild(h('p', { class: 'hint', text: 'Add a person to preview a one-pager.' })); return; }
+    slot.appendChild(renderOnePager(p, a, printIntent.hideInternal));
+  }
+  function paperHeader(kicker, a) {
+    var src = document.getElementById('brandLogo').getAttribute('src');
+    var bits = [companyName(a), formatDate(a.assessmentDate), a.consultantName].filter(Boolean);
+    return h('div', {},
+      h('img', { class: 'paper-logo', alt: 'structure', src: src }),
+      h('div', { class: 'paper-kicker', style: 'margin-top:14px', text: kicker }),
+      h('p', { class: 'hint', text: bits.join(' · ') })
+    );
+  }
+  function blockText(title, text, empty) {
+    return h('div', { class: 'avoid' }, h('h3', { text: title }), h('p', { text: String(text || '').trim() || empty }));
+  }
+  function renderOnePager(p, a, hide) {
+    var stat = null;
+    derive(a).people.forEach(function (s) { if (s.person.id === p.id) stat = s; });
+    var own = stat ? dutyLine(stat.items, 'owner') : '';
+    var help = stat ? dutyLine(stat.items, 'helper') : '';
+    var roleBits = [p.role, p.department].filter(Boolean).join(' · ');
+    var paper = h('article', { class: 'paper' });
+    paper.appendChild(paperHeader('One-pager', a));
+    paper.appendChild(h('h2', { text: personName(p) }));
+    paper.appendChild(h('p', { text: roleBits || 'Role not set' }));
+    if (p.manager) paper.appendChild(h('p', { class: 'hint', text: 'Reports to ' + p.manager }));
+    if (p.startDate) paper.appendChild(h('p', { class: 'hint', text: 'Started ' + formatDate(p.startDate) }));
+    paper.appendChild(h('hr', { class: 'rule' }));
+    paper.appendChild(h('h3', { text: 'Your role and responsibilities' }));
+    if (!own && !help) paper.appendChild(h('p', { text: 'Nothing on the activity map is assigned yet.' }));
+    if (own) paper.appendChild(h('p', { text: 'You own: ' + own + '.' }));
+    if (help) paper.appendChild(h('p', { text: 'You help with: ' + help + '.' }));
+    if (!own && help) paper.appendChild(h('p', { text: 'You do not own a seat yet.' }));
+    var sentence = ratingSentence(p);
+    if (sentence) paper.appendChild(blockText('Where the work stands', sentence, ''));
+    paper.appendChild(blockText('What’s going well', p.strengths, 'Not written yet.'));
+    paper.appendChild(blockText('What to improve', p.issues, 'Not written yet.'));
+    paper.appendChild(blockText('Adjustments', p.roleAdjustments, 'Not written yet.'));
+    paper.appendChild(blockText('Next steps', p.actionPlan, 'Not written yet.'));
+    if (!hide) {
+      var internal = h('div', { class: 'internal-block' }, h('div', { class: 'paper-kicker', text: 'Internal copy. Includes pay, the recommendation, and consultant notes.' }));
+      if (p.pay != null) internal.appendChild(blockText('Pay', money(p.pay) + ' a year', ''));
+      internal.appendChild(blockText('Recommendation', [recLabel(p.recommendation) || 'Not chosen', p.reasoning].filter(Boolean).join('. '), 'Not chosen yet.'));
+      internal.appendChild(blockText('Consultant notes', p.notes, 'None.'));
+      paper.appendChild(internal);
+    }
+    paper.appendChild(h('div', { class: 'paper-foot' }, h('span', { text: 'Growth needs structure. We build it.' }), h('span', { text: 'structure' })));
+    return paper;
+  }
+  function renderSummary(a) {
+    var f = findings(a);
+    var pay = payReads(a);
+    var paper = h('article', { class: 'paper' });
+    paper.appendChild(paperHeader('Owner summary', a));
+    paper.appendChild(h('h2', { text: 'Team assessment' }));
+    paper.appendChild(h('p', { text: 'Prepared for the owner of ' + companyName(a) + '. This is the working read: who is solid, where the work has no owner, and what to do with each person.' }));
+    paper.appendChild(h('h3', { text: 'Team overview' }));
+    ['risk', 'well', 'mixed', 'none'].forEach(function (key) {
+      var group = f.d.people.filter(function (s) { return s.standing === key; });
+      if (!group.length) return;
+      paper.appendChild(h('p', { text: standingLabel(key) + ': ' + group.map(function (s) {
+        return personName(s.person) + (recLabel(s.person.recommendation) ? ' (' + recLabel(s.person.recommendation) + ')' : '');
+      }).join(', ') + '.' }));
+    });
+    if (f.over.length) paper.appendChild(h('p', { text: 'Over a full week: ' + f.over.map(function (s) { return personName(s.person) + ' at ' + s.total + '%'; }).join(', ') + '.' }));
+    if (f.thin.length) paper.appendChild(h('p', { text: 'Spread too thin: ' + f.thin.map(function (s) { return personName(s.person); }).join(', ') + '.' }));
+    paper.appendChild(h('h3', { text: 'Activity map' }));
+    if (!f.rows.length) paper.appendChild(h('p', { text: 'No activities listed.' }));
+    f.rows.forEach(function (r) {
+      var owners = r.owners.length ? r.owners.map(function (o) { return personName(o.person) + (o.pct ? ' ' + o.pct + '%' : ''); }).join(', ') : 'no owner';
+      var helpers = r.helpers.length ? ' Helpers: ' + r.helpers.map(function (o) { return personName(o.person) + (o.pct ? ' ' + o.pct + '%' : ''); }).join(', ') + '.' : '';
+      var flag = r.flag === 'none' ? ' Gap.' : r.flag === 'many' ? ' Too many owners.' : '';
+      paper.appendChild(h('p', { class: 'avoid', text: (r.activity.name || 'Untitled') + ' — ' + (r.flag === 'many' ? 'Owners: ' : 'Owner: ') + owners + '.' + helpers + flag }));
+    });
+    paper.appendChild(h('h3', { text: 'Findings' }));
+    var found = false;
+    f.gaps.forEach(function (r) { found = true; paper.appendChild(h('p', { text: (r.activity.name || 'Untitled') + ' has no owner.' })); });
+    f.many.forEach(function (r) { found = true; paper.appendChild(h('p', { text: (r.activity.name || 'Untitled') + ' has more than one owner.' })); });
+    f.pairs.forEach(function (pair) { found = true; paper.appendChild(h('p', { text: pair.a + ' and ' + pair.b + ' overlap on ' + pair.shared.join(', ') + '.' })); });
+    f.noSeat.forEach(function (s) { found = true; paper.appendChild(h('p', { text: personName(s.person) + ' does not own a seat.' })); });
+    if (f.side.length) { found = true; paper.appendChild(h('p', { text: 'Owned only as a sliver: ' + f.side.map(function (s) { return s.activity + ' (' + s.person + ', ' + s.pct + '%)'; }).join('; ') + '.' })); }
+    if (!found) paper.appendChild(h('p', { text: 'No structural flags.' }));
+    paper.appendChild(h('h3', { text: 'Recommendations' }));
+    if (!a.people.length) paper.appendChild(h('p', { text: 'No people on this assessment.' }));
+    a.people.forEach(function (p) {
+      var box = h('div', { class: 'avoid' },
+        h('p', {}, h('strong', { text: personName(p) + ' — ' + (recLabel(p.recommendation) || 'No decision yet') })),
+        p.reasoning ? h('p', { text: p.reasoning }) : null,
+        p.roleAdjustments ? h('p', { text: 'Adjustments: ' + p.roleAdjustments }) : null,
+        p.actionPlan ? h('p', { text: 'Next: ' + p.actionPlan }) : null
+      );
+      paper.appendChild(box);
+    });
+    if (pay.median != null) {
+      paper.appendChild(h('h3', { text: 'Pay and value' }));
+      paper.appendChild(h('p', { class: 'hint', text: 'Middle pay on this team: ' + money(pay.median) + '.' }));
+      pay.rows.forEach(function (row) {
+        if (row.pay == null) return;
+        paper.appendChild(h('p', { text: personName(row.stat.person) + ' · ' + money(row.pay) + (row.stat.avg != null ? ' · average ' + formatAvg(row.stat.avg) : '') + ' · ' + row.read }));
+      });
+    }
+    paper.appendChild(h('div', { class: 'paper-foot' }, h('span', { text: 'Growth needs structure. We build it.' }), h('span', { text: 'structure' })));
+    return paper;
+  }
+  function fillPrintMount() {
+    var mount = document.getElementById('printMount');
+    var a = active();
+    clear(mount);
+    if (!a) return;
+    if (printIntent.kind === 'one' && printIntent.all) {
+      a.people.forEach(function (p) { mount.appendChild(renderOnePager(p, a, printIntent.hideInternal)); });
+      if (!a.people.length) mount.appendChild(h('article', { class: 'paper' }, h('p', { text: 'No people to print.' })));
+    } else if (printIntent.kind === 'one') {
+      var p = personById(printIntent.personId) || a.people[0];
+      if (p) mount.appendChild(renderOnePager(p, a, printIntent.hideInternal));
+    } else mount.appendChild(renderSummary(a));
+  }
+  function doPrint(title) {
+    fillPrintMount();
+    var prev = document.title;
+    document.title = title || document.title;
+    function done() {
+      document.title = prev;
+      window.removeEventListener('afterprint', done);
+    }
+    window.addEventListener('afterprint', done);
+    window.print();
+  }
+  function downloadBlob(content, filename, type) {
+    var blob = content instanceof Blob ? content : new Blob([content], { type: type || 'application/octet-stream' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(function () { URL.revokeObjectURL(link.href); link.remove(); }, 0);
+  }
+  function exportAssessment() {
+    var a = active();
+    if (!a) return;
+    var payload = { app: 'structure-team-assessment', version: 1, exportedAt: new Date().toISOString(), assessment: a };
+    downloadBlob(JSON.stringify(payload, null, 2), slug(a.companyName) + '-team-assessment.json', 'application/json');
+    setFileMsg('Downloaded. Keep that file if you want this assessment on another computer.');
+    persistNow();
+  }
+  function onOpenFile(input) {
+    var file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () { importAssessmentText(String(reader.result || '')); };
+    reader.onerror = function () { setFileMsg('Could not read that file.'); };
+    reader.readAsText(file);
+  }
+  function importAssessmentText(text) {
+    try {
+      var data = JSON.parse(text);
+      if (data && data.app === 'structure-performance-evaluation') throw new Error('wrong-app');
+      var list = [];
+      if (data && data.assessment && (data.assessment.people || data.assessment.activities || data.assessment.companyName)) list = [data.assessment];
+      else if (data && Array.isArray(data.assessments)) list = data.assessments;
+      else if (data && (data.people || data.activities) && data.companyName != null) list = [data];
+      else throw new Error('bad');
+      if (!list.length) throw new Error('bad');
+      var last = null;
+      list.forEach(function (raw) {
+        var item = normalizeAssessment(raw);
+        var idx = -1;
+        DB.assessments.forEach(function (existing, i) { if (existing.id === item.id) idx = i; });
+        if (idx >= 0) DB.assessments[idx] = item;
+        else DB.assessments.unshift(item);
+        last = item;
+      });
+      DB.activeId = last.id;
+      setFileMsg('Opened ' + companyName(last) + '.');
+      show('map');
+      persistNow();
+    } catch (err) {
+      var msg = err && err.message === 'wrong-app'
+        ? 'That file is a performance evaluation. This page opens team assessments.'
+        : 'That file is not a team assessment this page can open.';
+      setFileMsg(msg);
+      var homeMsg = document.getElementById('fileMsg');
+      if (homeMsg) homeMsg.textContent = msg;
+    }
+  }
+  function downloadTemplate() {
+    var csv = '\uFEFFName,Role,Department,Manager,Pay,Start date\r\nJordan Lee,Operations Manager,Production,Dana Okonkwo,72000,2021-04-12\r\n';
+    downloadBlob(csv, 'team-assessment-people-template.csv', 'text/csv;charset=utf-8');
+  }
+  function detectDelim(text) {
+    var line = String(text || '').split(/\r?\n/).filter(function (l) { return l.trim(); })[0] || '';
+    var commas = (line.match(/,/g) || []).length;
+    var semis = (line.match(/;/g) || []).length;
+    var tabs = (line.match(/\t/g) || []).length;
+    if (tabs >= commas && tabs >= semis && tabs > 0) return '\t';
+    if (semis > commas) return ';';
+    return ',';
+  }
+  function parseDelimited(text, delim) {
+    if (!delim) delim = detectDelim(text);
+    var rows = [], row = [], cur = '', quoted = false;
+    text = String(text || '').replace(/^\uFEFF/, '');
+    for (var i = 0; i < text.length; i++) {
+      var c = text.charAt(i);
+      if (quoted) {
+        if (c === '"') { if (text.charAt(i + 1) === '"') { cur += '"'; i++; } else quoted = false; }
+        else cur += c;
+      } else if (c === '"') quoted = true;
+      else if (c === delim) { row.push(cur); cur = ''; }
+      else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+      else if (c !== '\r') cur += c;
+    }
+    if (cur.length || row.length) { row.push(cur); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (cell) { return String(cell).trim(); }); });
+  }
+  function headerIndex(header, names) {
+    for (var i = 0; i < header.length; i++) if (names.indexOf(header[i]) >= 0) return i;
+    return -1;
+  }
+  function cellAt(row, idx) {
+    if (!row || idx < 0 || idx >= row.length || row[idx] == null) return '';
+    return String(row[idx]).trim();
+  }
+  function peopleFromRows(rows) {
+    if (!rows || !rows.length) return [];
+    var header = rows[0].map(function (c) { return String(c || '').trim().toLowerCase(); });
+    var nameIdx = headerIndex(header, ['name', 'employee', 'employee name', 'full name', 'staff name', 'team member', 'person']);
+    var roleIdx = headerIndex(header, ['role', 'title', 'job title', 'job', 'position', 'role/title']);
+    var deptIdx = headerIndex(header, ['department', 'dept', 'team', 'division', 'area']);
+    var mgrIdx = headerIndex(header, ['manager', 'reports to', 'supervisor', 'reports']);
+    var payIdx = headerIndex(header, ['pay', 'cost', 'salary', 'wage', 'annual pay', 'compensation', 'pay/cost', 'annual cost']);
+    var startIdx = headerIndex(header, ['start date', 'start', 'hire date', 'hired', 'date started']);
+    var start = 0;
+    if (nameIdx >= 0) start = 1;
+    else { nameIdx = 0; roleIdx = 1; deptIdx = 2; mgrIdx = 3; payIdx = 4; startIdx = 5; }
+    var people = [];
+    for (var i = start; i < rows.length; i++) {
+      people.push({
+        name: cellAt(rows[i], nameIdx),
+        role: cellAt(rows[i], roleIdx),
+        department: cellAt(rows[i], deptIdx),
+        manager: cellAt(rows[i], mgrIdx),
+        pay: payIdx >= 0 ? parsePay(cellAt(rows[i], payIdx)) : null,
+        startDate: normalizeDate(cellAt(rows[i], startIdx))
+      });
+    }
+    return people;
+  }
+  function parsePeopleText(text) {
+    var trimmed = String(text || '').replace(/^\uFEFF/, '').trim();
+    if (!trimmed) return [];
+    if (/[,\t;]/.test(trimmed)) return peopleFromRows(parseDelimited(trimmed));
+    return trimmed.split(/\r?\n/).map(function (line) { return { name: line.trim(), role: '', department: '', manager: '', pay: null, startDate: '' }; }).filter(function (p) { return p.name; });
+  }
+  function addPeople(people) {
+    var a = active();
+    if (!a) return { added: 0, skipped: 0, updated: 0 };
+    var existing = {};
+    a.people.forEach(function (p) { var n = p.name.trim().toLowerCase(); if (n) existing[n] = p; });
+    var added = 0, skipped = 0, updated = 0;
+    (people || []).forEach(function (raw) {
+      var name = String((raw && raw.name) || '').trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (existing[key]) {
+        var p = existing[key];
+        var changed = false;
+        if (!p.role && raw.role) { p.role = raw.role; changed = true; }
+        if (!p.department && raw.department) { p.department = raw.department; changed = true; }
+        if (!p.manager && raw.manager) { p.manager = raw.manager; changed = true; }
+        if (p.pay == null && raw.pay != null) { p.pay = raw.pay; changed = true; }
+        if (!p.startDate && raw.startDate) { p.startDate = raw.startDate; changed = true; }
+        if (changed) updated++; else skipped++;
+        return;
+      }
+      var person = blankPerson(raw);
+      person.name = name;
+      a.people.push(person);
+      existing[key] = person;
+      added++;
+    });
+    if (!a.activePersonId && a.people[0]) a.activePersonId = a.people[0].id;
+    touch(a);
+    return { added: added, skipped: skipped, updated: updated };
+  }
+  function importPeopleText(text, clearPaste) {
+    var result = addPeople(parsePeopleText(text));
+    renderPeople();
+    persistNow();
+    if (!result.added && !result.updated && !result.skipped) { setImportMsg('No names found. Put one person on each row, or download the template.'); return; }
+    var msg = result.added ? 'Added ' + result.added + (result.added === 1 ? ' person.' : ' people.') : 'No new people.';
+    if (result.updated) msg += ' Filled in blank details for ' + result.updated + (result.updated === 1 ? ' person already here.' : ' people already here.');
+    if (result.skipped) msg += ' Left ' + result.skipped + ' unchanged.';
+    if (clearPaste) { var box = document.getElementById('peoplePaste'); if (box) box.value = ''; }
+    setImportMsg(msg);
+  }
+  function loadXlsx() {
+    if (window.XLSX) return Promise.resolve(window.XLSX);
+    if (xlsxPromise) return xlsxPromise;
+    xlsxPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+      s.onload = function () { if (window.XLSX) resolve(window.XLSX); else reject(new Error('xlsx')); };
+      s.onerror = function () { xlsxPromise = null; reject(new Error('xlsx')); };
+      document.head.appendChild(s);
+    });
+    return xlsxPromise;
+  }
+  function onPeopleFile(inputOrEvent) {
+    var input = inputOrEvent && inputOrEvent.target ? inputOrEvent.target : inputOrEvent;
+    var file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    var lower = file.name.toLowerCase();
+    if (/\.xlsx$|\.xls$/.test(lower)) {
+      setImportMsg('Reading the spreadsheet…');
+      var reader = new FileReader();
+      reader.onload = function () {
+        loadXlsx().then(function (XLSX) {
+          var wb = XLSX.read(new Uint8Array(reader.result), { type: 'array' });
+          var sheet = wb.Sheets[wb.SheetNames[0]];
+          var rows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: '' });
+          var result = addPeople(peopleFromRows(rows));
+          renderPeople();
+          persistNow();
+          setImportMsg(result.added ? 'Added ' + result.added + ' from the spreadsheet.' : 'No new names in that spreadsheet.');
+        }).catch(function () { setImportMsg('Could not read that Excel file. Save it as CSV and upload the CSV.'); });
+      };
+      reader.readAsArrayBuffer(file);
+      return;
+    }
+    var textReader = new FileReader();
+    textReader.onload = function () { importPeopleText(String(textReader.result || ''), false); };
+    textReader.onerror = function () { setImportMsg('Could not read that file. Try pasting the names instead.'); };
+    textReader.readAsText(file);
+  }
+  function startAssessment() {
+    var item = normalizeAssessment({
+      companyName: '',
+      assessmentDate: todayISO(),
+      consultantName: '',
+      view: 'setup',
+      people: [],
+      activities: starterActivities()
+    });
+    DB.assessments.unshift(item);
+    DB.activeId = item.id;
+    show('setup');
+    persistNow();
+    var input = document.querySelector('#view-setup input');
+    if (input) input.focus();
+  }
+  function deleteAssessment(id) {
+    var item = null;
+    DB.assessments.forEach(function (a) { if (a.id === id) item = a; });
+    if (!item) return;
+    if (!window.confirm('Remove “' + companyName(item) + '” from this browser? A file you already downloaded is not affected.')) return;
+    DB.assessments = DB.assessments.filter(function (a) { return a.id !== id; });
+    if (DB.activeId === id) DB.activeId = DB.assessments[0] ? DB.assessments[0].id : null;
+    show('home');
+    persistNow();
+  }
+  function buildSample() {
+    function P(id, name, role, department, manager, pay, start, ratings, extra) {
+      extra = extra || {};
+      return blankPerson(Object.assign({
+        id: id, name: name, role: role, department: department, manager: manager, pay: pay, startDate: start, ratings: {
+          quality: ratings[0], reliability: ratings[1], communication: ratings[2], ownership: ratings[3], teamwork: ratings[4]
+        }
+      }, extra));
+    }
+    var people = [
+      P('p_chris', 'Chris Hale', 'Owner', 'Leadership', '', null, '2011-04-02', [4, 3, 3, 5, 3], {
+        strengths: 'Sees the whole job. Clients trust him, and he steps in before something slips.',
+        issues: 'He is the backup for almost every seat. The team waits on him to lock the schedule.',
+        roleClarity: 'yes', fit: 'strong',
+        notes: 'The owner is the operating system. Do not frame this as a performance problem with him. The work is to get scheduling, hiring, and purchasing off his plate.',
+        recommendation: 'keep',
+        reasoning: 'The company needs Chris. It does not need him in seven seats.',
+        roleAdjustments: 'Stop owning the schedule. Name one owner for purchasing and one for hiring. Stay a helper on large estimates only.',
+        actionPlan: 'This month, Casey owns the weekly schedule. Chris reviews it once, on Monday, and then stays out of the board.'
+      }),
+      P('p_marcus', 'Marcus Hale', 'Estimator', 'Preconstruction', 'Chris Hale', 82000, '2019-03-04', [5, 5, 4, 5, 4], {
+        strengths: 'Bids are complete, priced with real costs, and usually out within two days.',
+        issues: 'He still rewrites numbers Chris already approved. That slows the handoff to production.',
+        roleClarity: 'yes', fit: 'strong',
+        notes: 'Family. Treat him as the bench for sales if Jordan leaves, but do not pile sales on him while estimating is this full.',
+        recommendation: 'keep',
+        reasoning: 'Right person, right seat. The estimating desk is the cleanest one in the company.',
+        roleAdjustments: 'Keep estimating as his seat. He can help on large sales calls, not run the pipeline.',
+        actionPlan: 'Marcus writes the estimate. Chris reviews exceptions only. No second pass unless the margin is under the floor they set.'
+      }),
+      P('p_jordan', 'Jordan Blake', 'Sales lead', 'Sales', 'Chris Hale', 96000, '2022-06-01', [2, 2, 3, 2, 3], {
+        strengths: 'Builds rapport quickly and knows the local builders.',
+        issues: 'The pipeline is thin, follow-up is late, and marketing has no plan.',
+        roleClarity: 'partial', fit: 'poor',
+        notes: 'Chris is loyal to Jordan. Walk him through the close rate and the pay before any conversation. Do not hand Jordan the replace recommendation.',
+        recommendation: 'replace',
+        reasoning: 'Results have been below the role for two seasons, and the pay is high for a team this size. Hand current bids to Marcus, then replace the sales seat.',
+        roleAdjustments: 'Sales stays a single seat. Marketing needs a different owner so the sales week is actually about sales.',
+        actionPlan: 'For the next 30 days, a written follow-up goes out within one day of every estimate. Review the list with Chris each Friday.'
+      }),
+      P('p_priya', 'Priya Shah', 'Office manager', 'Admin', 'Chris Hale', 68000, '2018-01-15', [5, 5, 4, 5, 4], {
+        strengths: 'Clients get an answer. Invoices go out. Payroll is correct.',
+        issues: 'The seat covers accounts, payroll, invoicing, customer calls, and purchasing help. Work slips at the end of the week because there is no spare hour.',
+        roleClarity: 'yes', fit: 'workable',
+        notes: 'She will not ask for help. If the seat is not narrowed, she will leave before she complains.',
+        recommendation: 'reassign',
+        reasoning: 'The person is strong. The seat is too wide. Move accounts payable fully to Avery and take purchasing off Priya.',
+        roleAdjustments: 'Priya owns customer calls, invoicing, receivables, and payroll. Avery owns payables and job costing. Purchasing gets its own owner.',
+        actionPlan: 'This Friday, list every task Priya touched this week. Monday, Avery takes payables with Priya beside her for two cycles.'
+      }),
+      P('p_luis', 'Luis Ortega', 'Field supervisor', 'Field', 'Chris Hale', 74000, '2017-09-01', [4, 5, 3, 4, 4], {
+        strengths: 'Crews know the plan for the day. Rework from layout mistakes is rare.',
+        issues: 'Quality notes stay in his head. Safety walks happen, and then they are not written down.',
+        roleClarity: 'yes', fit: 'strong',
+        notes: 'Do not add more office work. Pair him with Sam on the checklist so the notes exist without making Luis a clerk.',
+        recommendation: 'coach',
+        reasoning: 'The field seat is right. The missing piece is a written quality and safety record, not a new person.',
+        roleAdjustments: 'Luis keeps field supervision and safety. Sam becomes the owner of quality checklists, and Luis signs them.',
+        actionPlan: 'Starting next job, Sam completes the quality list before Luis walks the site. They spend ten minutes on what failed.'
+      }),
+      P('p_casey', 'Casey Nguyen', 'Scheduler and dispatcher', 'Operations', 'Priya Shah', 51000, '2023-02-14', [3, 3, 4, 3, 3], {
+        strengths: 'Crews get an answer the same day. The board stays current, and Casey is easy to reach.',
+        issues: 'The schedule changes again after Chris walks through. Jobs sometimes land on the wrong crew because two people are steering it.',
+        roleClarity: 'partial', fit: 'workable',
+        notes: 'Chris changes the board in front of the crew. The coaching is for both of them: Casey holds the board, Chris stays out.',
+        recommendation: 'coach',
+        reasoning: 'Casey can hold this seat once it is actually Casey’s. The overlap is an owner habit, not a skill gap.',
+        roleAdjustments: 'Casey owns the weekly schedule and dispatch. Chris reviews exceptions on Monday, then stays off the board.',
+        actionPlan: 'This Friday, Casey and Chris write the rules for a schedule change. Next Monday, Casey runs the scheduling meeting alone.'
+      }),
+      P('p_avery', 'Avery Cole', 'Bookkeeper', 'Finance', 'Priya Shah', 46000, '2025-08-01', [3, 4, 3, 3, 4], {
+        strengths: 'Careful with vendor bills. Asks before guessing on a code.',
+        issues: 'Still new. Job costs land late, and it is unclear whether payables belong to Avery or Priya.',
+        roleClarity: 'partial', fit: 'workable',
+        notes: 'Give Avery a clean seat before judging speed. Two owners on payables is the problem, not the hire.',
+        recommendation: 'coach',
+        reasoning: 'Too new to replace, and the work is the right kind of work. The seat has to be singular.',
+        roleAdjustments: 'Avery owns accounts payable and job costing. Priya stops coding bills.',
+        actionPlan: 'For the next two pay cycles, Avery closes payables and Priya only reviews the exceptions list.'
+      }),
+      P('p_sam', 'Sam Rivera', 'Lead carpenter', 'Field', 'Luis Ortega', 48000, '2020-05-11', [5, 4, 4, 4, 5], {
+        strengths: 'Other carpenters ask Sam how to do it. Punch lists come back short when Sam is on the job.',
+        issues: 'The lead carpenter title does not match the work. Quality has no owner, and Sam is only helping.',
+        roleClarity: 'partial', fit: 'strong',
+        notes: 'Underused. If quality stays ownerless, Sam will keep fixing other people’s work without the authority to stop it.',
+        recommendation: 'keep',
+        reasoning: 'Results are ahead of the pay, and the field trusts Sam. Make the role match the work.',
+        roleAdjustments: 'Sam owns quality assurance and keeps helping Luis on field supervision. Warranty stays shared until someone is named.',
+        actionPlan: 'Next Monday, Sam owns the quality list on every active job. Luis introduces that in the crew meeting so it is not a surprise.'
+      }),
+      P('p_robin', 'Robin Ellis', 'Marketing coordinator', 'Marketing', 'Jordan Blake', 44000, '2024-11-04', [3, 3, 3, 2, 4], {
+        strengths: 'Willing, and pleasant with customers who call.',
+        issues: 'The week is a handful of leftover tasks. Robin cannot say what the job is.',
+        roleClarity: 'no', fit: 'poor',
+        notes: 'This hire was meant to “help with marketing.” There is no marketing system to help. Do not coach a role that does not exist.',
+        recommendation: 'reassign',
+        reasoning: 'There is no seat here. Either build a real marketing seat with one owner, or end the patchwork and use the hours somewhere that has an owner.',
+        roleAdjustments: 'Stop splitting Robin across sales, hiring, customer calls, and warranty. One seat, or none.',
+        actionPlan: 'This week, Chris and the consultant pick one seat. If it is marketing, Jordan is no longer the owner of it. If it is not, Robin is told what ends.'
+      })
+    ];
+    function A(id, name, assignments) {
+      return { id: id, name: name, assignments: assignments.map(function (row) { return { personId: row[0], role: row[1], pct: row[2] }; }) };
+    }
+    var activities = [
+      A('act_sales', 'Sales', [['p_jordan', 'owner', 55], ['p_chris', 'helper', 20], ['p_marcus', 'helper', 15], ['p_robin', 'helper', 10]]),
+      A('act_est', 'Estimating', [['p_marcus', 'owner', 75], ['p_chris', 'helper', 15]]),
+      A('act_sched', 'Scheduling', [['p_casey', 'owner', 40], ['p_chris', 'owner', 30]]),
+      A('act_disp', 'Dispatch', [['p_casey', 'owner', 45], ['p_chris', 'helper', 10]]),
+      A('act_purch', 'Purchasing', [['p_chris', 'helper', 10], ['p_priya', 'helper', 10]]),
+      A('act_ar', 'Accounts receivable', [['p_priya', 'owner', 25]]),
+      A('act_ap', 'Accounts payable', [['p_avery', 'owner', 35], ['p_priya', 'owner', 20]]),
+      A('act_pay', 'Payroll', [['p_priya', 'owner', 15], ['p_avery', 'helper', 10]]),
+      A('act_hire', 'Hiring', [['p_chris', 'helper', 10], ['p_robin', 'helper', 10]]),
+      A('act_cs', 'Customer service', [['p_priya', 'owner', 40], ['p_casey', 'helper', 10], ['p_chris', 'helper', 10], ['p_robin', 'helper', 10]]),
+      A('act_field', 'Field supervision', [['p_luis', 'owner', 55], ['p_sam', 'helper', 25]]),
+      A('act_qa', 'Quality assurance', [['p_sam', 'helper', 20], ['p_luis', 'helper', 10]]),
+      A('act_mkt', 'Marketing', [['p_jordan', 'owner', 20], ['p_robin', 'helper', 15]]),
+      A('act_cost', 'Job costing', [['p_avery', 'owner', 30], ['p_marcus', 'helper', 10]]),
+      A('act_safe', 'Safety', [['p_luis', 'owner', 15]]),
+      A('act_inv', 'Invoicing', [['p_priya', 'owner', 20]]),
+      A('act_war', 'Warranty and callbacks', [['p_sam', 'helper', 15], ['p_luis', 'helper', 10], ['p_robin', 'helper', 10]])
+    ];
+    return normalizeAssessment({
+      id: 'sample_harbor_pine',
+      sampleKey: 'harbor-pine',
+      companyName: 'Harbor & Pine Remodeling',
+      assessmentDate: '2026-11-18',
+      consultantName: 'Blimi Adler',
+      view: 'map',
+      activePersonId: 'p_casey',
+      people: people,
+      activities: activities
+    });
+  }
+  function loadSample() {
+    var existing = null;
+    DB.assessments.forEach(function (a) { if (a.sampleKey === 'harbor-pine') existing = a; });
+    if (existing && !window.confirm('Replace the Harbor & Pine sample with a fresh copy? Your other clients stay on this browser.')) {
+      DB.activeId = existing.id;
+      show('map');
+      return;
+    }
+    DB.assessments = DB.assessments.filter(function (a) { return a.sampleKey !== 'harbor-pine'; });
+    var sample = buildSample();
+    DB.assessments.unshift(sample);
+    DB.activeId = sample.id;
+    show('map');
+    persistNow();
+  }
+  window.addEventListener('beforeprint', function () {
+    if (!active()) return;
+    var onExport = document.getElementById('view-export').classList.contains('active');
+    if (!onExport) { printIntent.kind = 'summary'; printIntent.all = false; }
+    fillPrintMount();
+  });
+  window.addEventListener('pagehide', function () { if (!loading) persistNow(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && !loading) persistNow();
+  });
+
+  loadDB();
+  var current = active();
+  show(current ? (current.view || 'map') : 'home');
+  loading = false;
+  setSavePill(current ? 'Saved' : 'Saved in this browser', 'saved');
+
+  window.loadSample = loadSample;
+  window.startAssessment = startAssessment;
+  window.show = show;
+  window.onOpenFile = onOpenFile;
+})();
+</script>
+</body>
+</html>
