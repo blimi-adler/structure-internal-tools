@@ -107,8 +107,9 @@
   .bar.over > i { background: var(--red); }
   .bar.thin > i { background: var(--amber); }
   .act { border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 10px; background: var(--bg2); }
-  .act-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-  .act-head input { font-weight: 600; }
+  .act-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+  .act-head input { font-weight: 600; flex: 1; min-width: 160px; }
+  .act-head select { max-width: 190px; }
   .assign { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(96px, 0.7fr) 84px 36px; gap: 6px; align-items: center; margin-bottom: 6px; }
   .pct-wrap { display: flex; align-items: center; gap: 4px; }
   .pct-wrap input { text-align: right; }
@@ -150,9 +151,43 @@
   .internal-block h3 { margin-top: 8px; }
   .footer-note { max-width: 1100px; margin: 0 auto; padding: 8px 24px 28px; font-size: 13px; color: var(--text2); }
   #printMount { display: none; }
+  .template-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .template-card { text-align: left; background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+  .template-card strong { display: block; font-size: 15px; margin-bottom: 4px; }
+  .dept-label { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; color: var(--text2); margin: 18px 0 8px; }
+  .empty { background: var(--bg2); border: 1px dashed var(--card-border); border-radius: 16px; padding: 22px 20px; margin-bottom: 16px; }
+  .empty h3 { font-size: 18px; margin-bottom: 6px; }
+  .compare, .action-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .compare th, .compare td, .action-table th, .action-table td { text-align: left; padding: 8px 8px 8px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .gap-big { color: var(--red); font-weight: 600; }
+  .board { display: grid; grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.5fr); gap: 12px; align-items: start; }
+  .seat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dropzone { min-height: 88px; border-radius: 14px; }
+  .dropzone.dragover { outline: 2px solid var(--text); outline-offset: 2px; }
+  .seat { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+  .seat > input[type=text], .seat > select { margin-bottom: 8px; font-weight: 600; }
+  .seat.open-seat { background: #F8F4EC; }
+  .chip { display: flex; gap: 8px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-top: 8px; cursor: grab; }
+  .chip strong { flex: 1; font-size: 14px; font-weight: 600; }
+  .chip input[type=number] { width: 72px; }
+  .chip select { max-width: 140px; }
+  .org-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .org-col { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; }
+  .action-line { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(120px, 0.7fr) 150px 140px 36px; gap: 8px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .action-line .src { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+  .tool-links { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 8px; }
+  .tool-links a { font-size: 14px; font-weight: 600; color: var(--text); }
+  .tour { position: fixed; inset: 0; background: rgba(41,45,48,.4); z-index: 40; display: flex; align-items: flex-end; justify-content: center; padding: 24px 16px; }
+  .tour-card { width: 100%; max-width: 560px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: 18px; box-shadow: var(--shadow); padding: 22px 22px 18px; margin-bottom: 12px; }
+  .tour-card h2 { font-size: 28px; }
+  .seat-block { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin: 8px 0; break-inside: avoid; }
+  .seat-block.open { border-color: var(--accent); }
+  .kicker-red { color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  body.employee-mode .nav, body.employee-mode .toprow { display: none; }
   @media (max-width: 800px) {
     .site-header, .main, .footer-note { padding-left: 16px; padding-right: 16px; }
-    .fields.two, .fields.three, .groups, .stat-strip, .map-grid { grid-template-columns: 1fr; }
+    .fields.two, .fields.three, .groups, .stat-strip, .map-grid, .template-grid, .board, .seat-grid, .org-grid { grid-template-columns: 1fr; }
+    .action-line { grid-template-columns: 1fr; }
     .load-panel { position: static; }
     .assign { grid-template-columns: 1fr 1fr; }
     .assign .pct-wrap { grid-column: 1; }
@@ -193,7 +228,7 @@
     <div class="narrow">
       <div class="eyebrow">Client team</div>
       <h1>See the team<br><em>clearly.</em></h1>
-      <p class="lede">Use this when you are assessing a client’s people. Map who owns the work, decide who stays, and leave with a page for each person and a summary for the owner.</p>
+      <p class="lede">Use this when you are assessing a client’s people. Map who owns the work, compare it with what they say they do, and leave with a future org, an action plan, and a report for the owner.</p>
       <div class="btn-row">
         <button type="button" class="btn-primary" id="startBtn" onclick="startAssessment()">Start an assessment</button>
         <button type="button" class="btn-secondary" id="loadSampleBtn" onclick="loadSample()">Load a sample client</button>
@@ -213,41 +248,136 @@
   <section class="view" id="view-setup"></section>
   <section class="view" id="view-people"></section>
   <section class="view" id="view-map"></section>
+  <section class="view" id="view-self"></section>
   <section class="view" id="view-person"></section>
   <section class="view" id="view-analysis"></section>
   <section class="view" id="view-recs"></section>
+  <section class="view" id="view-future"></section>
+  <section class="view" id="view-actions"></section>
   <section class="view" id="view-export"></section>
 </main>
-<p class="footer-note no-print">Privacy: what you type stays in this browser. It is not sent to structure or to anyone else. Download a file if you want a copy. Remove the assessment when you are done on a shared computer.</p>
+<p class="footer-note no-print">Privacy: what you type stays in this browser. It is not sent to structure or to anyone else. Self-input files, prior assessments, and performance reviews come in only when you open them. Download a file if you want a copy. Remove the assessment when you are done on a shared computer.</p>
 <div id="printMount"></div>
+<div id="tour" class="tour no-print" hidden></div>
 <input class="file-input" type="file" id="openFile" accept="application/json,.json" onchange="onOpenFile(this)">
 <script>
 (function () {
   var STORE_KEY = 'structure.teamAssessment.v1';
+  var TOUR_KEY = 'structure.teamAssessment.tour.v1';
+  var ROLE_CLARITY_URL = 'https://tools.ceomode.biz/role-clarity-tool.html';
+  var HIRING_URL = 'https://tools.ceomode.biz/hiring-tool.html';
+  var GAP_POINTS = 15;
   var saveTimer = null;
   var loading = true;
   var xlsxPromise = null;
-  var printIntent = { kind: 'summary', personId: null, hideInternal: true, all: false };
+  var selfDraft = null;
+  var tourStep = 0;
+  var printIntent = { kind: 'summary', personId: null, hideInternal: true, all: false, report: 'one' };
   var DB = { version: 1, activeId: null, assessments: [] };
+  var SELF_BOOT = false;
+  var selfBootPrefill = { company: '', name: '', role: '' };
+  try {
+    var bootQuery = new URLSearchParams(window.location.search);
+    SELF_BOOT = bootQuery.get('self') === '1' || window.location.hash === '#self';
+    selfBootPrefill.company = bootQuery.get('company') || '';
+    selfBootPrefill.name = bootQuery.get('name') || '';
+    selfBootPrefill.role = bootQuery.get('role') || '';
+  } catch (e) {}
 
   var NAV = [
     ['home', 'Home'],
     ['setup', 'Setup'],
     ['people', 'People'],
     ['map', 'Activity map'],
+    ['self', 'Self-input'],
     ['person', 'Assess'],
     ['analysis', 'Analysis'],
     ['recs', 'Recommendations'],
-    ['export', 'Export']
+    ['future', 'Future org'],
+    ['actions', 'Actions'],
+    ['export', 'Report']
   ];
   var HOW = [
-    ['1', 'Name the client, the date, and who from structure is in the room.'],
+    ['1', 'Name the client, then pick a starter list for their trade.'],
     ['2', 'Add the people, or bring them in from a spreadsheet.'],
-    ['3', 'List the work and mark an owner and helpers, with a rough share of the week.'],
-    ['4', 'Assess each person: results, clarity, fit, and what is in the way.'],
-    ['5', 'Read who is doing well, who is at risk, and where the work has gaps.'],
-    ['6', 'Choose keep, coach, reassign, or replace, and say why.'],
-    ['7', 'Print a one-pager per person, and a summary for the owner.']
+    ['3', 'Mark an owner and a rough share of the week. Import what each person says they do.'],
+    ['4', 'Assess each person, or open a performance review file and match the names.'],
+    ['5', 'Move the work onto the seats you want, including seats you still have to hire.'],
+    ['6', 'Turn the gaps into an action list with a 30, 60, or 90 day check, then print the report the owner can read.']
+  ];
+  var DEPTS = ['Sales', 'Estimating', 'Operations/Field', 'PM', 'Purchasing', 'Finance', 'Admin', 'People/HR', 'Marketing', 'IT', 'Leadership'];
+  var TEMPLATES = [
+    { id: 'roofing', name: 'Roofing', blurb: 'Storm work, replacements, and a small office around the crews.', activities: [
+      ['Lead intake and inspections', 'Sales'], ['Insurance claim coordination', 'Sales'],
+      ['Measurements and pricing', 'Estimating'], ['Proposal writing', 'Estimating'],
+      ['Crew scheduling', 'Operations/Field'], ['Tear-off and install', 'Operations/Field'], ['Site safety', 'Operations/Field'],
+      ['Job scheduling and homeowner updates', 'PM'], ['Warranty and leak calls', 'PM'],
+      ['Material ordering', 'Purchasing'],
+      ['Invoicing and collections', 'Finance'], ['Job costing', 'Finance'], ['Accounts payable', 'Finance'],
+      ['Phones, office, and permits', 'Admin'],
+      ['Hiring and crew payroll', 'People/HR'],
+      ['Reviews, referrals, and local marketing', 'Marketing'],
+      ['Job photos and software', 'IT'],
+      ['Production and sales oversight', 'Leadership']
+    ]},
+    { id: 'hvac', name: 'HVAC / Mechanical', blurb: 'Service, replacement, and maintenance agreements.', activities: [
+      ['Replacement and system sales', 'Sales'], ['Maintenance agreement sales', 'Sales'],
+      ['Load calculations and equipment quotes', 'Estimating'],
+      ['Dispatch', 'Operations/Field'], ['Service calls', 'Operations/Field'], ['Installations', 'Operations/Field'], ['Maintenance visits', 'Operations/Field'],
+      ['Install project management', 'PM'], ['Callbacks', 'PM'],
+      ['Parts ordering and truck stock', 'Purchasing'],
+      ['Invoicing', 'Finance'], ['Accounts receivable', 'Finance'], ['Accounts payable', 'Finance'], ['Job costing', 'Finance'],
+      ['Customer calls', 'Admin'],
+      ['Technician hiring and training', 'People/HR'], ['Payroll', 'People/HR'],
+      ['Membership marketing and reviews', 'Marketing'],
+      ['Dispatch software and price book', 'IT'],
+      ['Owner ride-alongs and department leadership', 'Leadership']
+    ]},
+    { id: 'remodel', name: 'Remodeling / GC', blurb: 'Projects with a sales desk, a field, and a back office.', activities: [
+      ['Lead intake', 'Sales'], ['Sales appointments', 'Sales'],
+      ['Estimating', 'Estimating'], ['Selections and allowances', 'Estimating'],
+      ['Field supervision', 'Operations/Field'], ['Scheduling', 'Operations/Field'], ['Quality assurance', 'Operations/Field'], ['Safety', 'Operations/Field'],
+      ['Project management', 'PM'], ['Client updates', 'PM'], ['Warranty and callbacks', 'PM'],
+      ['Purchasing', 'Purchasing'],
+      ['Invoicing', 'Finance'], ['Accounts receivable', 'Finance'], ['Accounts payable', 'Finance'], ['Job costing', 'Finance'],
+      ['Customer service', 'Admin'], ['Permits', 'Admin'],
+      ['Hiring', 'People/HR'], ['Payroll', 'People/HR'],
+      ['Marketing', 'Marketing'],
+      ['Project software', 'IT'],
+      ['Owner oversight', 'Leadership']
+    ]},
+    { id: 'trades', name: 'Plumbing / Electrical', blurb: 'Service calls and project work, often on the same board.', activities: [
+      ['Service sales', 'Sales'], ['Project sales', 'Sales'],
+      ['Job estimates', 'Estimating'], ['Change orders', 'Estimating'],
+      ['Dispatch', 'Operations/Field'], ['Service calls', 'Operations/Field'], ['Rough-in and finish', 'Operations/Field'], ['Inspections and safety', 'Operations/Field'],
+      ['Project scheduling', 'PM'], ['Callbacks', 'PM'],
+      ['Material and parts ordering', 'Purchasing'],
+      ['Invoicing', 'Finance'], ['Accounts receivable', 'Finance'], ['Accounts payable', 'Finance'], ['Job costing', 'Finance'],
+      ['Customer calls and permits', 'Admin'],
+      ['Hiring and apprenticeships', 'People/HR'], ['Payroll', 'People/HR'],
+      ['Reviews and maintenance plans', 'Marketing'],
+      ['Dispatch software and price book', 'IT'],
+      ['Field leadership', 'Leadership']
+    ]},
+    { id: 'general', name: 'General service business', blurb: 'A plain list that fits most construction and home-service companies.', activities: [
+      ['Sales', 'Sales'], ['Estimating', 'Estimating'],
+      ['Scheduling', 'Operations/Field'], ['Dispatch', 'Operations/Field'], ['Field supervision', 'Operations/Field'], ['Quality assurance', 'Operations/Field'], ['Safety', 'Operations/Field'],
+      ['Warranty and callbacks', 'PM'],
+      ['Purchasing', 'Purchasing'],
+      ['Accounts receivable', 'Finance'], ['Accounts payable', 'Finance'], ['Job costing', 'Finance'], ['Invoicing', 'Finance'],
+      ['Customer service', 'Admin'],
+      ['Hiring', 'People/HR'], ['Payroll', 'People/HR'],
+      ['Marketing', 'Marketing'],
+      ['Systems and software', 'IT'],
+      ['Owner oversight', 'Leadership']
+    ]}
+  ];
+  var TOUR = [
+    ['Start with a client', 'Name the company, or load the sample to see a full fictional assessment. What you type stays in this browser.'],
+    ['Pick a trade', 'Choose a starter list for roofing, HVAC, remodeling, plumbing and electrical, or a general service business. You can add that list to a map you already started.'],
+    ['Ask people what they do', 'Each person gets a short page. They list the work and a rough percent of the week, then download a small file. Import it here to see what the map missed and where the percents disagree.'],
+    ['Design the next org', 'Drag work onto the seats you want. Add a seat you do not have yet, such as a COO or a traveling PM. Open seats export as a role list you can use for a job description.'],
+    ['Leave with a plan', 'Turn gaps, overlaps, overloads, and recommendations into an action list with an owner, a date, and a 30, 60, or 90 day check. The client report leaves out pay, private notes, and the keep or replace call.']
   ];
   var STARTER = [
     'Sales', 'Estimating', 'Scheduling', 'Dispatch', 'Purchasing',
@@ -391,11 +521,61 @@
       actionPlan: partial.actionPlan || ''
     };
   }
-  function blankActivity(name) { return { id: uid('act'), name: name || '', assignments: [] }; }
-  function starterActivities() { return STARTER.map(function (name) { return blankActivity(name); }); }
+  function blankActivity(name, department) {
+    return { id: uid('act'), name: name || '', department: department || '', assignments: [] };
+  }
+  function normKey(s) {
+    return String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function templateById(id) {
+    for (var i = 0; i < TEMPLATES.length; i++) if (TEMPLATES[i].id === id) return TEMPLATES[i];
+    return null;
+  }
+  function cleanStatus(v) {
+    return v === 'doing' || v === 'done' || v === 'open' ? v : 'open';
+  }
+  function statusLabel(v) {
+    return v === 'doing' ? 'In progress' : v === 'done' ? 'Done' : 'Not started';
+  }
+  function sourceLabel(v) {
+    return v === 'gap' ? 'Gap' : v === 'overlap' ? 'Overlap' : v === 'overload' ? 'Overload' : v === 'recommendation' ? 'Recommendation' : 'Added';
+  }
+  function addDays(iso, days) {
+    var base = /^\d{4}-\d{2}-\d{2}$/.test(String(iso || '')) ? String(iso) : todayISO();
+    var p = base.split('-');
+    var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+    d.setDate(d.getDate() + Number(days || 0));
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+  function matchPerson(people, name) {
+    var key = normKey(name);
+    if (!key) return null;
+    var exact = (people || []).filter(function (p) { return normKey(p.name) === key; });
+    if (exact.length === 1) return exact[0];
+    var first = key.split(' ')[0];
+    var byFirst = (people || []).filter(function (p) { return normKey(p.name).split(' ')[0] === first; });
+    if (byFirst.length === 1) return byFirst[0];
+    return null;
+  }
   function normalizeAssessment(raw) {
     raw = raw || {};
-    var people = (raw.people || []).filter(function (p) { return p && typeof p === 'object'; }).map(blankPerson);
+    var people = (raw.people || []).filter(function (p) { return p && typeof p === 'object'; }).map(function (src) {
+      var person = blankPerson(src);
+      var imp = src.performanceImport;
+      if (imp && typeof imp === 'object') {
+        person.performanceImport = {
+          importedAt: imp.importedAt || '',
+          reviewName: imp.reviewName || '',
+          matchedName: imp.matchedName || '',
+          gwc: {
+            g: imp.gwc && (imp.gwc.g === 'yes' || imp.gwc.g === 'no') ? imp.gwc.g : null,
+            w: imp.gwc && (imp.gwc.w === 'yes' || imp.gwc.w === 'no') ? imp.gwc.w : null,
+            c: imp.gwc && (imp.gwc.c === 'yes' || imp.gwc.c === 'no') ? imp.gwc.c : null
+          }
+        };
+      }
+      return person;
+    });
     var ids = {};
     people.forEach(function (p) { ids[p.id] = true; });
     var activities = (raw.activities || []).filter(function (a) { return a && typeof a === 'object'; }).map(function (act) {
@@ -404,8 +584,70 @@
       }).map(function (as) {
         return { personId: as.personId, role: as.role === 'owner' ? 'owner' : 'helper', pct: parsePct(as.pct) };
       });
-      return { id: act.id || uid('act'), name: act.name || '', assignments: assignments };
+      return { id: act.id || uid('act'), name: act.name || '', department: act.department || '', assignments: assignments };
     });
+    var actIds = {};
+    activities.forEach(function (act) { actIds[act.id] = true; });
+    var selfInputs = (raw.selfInputs || []).filter(function (row) { return row && typeof row === 'object'; }).map(function (row) {
+      var items = (row.items || []).filter(function (item) { return item && String(item.name || '').trim(); }).map(function (item) {
+        return { name: String(item.name || '').trim(), department: item.department || '', pct: parsePct(item.pct) };
+      });
+      var matched = matchPerson(people, row.personName);
+      return {
+        id: row.id || uid('self'),
+        personName: String(row.personName || '').trim(),
+        role: row.role || '',
+        companyName: row.companyName || '',
+        exportedAt: row.exportedAt || '',
+        importedAt: row.importedAt || row.exportedAt || new Date().toISOString(),
+        personId: matched ? matched.id : '',
+        items: items
+      };
+    });
+    var seatIds = {};
+    var seats = ((raw.future && raw.future.seats) || []).filter(function (seat) { return seat && typeof seat === 'object'; }).map(function (seat) {
+      var personId = seat.personId && ids[seat.personId] ? seat.personId : '';
+      var item = { id: seat.id || uid('seat'), title: String(seat.title || '').trim() || 'Open seat', personId: personId };
+      seatIds[item.id] = true;
+      return item;
+    });
+    var seenSeatPeople = {};
+    seats = seats.filter(function (seat) {
+      if (!seat.personId) return true;
+      if (seenSeatPeople[seat.personId]) return false;
+      seenSeatPeople[seat.personId] = true;
+      return true;
+    });
+    var moves = ((raw.future && raw.future.moves) || []).filter(function (move) {
+      return move && actIds[move.activityId] && seatIds[move.seatId];
+    }).map(function (move) {
+      return { activityId: move.activityId, seatId: move.seatId, pct: parsePct(move.pct) };
+    });
+    var seenMove = {};
+    moves = moves.filter(function (move) {
+      if (seenMove[move.activityId]) return false;
+      seenMove[move.activityId] = true;
+      return true;
+    });
+    var actions = (raw.actions || []).filter(function (item) { return item && typeof item === 'object'; }).map(function (item) {
+      return {
+        id: item.id || uid('do'),
+        key: item.key || '',
+        source: item.source || 'manual',
+        title: item.title || '',
+        detail: item.detail || '',
+        clientTitle: item.clientTitle || '',
+        clientDetail: item.clientDetail || '',
+        owner: item.owner || '',
+        dueDate: normalizeDate(item.dueDate || ''),
+        status: cleanStatus(item.status)
+      };
+    });
+    var prior = null;
+    if (raw.prior && raw.prior.assessment && !raw._nested) {
+      var priorRaw = Object.assign({}, raw.prior.assessment, { prior: null, _nested: true });
+      prior = { importedAt: raw.prior.importedAt || '', label: raw.prior.label || '', assessment: normalizeAssessment(priorRaw) };
+    }
     return {
       id: raw.id || uid('s'),
       sampleKey: raw.sampleKey || '',
@@ -416,8 +658,15 @@
       updatedAt: raw.updatedAt || raw.createdAt || new Date().toISOString(),
       view: raw.view || 'setup',
       activePersonId: raw.activePersonId && ids[raw.activePersonId] ? raw.activePersonId : (people[0] ? people[0].id : null),
+      tradeTemplate: raw.tradeTemplate || '',
+      reassessDate: normalizeDate(raw.reassessDate || ''),
+      reassessHorizon: raw.reassessHorizon === '30' || raw.reassessHorizon === '60' || raw.reassessHorizon === '90' ? raw.reassessHorizon : '',
       people: people,
-      activities: activities
+      activities: activities,
+      selfInputs: selfInputs,
+      future: { seats: seats, moves: moves },
+      actions: actions,
+      prior: prior
     };
   }
   function active() {
@@ -640,16 +889,20 @@
 
   function show(view) {
     var a = active();
-    if (!a && view !== 'home') view = 'home';
-    if (a) a.view = view;
+    if (SELF_BOOT) view = 'self';
+    else if (!a && view !== 'home') view = 'home';
+    if (a && !SELF_BOOT) a.view = view;
     document.querySelectorAll('.view').forEach(function (el) { el.classList.toggle('active', el.id === 'view-' + view); });
     if (view === 'home') renderHome();
     if (view === 'setup') renderSetup();
     if (view === 'people') renderPeople();
     if (view === 'map') renderMap();
+    if (view === 'self') renderSelf();
     if (view === 'person') renderPerson();
     if (view === 'analysis') renderAnalysis();
     if (view === 'recs') renderRecs();
+    if (view === 'future') renderFuture();
+    if (view === 'actions') renderActions();
     if (view === 'export') renderExport();
     updateChrome();
     if (!loading) scheduleSave();
@@ -660,7 +913,7 @@
     var a = active();
     var btn = document.getElementById('companyBtn');
     if (btn) btn.textContent = a ? companyName(a) : 'No client yet';
-    document.title = (a ? companyName(a) + ' · ' : '') + 'Team assessment · structure';
+    document.title = SELF_BOOT ? 'What I do · structure' : ((a ? companyName(a) + ' · ' : '') + 'Team assessment · structure');
     var nav = document.getElementById('nav');
     clear(nav);
     NAV.forEach(function (item) {
@@ -681,6 +934,11 @@
       HOW.forEach(function (step) {
         steps.appendChild(h('div', { class: 'step' }, h('div', { class: 'num', text: step[0] }), h('div', { text: step[1] })));
       });
+      if (steps.parentNode && !document.getElementById('tourBtn')) {
+        steps.parentNode.appendChild(h('div', { class: 'btn-row' },
+          h('button', { type: 'button', id: 'tourBtn', class: 'btn-secondary', onclick: openTour }, 'Show the short tour')
+        ));
+      }
     }
     clear(list);
     var rows = DB.assessments.slice().sort(function (a, b) { return String(b.updatedAt).localeCompare(String(a.updatedAt)); });
@@ -723,6 +981,11 @@
             field('Consultant', textInput(a.consultantName, 'Your name', function (e) { a.consultantName = e.target.value; touch(a); scheduleSave(); }))
           )
         )
+      ),
+      h('div', { class: 'card' },
+        h('h3', { text: 'Starter list by trade' }),
+        h('p', { class: 'hint', text: a.activities.length ? 'The activity map already has ' + a.activities.length + ' lines. Add a trade to fill in what is missing, or replace the list.' : 'Pick the list that is closest. You can rename lines, drop lines, and add your own after that.' }),
+        templateChooser(a)
       ),
       h('div', { class: 'card' },
         h('h3', { text: 'A copy of this assessment' }),
@@ -773,7 +1036,7 @@
     );
     root.appendChild(importCard);
     var roster = h('div', { id: 'roster' });
-    if (!a.people.length) roster.appendChild(h('p', { class: 'hint', text: 'No one is on this assessment yet.' }));
+    if (!a.people.length) roster.appendChild(h('div', { class: 'empty' }, h('h3', { text: 'No one is on this team yet' }), h('p', { class: 'hint', text: 'Add a name, paste a list, or upload a spreadsheet. Pay can wait.' })));
     a.people.forEach(function (p) {
       var stat = null;
       d.people.forEach(function (s) { if (s.person.id === p.id) stat = s; });
@@ -833,6 +1096,10 @@
     if (!window.confirm('Remove ' + personName(p) + ' from this assessment? Their activity assignments go too.')) return;
     a.people = a.people.filter(function (x) { return x.id !== id; });
     a.activities.forEach(function (act) { act.assignments = act.assignments.filter(function (as) { return as.personId !== id; }); });
+    if (a.future && a.future.seats) {
+      a.future.seats.forEach(function (seat) { if (seat.personId === id) seat.personId = ''; });
+    }
+    (a.selfInputs || []).forEach(function (row) { if (row.personId === id) row.personId = ''; });
     if (a.activePersonId === id) a.activePersonId = a.people[0] ? a.people[0].id : null;
     touch(a);
     renderPeople();
@@ -853,19 +1120,35 @@
     root.appendChild(h('div', { class: 'card', id: 'flagSentences' }, sentencesFor(f)));
     var grid = h('div', { class: 'map-grid', id: 'mapGrid' });
     var left = h('div', { id: 'activityList' });
-    if (!a.activities.length) left.appendChild(h('p', { class: 'hint', text: 'No activities yet. Add one, or bring back the usual list for a construction or service company.' }));
-    a.activities.forEach(function (act) { left.appendChild(activityCard(a, act)); });
+    if (!a.activities.length) {
+      left.appendChild(h('div', { class: 'empty' },
+        h('h3', { text: 'No activities yet' }),
+        h('p', { class: 'hint', text: 'Pick a trade and this map starts with the usual work, grouped by department. You can rename, drop, or add lines after that.' })
+      ));
+      left.appendChild(templateChooser(a));
+    }
+    var grouped = activityGroups(a.activities);
+    grouped.order.forEach(function (dept) {
+      var list = grouped.map[dept] || [];
+      if (!list.length) return;
+      left.appendChild(h('div', { class: 'dept-label', text: dept }));
+      list.forEach(function (act) { left.appendChild(activityCard(a, act)); });
+    });
     left.appendChild(h('div', { class: 'btn-row' },
       h('button', { type: 'button', class: 'btn-secondary', onclick: function () { a.activities.push(blankActivity('New activity')); touch(a); renderMap(); scheduleSave(); } }, 'Add an activity'),
-      h('button', { type: 'button', class: 'btn-secondary', onclick: addMissingStarter }, 'Add the usual activities')
+      a.activities.length ? h('button', { type: 'button', class: 'btn-secondary', onclick: function () { var box = document.getElementById('mapTemplates'); if (box) box.hidden = !box.hidden; } }, 'Add from a template') : null
     ));
+    if (a.activities.length) {
+      var chooser = h('div', { id: 'mapTemplates', hidden: true }, templateChooser(a));
+      left.appendChild(chooser);
+    }
     left.appendChild(h('p', { class: 'msg', id: 'mapMsg' }));
     grid.appendChild(left);
     grid.appendChild(loadPanel(f));
     root.appendChild(grid);
     root.appendChild(h('div', { class: 'btn-row' },
       h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('people'); } }, '← People'),
-      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('person'); } }, 'Assess people →')
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('self'); } }, 'Self-input →')
     ));
   }
   function flagStrip(f) {
@@ -893,8 +1176,18 @@
     var row = null;
     findings(a).rows.forEach(function (r) { if (r.activity.id === act.id) row = r; });
     var flag = row ? row.flag : '';
+    var deptSel = h('select', { 'aria-label': 'Department', onchange: function (e) { act.department = e.target.value; touch(a); renderMap(); scheduleSave(); } },
+      h('option', { value: '', selected: !act.department ? 'selected' : false, text: 'Department' })
+    );
+    DEPTS.forEach(function (dept) {
+      deptSel.appendChild(h('option', { value: dept, selected: act.department === dept ? 'selected' : false, text: dept }));
+    });
+    if (act.department && DEPTS.indexOf(act.department) < 0) {
+      deptSel.appendChild(h('option', { value: act.department, selected: 'selected', text: act.department }));
+    }
     var head = h('div', { class: 'act-head' },
       h('input', { type: 'text', value: act.name, 'aria-label': 'Activity name', oninput: function (e) { act.name = e.target.value; touch(a); scheduleSave(); refreshFlagCopy(); } }),
+      deptSel,
       flag === 'none' ? h('span', { class: 'pill none', text: 'No owner' }) : null,
       flag === 'many' ? h('span', { class: 'pill many', text: (row.owners.length) + ' owners' }) : null,
       h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove activity', onclick: function () { removeActivity(act.id); } }, '×')
@@ -964,6 +1257,7 @@
     if (!a || !act) return;
     if (act.assignments.length && !window.confirm('Remove ' + (act.name || 'this activity') + '? The assignments on it go too.')) return;
     a.activities = a.activities.filter(function (x) { return x.id !== id; });
+    if (a.future && a.future.moves) a.future.moves = a.future.moves.filter(function (move) { return move.activityId !== id; });
     touch(a);
     renderMap();
     scheduleSave();
@@ -1025,8 +1319,9 @@
       h('h2', null, 'How is this person ', h('em', { text: 'actually doing?' })),
       h('p', { class: 'lede', text: 'This is for the structure team. Be specific. The one-pager can hide pay, the keep-or-replace call, and your private notes.' })
     ));
+    root.appendChild(performanceImportCard(a));
     if (!a.people.length) {
-      root.appendChild(h('p', { class: 'hint', text: 'Add people first.' }));
+      root.appendChild(h('div', { class: 'empty narrow' }, h('h3', { text: 'Add people first' }), h('p', { class: 'hint', text: 'The scores live on a person. Add the team, then come back. You can also open a performance review file once the names are here.' })));
       return;
     }
     if (!personById(a.activePersonId)) a.activePersonId = a.people[0].id;
@@ -1096,7 +1391,8 @@
         ),
         field('Consultant notes (internal)', h('textarea', { text: p.notes, placeholder: 'Private to structure. Hidden on the employee page and on the owner summary.', oninput: function (e) { p.notes = e.target.value; touch(a); scheduleSave(); } }))
       ),
-      h('p', { class: 'hint', style: 'margin-top:8px', text: 'Pay stays on the People step' + (p.pay != null ? ' (' + money(p.pay) + ').' : '. It is optional.') })
+      h('p', { class: 'hint', style: 'margin-top:8px', text: 'Pay stays on the People step' + (p.pay != null ? ' (' + money(p.pay) + ').' : '. It is optional.') }),
+      p.performanceImport ? h('p', { class: 'hint', style: 'margin-top:6px', text: performanceHint(p) }) : null
     ));
     root.appendChild(h('div', { class: 'btn-row narrow' },
       h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('map'); } }, '← Activity map'),
@@ -1316,7 +1612,7 @@
     });
     root.appendChild(h('div', { class: 'btn-row narrow' },
       h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('analysis'); } }, '← Analysis'),
-      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('export'); } }, 'Export →')
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('future'); } }, 'Future org →')
     ));
   }
   function renderExport() {
@@ -1351,7 +1647,12 @@
         h('button', { type: 'button', class: 'btn-secondary', id: 'printAll', onclick: function () { printIntent.kind = 'one'; printIntent.all = true; doPrint(companyName(a) + ' one-pagers'); } }, 'Print all one-pagers'),
         h('button', { type: 'button', class: 'btn-secondary', id: 'printSummary', onclick: function () { printIntent.kind = 'summary'; printIntent.all = false; doPrint(companyName(a) + ' summary'); } }, 'Print owner summary')
       ),
-      h('p', { class: 'hint', text: 'The owner summary includes the overview, the activity map, the findings, the recommendations, and pay where you entered it. Consultant notes stay off that report.' }),
+      h('p', { class: 'hint', text: 'The internal summary includes the overview, the activity map, the findings, the recommendations, and pay where you entered it. Consultant notes stay off that report. The client report also leaves out pay and the keep or replace call, and it adds the future org and the action plan.' }),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-primary', id: 'printOwner', onclick: function () { printIntent.kind = 'owner'; printIntent.report = 'owner'; printIntent.all = false; doPrint(companyName(a) + ' owner report'); } }, 'Print client owner report'),
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { printIntent.report = 'owner'; renderPreview(); } }, 'Preview the client report'),
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { printIntent.report = 'one'; renderPreview(); } }, 'Preview the one-pager')
+      ),
       h('div', { class: 'btn-row' },
         h('button', { type: 'button', class: 'btn-secondary', onclick: exportAssessment }, 'Download this assessment'),
         h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('openFile').click(); } }, 'Open a file')
@@ -1367,6 +1668,14 @@
     var a = active();
     if (!slot || !a) return;
     clear(slot);
+    if (printIntent.report === 'owner') {
+      slot.appendChild(renderClientReport(a));
+      return;
+    }
+    if (printIntent.report === 'actions') {
+      slot.appendChild(renderActionPaper(a));
+      return;
+    }
     var p = personById(a.activePersonId) || a.people[0];
     if (!p) { slot.appendChild(h('p', { class: 'hint', text: 'Add a person to preview a one-pager.' })); return; }
     slot.appendChild(renderOnePager(p, a, printIntent.hideInternal));
@@ -1483,7 +1792,10 @@
     } else if (printIntent.kind === 'one') {
       var p = personById(printIntent.personId) || a.people[0];
       if (p) mount.appendChild(renderOnePager(p, a, printIntent.hideInternal));
-    } else mount.appendChild(renderSummary(a));
+    } else if (printIntent.kind === 'owner') mount.appendChild(renderClientReport(a));
+    else if (printIntent.kind === 'actions') mount.appendChild(renderActionPaper(a));
+    else if (printIntent.kind === 'roles') mount.appendChild(renderRolesPaper(a));
+    else mount.appendChild(renderSummary(a));
   }
   function doPrint(title) {
     fillPrintMount();
@@ -1508,7 +1820,7 @@
   function exportAssessment() {
     var a = active();
     if (!a) return;
-    var payload = { app: 'structure-team-assessment', version: 1, exportedAt: new Date().toISOString(), assessment: a };
+    var payload = { app: 'structure-team-assessment', version: 2, exportedAt: new Date().toISOString(), assessment: a };
     downloadBlob(JSON.stringify(payload, null, 2), slug(a.companyName) + '-team-assessment.json', 'application/json');
     setFileMsg('Downloaded. Keep that file if you want this assessment on another computer.');
     persistNow();
@@ -1525,7 +1837,25 @@
   function importAssessmentText(text) {
     try {
       var data = JSON.parse(text);
-      if (data && data.app === 'structure-performance-evaluation') throw new Error('wrong-app');
+      if (data && data.app === 'structure-performance-evaluation') {
+        if (!active()) {
+          setFileMsg('That is a performance review. Open an assessment first, then import the ratings from Assess.');
+          return;
+        }
+        applyPerformanceFile(data, false);
+        show('person');
+        return;
+      }
+      if (data && data.app === 'structure-team-assessment-self') {
+        if (!active()) {
+          setFileMsg('That is a self-input file. Open the assessment it belongs to, then import it on Self-input.');
+          return;
+        }
+        var selfResult = ingestSelf(data);
+        setFileMsg(selfResult.message);
+        show('self');
+        return;
+      }
       var list = [];
       if (data && data.assessment && (data.assessment.people || data.assessment.activities || data.assessment.companyName)) list = [data.assessment];
       else if (data && Array.isArray(data.assessments)) list = data.assessments;
@@ -1712,7 +2042,7 @@
       consultantName: '',
       view: 'setup',
       people: [],
-      activities: starterActivities()
+      activities: []
     });
     DB.assessments.unshift(item);
     DB.activeId = item.id;
@@ -1832,27 +2162,49 @@
         actionPlan: 'This week, Chris and the consultant pick one seat. If it is marketing, Jordan is no longer the owner of it. If it is not, Robin is told what ends.'
       })
     ];
-    function A(id, name, assignments) {
-      return { id: id, name: name, assignments: assignments.map(function (row) { return { personId: row[0], role: row[1], pct: row[2] }; }) };
+    function A(id, name, department, assignments) {
+      return { id: id, name: name, department: department, assignments: assignments.map(function (row) { return { personId: row[0], role: row[1], pct: row[2] }; }) };
     }
     var activities = [
-      A('act_sales', 'Sales', [['p_jordan', 'owner', 55], ['p_chris', 'helper', 20], ['p_marcus', 'helper', 15], ['p_robin', 'helper', 10]]),
-      A('act_est', 'Estimating', [['p_marcus', 'owner', 75], ['p_chris', 'helper', 15]]),
-      A('act_sched', 'Scheduling', [['p_casey', 'owner', 40], ['p_chris', 'owner', 30]]),
-      A('act_disp', 'Dispatch', [['p_casey', 'owner', 45], ['p_chris', 'helper', 10]]),
-      A('act_purch', 'Purchasing', [['p_chris', 'helper', 10], ['p_priya', 'helper', 10]]),
-      A('act_ar', 'Accounts receivable', [['p_priya', 'owner', 25]]),
-      A('act_ap', 'Accounts payable', [['p_avery', 'owner', 35], ['p_priya', 'owner', 20]]),
-      A('act_pay', 'Payroll', [['p_priya', 'owner', 15], ['p_avery', 'helper', 10]]),
-      A('act_hire', 'Hiring', [['p_chris', 'helper', 10], ['p_robin', 'helper', 10]]),
-      A('act_cs', 'Customer service', [['p_priya', 'owner', 40], ['p_casey', 'helper', 10], ['p_chris', 'helper', 10], ['p_robin', 'helper', 10]]),
-      A('act_field', 'Field supervision', [['p_luis', 'owner', 55], ['p_sam', 'helper', 25]]),
-      A('act_qa', 'Quality assurance', [['p_sam', 'helper', 20], ['p_luis', 'helper', 10]]),
-      A('act_mkt', 'Marketing', [['p_jordan', 'owner', 20], ['p_robin', 'helper', 15]]),
-      A('act_cost', 'Job costing', [['p_avery', 'owner', 30], ['p_marcus', 'helper', 10]]),
-      A('act_safe', 'Safety', [['p_luis', 'owner', 15]]),
-      A('act_inv', 'Invoicing', [['p_priya', 'owner', 20]]),
-      A('act_war', 'Warranty and callbacks', [['p_sam', 'helper', 15], ['p_luis', 'helper', 10], ['p_robin', 'helper', 10]])
+      A('act_sales', 'Sales', 'Sales', [['p_jordan', 'owner', 55], ['p_chris', 'helper', 20], ['p_marcus', 'helper', 15], ['p_robin', 'helper', 10]]),
+      A('act_est', 'Estimating', 'Estimating', [['p_marcus', 'owner', 75], ['p_chris', 'helper', 15]]),
+      A('act_sched', 'Scheduling', 'Operations/Field', [['p_casey', 'owner', 40], ['p_chris', 'owner', 30]]),
+      A('act_disp', 'Dispatch', 'Operations/Field', [['p_casey', 'owner', 45], ['p_chris', 'helper', 10]]),
+      A('act_purch', 'Purchasing', 'Purchasing', [['p_chris', 'helper', 10], ['p_priya', 'helper', 10]]),
+      A('act_ar', 'Accounts receivable', 'Finance', [['p_priya', 'owner', 25]]),
+      A('act_ap', 'Accounts payable', 'Finance', [['p_avery', 'owner', 35], ['p_priya', 'owner', 20]]),
+      A('act_pay', 'Payroll', 'People/HR', [['p_priya', 'owner', 15], ['p_avery', 'helper', 10]]),
+      A('act_hire', 'Hiring', 'People/HR', [['p_chris', 'helper', 10], ['p_robin', 'helper', 10]]),
+      A('act_cs', 'Customer service', 'Admin', [['p_priya', 'owner', 40], ['p_casey', 'helper', 10], ['p_chris', 'helper', 10], ['p_robin', 'helper', 10]]),
+      A('act_field', 'Field supervision', 'Operations/Field', [['p_luis', 'owner', 55], ['p_sam', 'helper', 25]]),
+      A('act_qa', 'Quality assurance', 'Operations/Field', [['p_sam', 'helper', 20], ['p_luis', 'helper', 10]]),
+      A('act_mkt', 'Marketing', 'Marketing', [['p_jordan', 'owner', 20], ['p_robin', 'helper', 15]]),
+      A('act_cost', 'Job costing', 'Finance', [['p_avery', 'owner', 30], ['p_marcus', 'helper', 10]]),
+      A('act_safe', 'Safety', 'Operations/Field', [['p_luis', 'owner', 15]]),
+      A('act_inv', 'Invoicing', 'Finance', [['p_priya', 'owner', 20]]),
+      A('act_war', 'Warranty and callbacks', 'PM', [['p_sam', 'helper', 15], ['p_luis', 'helper', 10], ['p_robin', 'helper', 10]])
+    ];
+    var selfInputs = [
+      {
+        id: 'self_casey', personName: 'Casey Nguyen', role: 'Scheduler and dispatcher',
+        companyName: 'Harbor & Pine Remodeling', exportedAt: '2026-11-17T15:00:00.000Z',
+        items: [
+          { name: 'Scheduling', department: 'Operations/Field', pct: 20 },
+          { name: 'Dispatch', department: 'Operations/Field', pct: 50 },
+          { name: 'Material runs', department: 'Purchasing', pct: 15 },
+          { name: 'Customer calls', department: 'Admin', pct: 15 }
+        ]
+      },
+      {
+        id: 'self_chris', personName: 'Chris Hale', role: 'Owner',
+        companyName: 'Harbor & Pine Remodeling', exportedAt: '2026-11-17T16:00:00.000Z',
+        items: [
+          { name: 'Sales', department: 'Sales', pct: 15 },
+          { name: 'Scheduling', department: 'Operations/Field', pct: 45 },
+          { name: 'Hiring', department: 'People/HR', pct: 10 },
+          { name: 'Putting out fires', department: 'Leadership', pct: 20 }
+        ]
+      }
     ];
     return normalizeAssessment({
       id: 'sample_harbor_pine',
@@ -1862,8 +2214,10 @@
       consultantName: 'Blimi Adler',
       view: 'map',
       activePersonId: 'p_casey',
+      tradeTemplate: 'remodel',
       people: people,
-      activities: activities
+      activities: activities,
+      selfInputs: selfInputs
     });
   }
   function loadSample() {
@@ -1881,6 +2235,1295 @@
     show('map');
     persistNow();
   }
+  function activityGroups(list) {
+    var map = {};
+    (list || []).forEach(function (act) {
+      var key = String(act.department || '').trim() || 'Other';
+      if (!map[key]) map[key] = [];
+      map[key].push(act);
+    });
+    var order = [];
+    DEPTS.forEach(function (dept) { if (map[dept]) order.push(dept); });
+    Object.keys(map).forEach(function (key) {
+      if (key !== 'Other' && DEPTS.indexOf(key) < 0) order.push(key);
+    });
+    if (map.Other) order.push('Other');
+    return { order: order, map: map };
+  }
+  function flashTemplate(text) {
+    var el = document.getElementById('templateMsg');
+    if (el) el.textContent = text || '';
+    setMapMsg(text);
+  }
+  function templateChooser(a) {
+    var grid = h('div', { class: 'template-grid' });
+    TEMPLATES.forEach(function (tpl) {
+      var depts = {};
+      tpl.activities.forEach(function (row) { depts[row[1]] = true; });
+      var useLabel = a.activities.length ? 'Add missing lines' : 'Use this list';
+      grid.appendChild(h('div', { class: 'template-card' },
+        h('strong', { text: tpl.name }),
+        h('p', { class: 'hint', text: tpl.blurb + ' ' + tpl.activities.length + ' activities in ' + Object.keys(depts).length + ' departments.' }),
+        h('div', { class: 'btn-row' },
+          h('button', {
+            type: 'button', class: a.activities.length ? 'btn-secondary' : 'btn-primary',
+            onclick: function () { applyTemplate(tpl.id, a.activities.length ? 'merge' : 'use'); }
+          }, useLabel),
+          a.activities.length ? h('button', { type: 'button', class: 'btn-secondary', onclick: function () { applyTemplate(tpl.id, 'replace'); } }, 'Replace the list') : null
+        )
+      ));
+    });
+    return h('div', {}, grid, h('p', { class: 'msg', id: 'templateMsg' }));
+  }
+  function applyTemplate(id, mode) {
+    var a = active();
+    var tpl = templateById(id);
+    if (!a || !tpl) return;
+    var added = 0;
+    var filled = 0;
+    if (mode === 'replace') {
+      var assigned = a.activities.some(function (act) { return act.assignments && act.assignments.length; });
+      if (a.activities.length && !window.confirm(assigned
+        ? 'Replace the activity list with ' + tpl.name + '? Assignments on the current list will be removed.'
+        : 'Replace the activity list with ' + tpl.name + '?')) return;
+      a.activities = tpl.activities.map(function (row) { return blankActivity(row[0], row[1]); });
+      a.future.moves = [];
+      added = a.activities.length;
+    } else {
+      var have = {};
+      a.activities.forEach(function (act) { have[normKey(act.name)] = act; });
+      tpl.activities.forEach(function (row) {
+        var key = normKey(row[0]);
+        if (have[key]) {
+          if (!String(have[key].department || '').trim()) { have[key].department = row[1]; filled++; }
+          return;
+        }
+        var act = blankActivity(row[0], row[1]);
+        a.activities.push(act);
+        have[key] = act;
+        added++;
+      });
+    }
+    a.tradeTemplate = id;
+    touch(a);
+    var onSetup = document.getElementById('view-setup').classList.contains('active');
+    if (onSetup) renderSetup();
+    else renderMap();
+    var msg = mode === 'replace'
+      ? 'Using the ' + tpl.name + ' list (' + added + ' activities).'
+      : (added ? 'Added ' + added + ' from ' + tpl.name + '.' : 'Those activities are already on the map.');
+    if (filled) msg += ' Filled in the department on ' + filled + (filled === 1 ? ' line.' : ' lines.');
+    flashTemplate(msg);
+    scheduleSave();
+  }
+  function findById(list, id) {
+    for (var i = 0; i < (list || []).length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function setSelfMsg(text) { var el = document.getElementById('selfMsg'); if (el) el.textContent = text || ''; }
+  function setPerfMsg(text) { var el = document.getElementById('perfMsg'); if (el) el.textContent = text || ''; }
+  function setFutureMsg(text) { var el = document.getElementById('futureMsg'); if (el) el.textContent = text || ''; }
+  function setActionMsg(text) { var el = document.getElementById('actionMsg'); if (el) el.textContent = text || ''; }
+  function setProgressMsg(text) { var el = document.getElementById('progressMsg'); if (el) el.textContent = text || ''; }
+  function emptySelfItem() { return { name: '', department: '', pct: 10 }; }
+  function startSelfDraft(person) {
+    var a = active();
+    selfDraft = {
+      personName: person ? person.name : (selfBootPrefill.name || ''),
+      role: person ? person.role : (selfBootPrefill.role || ''),
+      companyName: a ? companyName(a) : (selfBootPrefill.company || ''),
+      items: [emptySelfItem(), emptySelfItem(), emptySelfItem()]
+    };
+  }
+  function draftPayload(draft) {
+    return {
+      app: 'structure-team-assessment-self',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      companyName: String(draft.companyName || '').trim(),
+      personName: String(draft.personName || '').trim(),
+      role: String(draft.role || '').trim(),
+      items: (draft.items || []).filter(function (item) { return String(item.name || '').trim(); }).map(function (item) {
+        return { name: String(item.name).trim(), department: item.department || '', pct: parsePct(item.pct) };
+      })
+    };
+  }
+  function selfForm(draft) {
+    var total = 0;
+    draft.items.forEach(function (item) { if (String(item.name || '').trim()) total += parsePct(item.pct); });
+    var box = h('div', { class: 'card' },
+      h('div', { class: 'fields' },
+        field('Company', textInput(draft.companyName, 'Company name', function (e) { draft.companyName = e.target.value; })),
+        h('div', { class: 'fields two' },
+          field('Your name', textInput(draft.personName, 'Casey Nguyen', function (e) { draft.personName = e.target.value; })),
+          field('Your role', textInput(draft.role, 'Optional', function (e) { draft.role = e.target.value; }))
+        )
+      )
+    );
+    draft.items.forEach(function (item, index) {
+      var dept = h('select', { 'aria-label': 'Department', onchange: function (e) { item.department = e.target.value; } },
+        h('option', { value: '', selected: !item.department ? 'selected' : false, text: 'Department' })
+      );
+      DEPTS.forEach(function (name) {
+        dept.appendChild(h('option', { value: name, selected: item.department === name ? 'selected' : false, text: name }));
+      });
+      box.appendChild(h('div', { class: 'assign' },
+        textInput(item.name, 'What you do', function (e) { item.name = e.target.value; paintSelfTotal(); }),
+        dept,
+        h('div', { class: 'pct-wrap' },
+          h('input', { type: 'number', min: '0', max: '100', value: String(item.pct), 'aria-label': 'Percent of your week', oninput: function (e) { item.pct = parsePct(e.target.value); paintSelfTotal(); } }),
+          h('span', { text: '%' })
+        ),
+        h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove line', onclick: function () { draft.items.splice(index, 1); renderSelf(); } }, '×')
+      ));
+    });
+    box.appendChild(h('button', { type: 'button', class: 'linkish', onclick: function () { draft.items.push(emptySelfItem()); renderSelf(); } }, '+ Add a line'));
+    box.appendChild(h('p', { class: 'hint', id: 'selfTotal', style: 'margin-top:10px', text: selfTotalText(total) }));
+    box.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { downloadSelfDraft(draft); } }, 'Download my list'),
+      active() && !SELF_BOOT ? h('button', { type: 'button', class: 'btn-secondary', onclick: function () { saveSelfDraft(draft); } }, 'Add this to the assessment') : null
+    ));
+    box.appendChild(h('p', { class: 'msg', id: 'selfFormMsg' }));
+    return box;
+  }
+  function selfTotalText(total) {
+    if (!total) return 'No time entered yet. A rough percent is enough.';
+    if (total > 100) return 'That adds up to ' + total + '% of a week. Lower a few lines, or drop one.';
+    if (total < 100) return 'About ' + total + '% of the week is listed. The rest can stay blank.';
+    return 'That adds up to a full week.';
+  }
+  function paintSelfTotal() {
+    var el = document.getElementById('selfTotal');
+    if (!el || !selfDraft) return;
+    var total = 0;
+    selfDraft.items.forEach(function (item) { if (String(item.name || '').trim()) total += parsePct(item.pct); });
+    el.textContent = selfTotalText(total);
+  }
+  function downloadSelfDraft(draft) {
+    var payload = draftPayload(draft);
+    var msg = document.getElementById('selfFormMsg');
+    if (!payload.personName) { if (msg) msg.textContent = 'Add your name first.'; return; }
+    if (!payload.items.length) { if (msg) msg.textContent = 'Add at least one thing you do.'; return; }
+    downloadBlob(JSON.stringify(payload, null, 2), slug(payload.personName) + '-self-input.json', 'application/json');
+    if (msg) msg.textContent = 'Downloaded. Give that file to the person running the assessment. Nothing was sent.';
+  }
+  function saveSelfDraft(draft) {
+    var payload = draftPayload(draft);
+    var msg = document.getElementById('selfFormMsg');
+    if (!payload.personName) { if (msg) msg.textContent = 'Add a name first.'; return; }
+    if (!payload.items.length) { if (msg) msg.textContent = 'Add at least one activity.'; return; }
+    var result = ingestSelf(payload);
+    selfDraft = null;
+    renderSelf();
+    setSelfMsg(result.message);
+  }
+  function escHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function buildSelfHtml(seed) {
+    var options = DEPTS.map(function (name) { return '<option value="' + escHtml(name) + '">' + escHtml(name) + '</option>'; }).join('');
+    var logo = '';
+    var brand = document.getElementById('brandLogo');
+    if (brand) logo = brand.getAttribute('src') || '';
+    return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<title>What I do · structure</title>' +
+      '<style>' +
+      'body{margin:0;background:#F6F1E8;color:#292D30;font-family:Arial,sans-serif;font-size:16px;line-height:1.5}' +
+      'main{max-width:720px;margin:0 auto;padding:28px 20px 64px}img.logo{height:28px}' +
+      'h1{font-weight:500;letter-spacing:-.03em;font-size:40px;margin:12px 0}h1 em{font-style:normal;color:#A33A32}' +
+      '.card{background:#fff;border:1px solid #DDD5C6;border-radius:18px;padding:16px;margin:12px 0}' +
+      'label{display:block;font-size:13px;color:#6B6560;margin:8px 0 4px}input,select{width:100%;box-sizing:border-box;font:inherit;padding:10px 12px;border:1px solid #E3D9CA;border-radius:10px}' +
+      '.row{display:grid;grid-template-columns:1.4fr .8fr 90px 36px;gap:8px;margin-top:8px;align-items:center}' +
+      'button{font:inherit;cursor:pointer} .primary{background:#A33A32;color:#fff;border:0;border-radius:12px;padding:12px 16px;font-weight:600}' +
+      '.link{background:none;border:0;font-weight:600;text-decoration:underline} .x{background:none;border:0;font-size:20px}' +
+      '.hint{color:#6B6560;font-size:14px} @media(max-width:700px){.row{grid-template-columns:1fr}}' +
+      '</style></head><body><main>' +
+      (logo ? '<img class="logo" alt="structure" src="' + logo + '">' : '<strong>structure</strong>') +
+      '<p class="hint">For ' + escHtml(seed.company || 'your company') + '</p>' +
+      '<h1>What you <em>actually do.</em></h1>' +
+      '<p class="hint">List the work in a normal week and a rough percent of your time. The lines do not have to add up to 100. Download the file when you are done. This page does not send it anywhere.</p>' +
+      '<div class="card"><label>Your name</label><input id="name" value="' + escHtml(seed.name || '') + '">' +
+      '<label>Your role</label><input id="role" value="' + escHtml(seed.role || '') + '">' +
+      '<label>Company</label><input id="company" value="' + escHtml(seed.company || '') + '">' +
+      '<div id="rows"></div><p><button class="link" type="button" id="add">+ Add a line</button></p>' +
+      '<p class="hint" id="total"></p><button class="primary" type="button" id="save">Download my list</button><p class="hint" id="msg"></p></div>' +
+      '<p class="hint">Growth needs structure. We build it.</p></main><script>' +
+      'var DEPTS=' + JSON.stringify(DEPTS) + ';' +
+      'var items=[{name:"",department:"",pct:10},{name:"",department:"",pct:10},{name:"",department:"",pct:10}];' +
+      'function el(id){return document.getElementById(id);}' +
+      'function row(item,i){var d=document.createElement("div");d.className="row";' +
+      'var name=document.createElement("input");name.placeholder="What you do";name.value=item.name;name.oninput=function(){item.name=name.value;total();};' +
+      'var dept=document.createElement("select");var o=document.createElement("option");o.value="";o.textContent="Department";dept.appendChild(o);' +
+      'DEPTS.forEach(function(n){var opt=document.createElement("option");opt.value=n;opt.textContent=n;if(n===item.department)opt.selected=true;dept.appendChild(opt);});' +
+      'dept.onchange=function(){item.department=dept.value;};' +
+      'var pct=document.createElement("input");pct.type="number";pct.min="0";pct.max="100";pct.value=item.pct;pct.oninput=function(){item.pct=pct.value;total();};' +
+      'var x=document.createElement("button");x.type="button";x.className="x";x.textContent="×";x.onclick=function(){items.splice(i,1);draw();};' +
+      'd.appendChild(name);d.appendChild(dept);d.appendChild(pct);d.appendChild(x);return d;}' +
+      'function draw(){var host=el("rows");host.innerHTML="";items.forEach(function(item,i){host.appendChild(row(item,i));});total();}' +
+      'function total(){var n=0;items.forEach(function(item){if(String(item.name||"").trim())n+=Math.max(0,Math.min(100,Math.round(Number(item.pct)||0)));});' +
+      'el("total").textContent=n?(n>100?"That adds up to "+n+"% of a week. Lower a few lines.":"About "+n+"% of the week is listed."):"No time entered yet.";}' +
+      'el("add").onclick=function(){items.push({name:"",department:"",pct:10});draw();};' +
+      'el("save").onclick=function(){var named=items.filter(function(item){return String(item.name||"").trim();}).map(function(item){return{name:String(item.name).trim(),department:item.department||"",pct:Math.max(0,Math.min(100,Math.round(Number(item.pct)||0)))};});' +
+      'var person=el("name").value.trim();if(!person){el("msg").textContent="Add your name first.";return;}if(!named.length){el("msg").textContent="Add at least one thing you do.";return;}' +
+      'var payload={app:"structure-team-assessment-self",version:1,exportedAt:new Date().toISOString(),companyName:el("company").value.trim(),personName:person,role:el("role").value.trim(),items:named};' +
+      'var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var link=document.createElement("a");link.href=URL.createObjectURL(blob);' +
+      'link.download=person.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-self-input.json";document.body.appendChild(link);link.click();link.remove();' +
+      'el("msg").textContent="Downloaded. Give that file to the person running the assessment. Nothing was sent.";};' +
+      'draw();' +
+      '<' + '/script></body></html>';
+  }
+  function downloadSelfPage(person) {
+    var a = active();
+    var html = buildSelfHtml({
+      company: a ? companyName(a) : '',
+      name: person ? person.name : '',
+      role: person ? person.role : ''
+    });
+    downloadBlob(html, slug((person && person.name) || 'self-input') + '-self-input.html', 'text/html;charset=utf-8');
+    setSelfMsg('Downloaded a page for ' + (person ? personName(person) : 'someone') + '. They fill it in and download a small JSON file.');
+  }
+  function ingestSelf(data) {
+    var a = active();
+    if (!a) return { message: 'Open an assessment first.' };
+    var records = [];
+    if (Array.isArray(data)) records = data;
+    else if (data && Array.isArray(data.selfInputs)) records = data.selfInputs;
+    else if (data && (data.personName || data.name || data.items)) records = [data];
+    var added = 0, updated = 0, unmatched = [];
+    records.forEach(function (raw) {
+      if (!raw) return;
+      var name = String(raw.personName || raw.name || '').trim();
+      if (!name) return;
+      var items = (raw.items || []).filter(function (item) { return item && String(item.name || '').trim(); }).map(function (item) {
+        return { name: String(item.name).trim(), department: item.department || '', pct: parsePct(item.pct) };
+      });
+      var person = matchPerson(a.people, name);
+      var existing = null;
+      a.selfInputs.forEach(function (row) { if (normKey(row.personName) === normKey(name)) existing = row; });
+      var record = existing || { id: uid('self') };
+      record.personName = name;
+      record.role = raw.role || '';
+      record.companyName = raw.companyName || companyName(a);
+      record.exportedAt = raw.exportedAt || new Date().toISOString();
+      record.importedAt = new Date().toISOString();
+      record.personId = person ? person.id : '';
+      record.items = items;
+      if (!existing) { a.selfInputs.push(record); added++; }
+      else updated++;
+      if (!person) unmatched.push(name);
+    });
+    touch(a);
+    persistNow();
+    if (!added && !updated) return { message: 'No named self-input in that file.' };
+    var msg = (added ? 'Imported ' + added + (added === 1 ? ' list.' : ' lists.') : '') + (updated ? ' Updated ' + updated + '.' : '');
+    if (unmatched.length) msg += ' No one on the team matches ' + unmatched.join(', ') + '.';
+    return { message: msg.trim() };
+  }
+  function onSelfFile(inputOrEvent) {
+    var input = inputOrEvent && inputOrEvent.target ? inputOrEvent.target : inputOrEvent;
+    var file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var result = ingestSelf(JSON.parse(String(reader.result || '')));
+        selfDraft = null;
+        renderSelf();
+        setSelfMsg(result.message);
+      } catch (e) { setSelfMsg('That file is not a self-input list.'); }
+    };
+    reader.readAsText(file);
+  }
+  function personSelf(a, person) {
+    var found = null;
+    (a.selfInputs || []).forEach(function (row) {
+      if (row.personId === person.id || normKey(row.personName) === normKey(person.name)) found = row;
+    });
+    return found;
+  }
+  function comparePerson(a, person) {
+    var selfRow = personSelf(a, person);
+    if (!selfRow) return null;
+    var stat = null;
+    derive(a).people.forEach(function (s) { if (s.person.id === person.id) stat = s; });
+    var manager = {};
+    ((stat && stat.items) || []).forEach(function (item) {
+      var key = normKey(item.name);
+      if (!key) return;
+      if (!manager[key]) manager[key] = { name: item.name, pct: 0 };
+      manager[key].pct += Number(item.pct) || 0;
+    });
+    var selfMap = {};
+    (selfRow.items || []).forEach(function (item) {
+      var key = normKey(item.name);
+      if (!key) return;
+      if (!selfMap[key]) selfMap[key] = { name: item.name, pct: 0 };
+      selfMap[key].pct += Number(item.pct) || 0;
+    });
+    var keys = {};
+    Object.keys(manager).forEach(function (key) { keys[key] = true; });
+    Object.keys(selfMap).forEach(function (key) { keys[key] = true; });
+    var rows = Object.keys(keys).map(function (key) {
+      var left = manager[key], right = selfMap[key];
+      var flag = 'close';
+      if (left && !right) flag = 'map-only';
+      else if (right && !left) flag = 'self-only';
+      else if (Math.abs(left.pct - right.pct) >= GAP_POINTS) flag = 'gap';
+      return {
+        name: (left && left.name) || right.name,
+        managerPct: left ? left.pct : null,
+        selfPct: right ? right.pct : null,
+        flag: flag
+      };
+    });
+    var rank = { gap: 0, 'self-only': 1, 'map-only': 2, close: 3 };
+    rows.sort(function (x, y) { return rank[x.flag] - rank[y.flag] || x.name.localeCompare(y.name); });
+    return { self: selfRow, rows: rows };
+  }
+  function flagLabel(row) {
+    if (row.flag === 'gap') return 'Big gap · ' + Math.abs(row.managerPct - row.selfPct) + ' points';
+    if (row.flag === 'self-only') return 'Only in self-input';
+    if (row.flag === 'map-only') return 'Only on the map';
+    return 'Close';
+  }
+  function renderSelf() {
+    var root = document.getElementById('view-self');
+    clear(root);
+    if (SELF_BOOT || selfDraft) {
+      if (!selfDraft) startSelfDraft(null);
+      root.appendChild(h('div', { class: 'narrow' },
+        h('div', { class: 'eyebrow', text: SELF_BOOT ? 'Your list' : 'Self-input' }),
+        h('h2', null, 'What you ', h('em', { text: 'actually do.' })),
+        h('p', { class: 'lede', text: 'List the work in a normal week and a rough percent of your time. Download the file when you are done. This page does not send it anywhere.' }),
+        selfForm(selfDraft),
+        SELF_BOOT ? null : h('button', { type: 'button', class: 'btn-secondary', onclick: function () { selfDraft = null; renderSelf(); } }, 'Back to the comparison')
+      ));
+      return;
+    }
+    var a = active();
+    if (!a) return;
+    root.appendChild(h('div', { class: 'eyebrow', text: 'Self-input' }));
+    root.appendChild(h('h2', null, 'What they say they ', h('em', { text: 'do.' })));
+    root.appendChild(h('p', { class: 'lede', text: 'Each person lists their work and a rough percent of the week, then downloads a small file. Import it here. A big gap is ' + GAP_POINTS + ' points or more. Names have to match the roster.' }));
+    if (!a.people.length) {
+      root.appendChild(h('div', { class: 'empty' },
+        h('h3', { text: 'Add the team first' }),
+        h('p', { class: 'hint', text: 'The comparison needs a name to match. Add people, then come back for their lists.' })
+      ));
+    } else {
+      var list = h('div', { class: 'card' }, h('h3', { text: 'A page for each person' }), h('p', { class: 'hint', text: 'Download a one-person page they can open in a browser, or fill it in while they sit with you.' }));
+      a.people.forEach(function (p) {
+        list.appendChild(h('div', { class: 'person-card' },
+          h('div', { class: 'top' },
+            h('strong', { text: personName(p) }),
+            h('span', {},
+              h('button', { type: 'button', class: 'linkish', onclick: function () { downloadSelfPage(p); } }, 'Download their page'),
+              ' · ',
+              h('button', { type: 'button', class: 'linkish', onclick: function () { startSelfDraft(p); renderSelf(); } }, 'Fill in now')
+            )
+          ),
+          h('p', { class: 'hint', text: [p.role, personSelf(a, p) ? 'Self-input is in' : 'No self-input yet'].filter(Boolean).join(' · ') })
+        ));
+      });
+      root.appendChild(list);
+    }
+    root.appendChild(h('div', { class: 'card' },
+      h('h3', { text: 'Import a self-input file' }),
+      h('p', { class: 'hint', text: 'Open the JSON they downloaded. You can import more than one. A second file for the same name replaces the first.' }),
+      h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('selfFile').click(); } }, 'Open a self-input file')),
+      h('input', { class: 'file-input', type: 'file', id: 'selfFile', accept: 'application/json,.json', onchange: onSelfFile }),
+      h('p', { class: 'msg', id: 'selfMsg' })
+    ));
+    var matched = {};
+    a.people.forEach(function (p) {
+      var cmp = comparePerson(a, p);
+      if (!cmp) return;
+      matched[normKey(p.name)] = true;
+      var gaps = cmp.rows.filter(function (row) { return row.flag === 'gap'; }).length;
+      var onlySelf = cmp.rows.filter(function (row) { return row.flag === 'self-only'; }).length;
+      var onlyMap = cmp.rows.filter(function (row) { return row.flag === 'map-only'; }).length;
+      var card = h('div', { class: 'card' },
+        h('div', { class: 'top' },
+          h('h3', { text: personName(p) }),
+          h('button', { type: 'button', class: 'linkish', onclick: function () { removeSelf(cmp.self.id); } }, 'Remove this list')
+        ),
+        h('p', { class: 'hint', text: [gaps ? gaps + (gaps === 1 ? ' big gap' : ' big gaps') : '', onlySelf ? onlySelf + ' only they mentioned' : '', onlyMap ? onlyMap + ' only on the map' : ''].filter(Boolean).join(' · ') || 'The two lists are close.' })
+      );
+      var table = h('table', { class: 'compare' }, h('thead', {}, h('tr', {},
+        h('th', { text: 'Activity' }), h('th', { text: 'Map' }), h('th', { text: 'Self' }), h('th', { text: 'Read' })
+      )));
+      var body = h('tbody');
+      cmp.rows.forEach(function (row) {
+        body.appendChild(h('tr', {},
+          h('td', { text: row.name }),
+          h('td', { text: row.managerPct == null ? '—' : row.managerPct + '%' }),
+          h('td', { text: row.selfPct == null ? '—' : row.selfPct + '%' }),
+          h('td', { class: row.flag === 'gap' ? 'gap-big' : '', text: flagLabel(row) })
+        ));
+      });
+      table.appendChild(body);
+      card.appendChild(table);
+      root.appendChild(card);
+    });
+    var stray = (a.selfInputs || []).filter(function (row) { return !matched[normKey(row.personName)] && !row.personId; });
+    if (stray.length) {
+      var strayCard = h('div', { class: 'card' }, h('h3', { text: 'No match on the team' }), h('p', { class: 'hint', text: 'These names did not match anyone on the roster. Add the person, or remove the list.' }));
+      stray.forEach(function (row) {
+        strayCard.appendChild(h('div', { class: 'finding' },
+          h('strong', { text: row.personName || 'Unnamed' }),
+          h('p', { class: 'hint', text: (row.items || []).map(function (item) { return item.name + ' ' + item.pct + '%'; }).join(', ') }),
+          h('div', { class: 'btn-row' },
+            h('button', { type: 'button', class: 'btn-secondary', onclick: function () { addPerson(row.personName); var created = matchPerson(active().people, row.personName); if (created) { row.personId = created.id; if (!created.role && row.role) created.role = row.role; } renderSelf(); persistNow(); } }, 'Add ' + row.personName),
+            h('button', { type: 'button', class: 'btn-secondary', onclick: function () { removeSelf(row.id); } }, 'Remove')
+          )
+        ));
+      });
+      root.appendChild(strayCard);
+    }
+    if (a.people.length && !(a.selfInputs || []).length) {
+      root.appendChild(h('div', { class: 'empty' },
+        h('h3', { text: 'No self-input yet' }),
+        h('p', { class: 'hint', text: 'Download a page for each person, or fill one in while they sit with you. The comparison shows up after you import the file.' })
+      ));
+    }
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('map'); } }, '← Activity map'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('person'); } }, 'Assess people →')
+    ));
+  }
+  function removeSelf(id) {
+    var a = active();
+    if (!a) return;
+    a.selfInputs = (a.selfInputs || []).filter(function (row) { return row.id !== id; });
+    touch(a);
+    renderSelf();
+    persistNow();
+  }
+  function scaleEval(v) {
+    if (v == null || v === '') return null;
+    var n = Number(v);
+    if (isNaN(n)) return null;
+    if (n >= 2) return 4;
+    if (n === 1) return 2;
+    if (n <= 0) return 1;
+    return null;
+  }
+  function ratingsFromEval(emp) {
+    var ev = (emp.state && emp.state.evalState) || {};
+    function one(key) { return Object.prototype.hasOwnProperty.call(ev, key) ? scaleEval(ev[key]) : null; }
+    function avg(list) {
+      var vals = list.filter(function (n) { return n != null; });
+      if (!vals.length) return null;
+      return Math.round(vals.reduce(function (sum, n) { return sum + n; }, 0) / vals.length);
+    }
+    return {
+      quality: one('pf_0'),
+      reliability: avg([one('pf_1'), one('cv_2')]),
+      communication: one('cv_1'),
+      ownership: one('cv_0'),
+      teamwork: one('pf_3')
+    };
+  }
+  function employeesFromPerformance(data) {
+    var sessions = [];
+    if (data && Array.isArray(data.sessions)) sessions = data.sessions;
+    else if (data && data.session && Array.isArray(data.session.employees)) sessions = [data.session];
+    else if (data && Array.isArray(data.employees)) sessions = [{ name: data.name || '', employees: data.employees }];
+    var rows = [];
+    sessions.forEach(function (session) {
+      (session.employees || []).forEach(function (emp) {
+        var name = emp && emp.fields && emp.fields.empName;
+        if (!String(name || '').trim()) return;
+        rows.push({ emp: emp, reviewName: session.name || '', name: String(name).trim() });
+      });
+    });
+    return rows;
+  }
+  function applyPerformanceFile(data, replace) {
+    var a = active();
+    if (!a) return { message: 'Open an assessment first.' };
+    var rows = employeesFromPerformance(data);
+    if (!rows.length) return { message: 'No named people in that review.' };
+    var byName = {};
+    rows.forEach(function (row) { byName[normKey(row.name)] = row; });
+    var matched = 0, filled = 0, replaced = 0, skipped = [];
+    Object.keys(byName).forEach(function (key) {
+      var row = byName[key];
+      var person = matchPerson(a.people, row.name);
+      if (!person) { skipped.push(row.name); return; }
+      matched++;
+      var scores = ratingsFromEval(row.emp);
+      var gwc = (row.emp.state && row.emp.state.gwc) || {};
+      function yn(v) { return v === 'yes' || v === 'no' ? v : null; }
+      person.performanceImport = {
+        importedAt: new Date().toISOString(),
+        reviewName: row.reviewName || '',
+        matchedName: row.name,
+        gwc: { g: yn(gwc.g), w: yn(gwc.w), c: yn(gwc.c) }
+      };
+      RATINGS.forEach(function (pair) {
+        var score = scores[pair[0]];
+        if (score == null) return;
+        if (person.ratings[pair[0]] == null) { person.ratings[pair[0]] = score; filled++; }
+        else if (replace) { person.ratings[pair[0]] = score; replaced++; }
+      });
+    });
+    touch(a);
+    persistNow();
+    var msg = 'Matched ' + matched + (matched === 1 ? ' person.' : ' people.');
+    if (filled) msg += ' Filled ' + filled + ' empty scores.';
+    if (replaced) msg += ' Replaced ' + replaced + ' scores.';
+    if (!filled && !replaced && matched) msg += ' Scores already filled were left as they are.';
+    if (skipped.length) msg += ' No match for ' + skipped.join(', ') + '.';
+    return { message: msg };
+  }
+  function onPerfFile(inputOrEvent) {
+    var input = inputOrEvent && inputOrEvent.target ? inputOrEvent.target : inputOrEvent;
+    var file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(String(reader.result || ''));
+        var box = document.getElementById('replaceScores');
+        var result = applyPerformanceFile(data, !!(box && box.checked));
+        show.keep = true;
+        if (document.getElementById('view-person').classList.contains('active')) renderPerson();
+        setPerfMsg(result.message);
+        setFileMsg(result.message);
+      } catch (e) { setPerfMsg('Could not read that review.'); setFileMsg('Could not read that review.'); }
+    };
+    reader.readAsText(file);
+  }
+  function performanceHint(p) {
+    var imp = p.performanceImport;
+    if (!imp) return '';
+    var gwc = imp.gwc || {};
+    var bits = [];
+    if (gwc.g) bits.push('Get it ' + gwc.g);
+    if (gwc.w) bits.push('Want it ' + gwc.w);
+    if (gwc.c) bits.push('Capacity ' + gwc.c);
+    var when = imp.importedAt ? formatDate(String(imp.importedAt).slice(0, 10)) : '';
+    return 'Performance review' + (imp.reviewName ? ' "' + imp.reviewName + '"' : '') + (when ? ', ' + when : '') + (bits.length ? '. ' + bits.join(', ') + '.' : '.');
+  }
+  function performanceImportCard() {
+    return h('div', { class: 'card narrow' },
+      h('h3', { text: 'Ratings from a performance review' }),
+      h('p', { class: 'hint', text: 'Open a JSON file from the performance evaluation tool. People are matched by name. Consistently meets becomes a 4, inconsistently a 2, and does not meet a 1. Empty scores are filled. Pay stays where it is.' }),
+      h('label', { class: 'check', style: 'margin:10px 0' },
+        h('input', { type: 'checkbox', id: 'replaceScores' }),
+        h('span', { text: 'Replace scores that are already filled in.' })
+      ),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('perfFile').click(); } }, 'Open a performance review'),
+        h('a', { href: 'https://tools.ceomode.biz/performance-evaluation-app.html', target: '_blank', rel: 'noopener', class: 'linkish', text: 'Open the performance tool' })
+      ),
+      h('p', { class: 'msg', id: 'perfMsg' }),
+      h('input', { class: 'file-input', type: 'file', id: 'perfFile', accept: 'application/json,.json', onchange: onPerfFile })
+    );
+  }
+  function defaultPct(act) {
+    var owners = (act.assignments || []).filter(function (as) { return as.role === 'owner'; });
+    if (!owners.length) return 20;
+    var top = 0;
+    owners.forEach(function (as) { if ((as.pct || 0) > top) top = as.pct; });
+    return top || 20;
+  }
+  function futureSnapshot(a) {
+    var seats = (a.future.seats || []).map(function (seat) {
+      var person = null;
+      a.people.forEach(function (p) { if (p.id === seat.personId) person = p; });
+      var items = [];
+      (a.future.moves || []).forEach(function (move) {
+        if (move.seatId !== seat.id) return;
+        var act = findById(a.activities, move.activityId);
+        if (!act) return;
+        items.push({ name: act.name || 'Untitled', pct: move.pct || 0, activityId: act.id });
+      });
+      var total = items.reduce(function (sum, item) { return sum + item.pct; }, 0);
+      return { seat: seat, person: person, open: !person, title: seat.title || 'Open seat', items: items, total: total, over: total > 100 };
+    });
+    var placed = {};
+    (a.future.moves || []).forEach(function (move) { placed[move.activityId] = true; });
+    var seated = {};
+    seats.forEach(function (row) { if (row.person) seated[row.person.id] = true; });
+    return {
+      seats: seats,
+      unassigned: a.activities.filter(function (act) { return !placed[act.id]; }),
+      notPlaced: a.people.filter(function (p) { return !seated[p.id]; })
+    };
+  }
+  function toolLinks() {
+    return h('div', { class: 'tool-links' },
+      h('a', { href: ROLE_CLARITY_URL, target: '_blank', rel: 'noopener', text: 'Role clarity tool' }),
+      h('a', { href: HIRING_URL, target: '_blank', rel: 'noopener', text: 'Hiring tool' })
+    );
+  }
+  function moveFor(a, activityId) {
+    var found = null;
+    (a.future.moves || []).forEach(function (move) { if (move.activityId === activityId) found = move; });
+    return found;
+  }
+  function assignFuture(activityId, seatId) {
+    var a = active();
+    var act = activityById(activityId);
+    if (!a || !act) return;
+    var existing = moveFor(a, activityId);
+    var pct = existing ? existing.pct : defaultPct(act);
+    a.future.moves = (a.future.moves || []).filter(function (move) { return move.activityId !== activityId; });
+    if (seatId) a.future.moves.push({ activityId: activityId, seatId: seatId, pct: pct });
+    touch(a);
+    renderFuture();
+    scheduleSave();
+  }
+  function setFuturePct(activityId, pct) {
+    var a = active();
+    if (!a) return;
+    (a.future.moves || []).forEach(function (move) { if (move.activityId === activityId) move.pct = pct; });
+    touch(a);
+    scheduleSave();
+    paintFutureLoads();
+  }
+  function paintFutureLoads() {
+    var a = active();
+    var slot = document.getElementById('futureSummary');
+    if (!a || !slot) return;
+    var next = futureSummary(a);
+    slot.parentNode.replaceChild(next, slot);
+  }
+  function addSeat(title, personId) {
+    var a = active();
+    if (!a) return;
+    var id = personId || '';
+    if (id && (a.future.seats || []).some(function (seat) { return seat.personId === id; })) {
+      setFutureMsg('That person already has a seat. Rename it, or pick someone else.');
+      return;
+    }
+    a.future.seats.push({ id: uid('seat'), title: String(title || '').trim() || 'New seat', personId: id });
+    touch(a);
+    renderFuture();
+    scheduleSave();
+  }
+  function startFutureFromToday() {
+    var a = active();
+    if (!a) return;
+    if ((a.future.seats || []).length && !window.confirm('Replace the future org with a copy of today’s seats?')) return;
+    var seats = a.people.map(function (p) {
+      return { id: uid('seat'), title: p.role || personName(p), personId: p.id };
+    });
+    var moves = [];
+    a.activities.forEach(function (act) {
+      var owners = (act.assignments || []).filter(function (as) { return as.role === 'owner'; });
+      if (owners.length !== 1) return;
+      var seat = null;
+      seats.forEach(function (item) { if (item.personId === owners[0].personId) seat = item; });
+      if (!seat) return;
+      moves.push({ activityId: act.id, seatId: seat.id, pct: owners[0].pct || 0 });
+    });
+    a.future = { seats: seats, moves: moves };
+    touch(a);
+    renderFuture();
+    setFutureMsg('Started from today’s map. Activities with more than one owner, or none, are still unassigned.');
+    scheduleSave();
+  }
+  function futureChip(a, act) {
+    var move = moveFor(a, act);
+    var pct = move ? move.pct : defaultPct(act);
+    var sel = h('select', { 'aria-label': 'Future seat for ' + (act.name || 'activity'), onchange: function (e) { assignFuture(act.id, e.target.value); } },
+      h('option', { value: '', selected: !move ? 'selected' : false, text: 'Unassigned' })
+    );
+    (a.future.seats || []).forEach(function (seat) {
+      var open = !seat.personId;
+      sel.appendChild(h('option', { value: seat.id, selected: move && move.seatId === seat.id ? 'selected' : false, text: seat.title + (open ? ' · open' : '') }));
+    });
+    return h('div', {
+      class: 'chip', draggable: 'true', 'data-act': act.id,
+      ondragstart: function (e) {
+        var tag = e.target && e.target.tagName;
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'OPTION') { e.preventDefault(); return; }
+        e.dataTransfer.setData('text/plain', act.id);
+        e.dataTransfer.effectAllowed = 'move';
+      }
+    },
+      h('strong', { text: act.name || 'Untitled' }),
+      h('input', {
+        type: 'number', min: '0', max: '100', value: String(pct), 'aria-label': 'Percent for ' + (act.name || 'activity'),
+        oninput: function (e) {
+          if (!moveFor(active(), act.id)) return;
+          setFuturePct(act.id, parsePct(e.target.value));
+        }
+      }),
+      h('span', { text: '%' }),
+      sel
+    );
+  }
+  function bindDrop(node, seatId) {
+    node.addEventListener('dragover', function (e) { e.preventDefault(); node.classList.add('dragover'); });
+    node.addEventListener('dragleave', function () { node.classList.remove('dragover'); });
+    node.addEventListener('drop', function (e) {
+      e.preventDefault();
+      node.classList.remove('dragover');
+      var id = e.dataTransfer.getData('text/plain');
+      if (id) assignFuture(id, seatId);
+    });
+  }
+  function futureSummary(a) {
+    var f = findings(a);
+    var snap = futureSnapshot(a);
+    var before = h('div', { class: 'org-col' }, h('h3', { text: 'Today' }));
+    if (!f.d.people.length) before.appendChild(h('p', { class: 'hint', text: 'No people on the map yet.' }));
+    f.d.people.forEach(function (s) {
+      var owned = s.items.filter(function (item) { return item.role === 'owner'; });
+      before.appendChild(h('div', { class: 'finding' },
+        h('strong', { text: personName(s.person) + (s.person.role ? ' · ' + s.person.role : '') }),
+        h('p', { class: 'hint', text: (owned.length ? owned.map(function (item) { return item.name + (item.pct ? ' ' + item.pct + '%' : ''); }).join(', ') : 'Owns nothing yet') + ' · ' + s.total + '% of the week' })
+      ));
+    });
+    var after = h('div', { class: 'org-col' }, h('h3', { text: 'Next' }));
+    if (!snap.seats.length) after.appendChild(h('p', { class: 'hint', text: 'No future seats yet. Start from today’s map, or add a seat such as COO or Traveling PM.' }));
+    snap.seats.forEach(function (row) {
+      var who = row.open ? 'Open seat' : personName(row.person);
+      after.appendChild(h('div', { class: 'finding' },
+        h('strong', { text: row.title + ' · ' + who }),
+        h('p', { class: row.over ? 'gap-big' : 'hint', text: (row.items.length ? row.items.map(function (item) { return item.name + ' ' + item.pct + '%'; }).join(', ') : 'No work on this seat yet') + ' · ' + row.total + '% of the week' + (row.over ? ' · over a full week' : '') }),
+        row.open ? toolLinks() : null
+      ));
+    });
+    if (snap.unassigned.length) after.appendChild(h('p', { class: 'hint', text: 'Still no future owner: ' + snap.unassigned.map(function (act) { return act.name || 'Untitled'; }).join(', ') + '.' }));
+    if (snap.notPlaced.length) after.appendChild(h('p', { class: 'hint', text: 'Not in a seat yet: ' + snap.notPlaced.map(personName).join(', ') + '.' }));
+    return h('div', { class: 'org-grid', id: 'futureSummary' }, before, after);
+  }
+  function renderFuture() {
+    var root = document.getElementById('view-future');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    root.appendChild(h('div', { class: 'eyebrow', text: 'Future org' }));
+    root.appendChild(h('h2', null, 'Who should own it ', h('em', { text: 'next?' })));
+    root.appendChild(h('p', { class: 'lede', text: 'Drag an activity onto a seat, or choose the seat on the line. Add a seat you still have to hire. The percent is that seat’s share of a week.' }));
+    if (!a.activities.length) {
+      root.appendChild(h('div', { class: 'empty' },
+        h('h3', { text: 'The activity map is empty' }),
+        h('p', { class: 'hint', text: 'Add the work first. Then you can move it onto the seats you want.' })
+      ));
+    }
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-primary', onclick: startFutureFromToday }, 'Start from today’s map'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { addSeat('COO', ''); } }, 'Add a COO seat'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { addSeat('Traveling PM', ''); } }, 'Add a Traveling PM')
+    ));
+    var titleInput = textInput('', 'New seat, such as Production manager', function (e) { titleInput._value = e.target.value; });
+    var personSel = h('select', { 'aria-label': 'Who fills the seat' }, h('option', { value: '', text: 'Open seat' }));
+    a.people.forEach(function (p) {
+      var taken = (a.future.seats || []).some(function (seat) { return seat.personId === p.id; });
+      if (!taken) personSel.appendChild(h('option', { value: p.id, text: personName(p) }));
+    });
+    root.appendChild(h('div', { class: 'card' },
+      h('h3', { text: 'Add a seat' }),
+      h('div', { class: 'btn-row' },
+        titleInput,
+        personSel,
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { addSeat(titleInput.value, personSel.value); } }, 'Add seat')
+      ),
+      h('p', { class: 'msg', id: 'futureMsg' })
+    ));
+    if (!(a.future.seats || []).length && a.activities.length) {
+      root.appendChild(h('div', { class: 'empty' },
+        h('h3', { text: 'This is still today’s org' }),
+        h('p', { class: 'hint', text: 'Start from today’s map, then move work onto new seats. An open seat is one nobody fills yet.' })
+      ));
+    }
+    root.appendChild(futureSummary(a));
+    var board = h('div', { class: 'board' });
+    var loose = h('div', { class: 'card dropzone', id: 'drop-unassigned' }, h('h3', { text: 'Not placed yet' }), h('p', { class: 'hint', text: 'Drop work here to take it off a seat.' }));
+    var placedActs = {};
+    (a.future.moves || []).forEach(function (move) { placedActs[move.activityId] = move.seatId; });
+    a.activities.forEach(function (act) { if (!placedActs[act.id]) loose.appendChild(futureChip(a, act)); });
+    if (!a.activities.length) loose.appendChild(h('p', { class: 'hint', text: 'No activities to move.' }));
+    bindDrop(loose, '');
+    var seatWrap = h('div', { class: 'seat-grid' });
+    if (!(a.future.seats || []).length) seatWrap.appendChild(h('div', { class: 'empty' }, h('h3', { text: 'No seats to drop onto' }), h('p', { class: 'hint', text: 'Add a seat, then drag work onto it.' })));
+    (a.future.seats || []).forEach(function (seat) {
+      var person = null;
+      a.people.forEach(function (p) { if (p.id === seat.personId) person = p; });
+      var who = h('select', { 'aria-label': 'Who fills ' + seat.title, onchange: function (e) {
+        var next = e.target.value;
+        if (next && (a.future.seats || []).some(function (other) { return other.id !== seat.id && other.personId === next; })) {
+          setFutureMsg('That person already has a seat.');
+          renderFuture();
+          return;
+        }
+        seat.personId = next;
+        touch(a);
+        renderFuture();
+        scheduleSave();
+      } }, h('option', { value: '', selected: !seat.personId ? 'selected' : false, text: 'Open seat' }));
+      a.people.forEach(function (p) {
+        var taken = (a.future.seats || []).some(function (other) { return other.id !== seat.id && other.personId === p.id; });
+        if (!taken || p.id === seat.personId) who.appendChild(h('option', { value: p.id, selected: p.id === seat.personId ? 'selected' : false, text: personName(p) }));
+      });
+      var col = h('div', { class: 'seat dropzone' + (person ? '' : ' open-seat'), 'data-seat': seat.id },
+        h('input', { type: 'text', value: seat.title, 'aria-label': 'Seat title', oninput: function (e) { seat.title = e.target.value; touch(a); scheduleSave(); paintFutureLoads(); } }),
+        who,
+        h('button', { type: 'button', class: 'linkish', onclick: function () {
+          if ((a.future.moves || []).some(function (move) { return move.seatId === seat.id; }) && !window.confirm('Remove ' + (seat.title || 'this seat') + '? The work on it goes back to unassigned.')) return;
+          a.future.seats = a.future.seats.filter(function (item) { return item.id !== seat.id; });
+          a.future.moves = (a.future.moves || []).filter(function (move) { return move.seatId !== seat.id; });
+          touch(a);
+          renderFuture();
+          scheduleSave();
+        } }, 'Remove seat')
+      );
+      if (!person) {
+        col.appendChild(h('p', { class: 'hint', text: 'Open seat. Copy the role list into the other tools. This page does not send it.' }));
+        col.appendChild(toolLinks());
+      }
+      a.activities.forEach(function (act) { if (placedActs[act.id] === seat.id) col.appendChild(futureChip(a, act)); });
+      bindDrop(col, seat.id);
+      seatWrap.appendChild(col);
+    });
+    board.appendChild(loose);
+    board.appendChild(seatWrap);
+    root.appendChild(board);
+    var openCount = futureSnapshot(a).seats.filter(function (row) { return row.open; }).length;
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: exportOpenSeats }, 'Download open seats'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { printIntent.kind = 'roles'; doPrint(companyName(a) + ' open seats'); } }, 'Print the role list'),
+      h('span', { class: 'hint', text: openCount ? openCount + (openCount === 1 ? ' open seat' : ' open seats') : 'No open seats' })
+    ));
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('recs'); } }, '← Recommendations'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { show('actions'); } }, 'Action plan →')
+    ));
+  }
+  function exportOpenSeats() {
+    var a = active();
+    if (!a) return;
+    var snap = futureSnapshot(a);
+    var payload = {
+      app: 'structure-team-assessment-roles',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      companyName: companyName(a),
+      seats: snap.seats.filter(function (row) { return row.open; }).map(function (row) {
+        return { title: row.title, open: true, loadPct: row.total, activities: row.items.map(function (item) { return { name: item.name, pct: item.pct }; }) };
+      })
+    };
+    downloadBlob(JSON.stringify(payload, null, 2), slug(a.companyName) + '-open-seats.json', 'application/json');
+    setFutureMsg(payload.seats.length ? 'Downloaded ' + payload.seats.length + (payload.seats.length === 1 ? ' open seat.' : ' open seats.') : 'There are no open seats to export.');
+  }
+  function firstSentence(text) {
+    var s = String(text || '').trim();
+    if (!s) return '';
+    return s.split('. ')[0].replace(/\.$/, '');
+  }
+  function suggestActions(a) {
+    var f = findings(a);
+    var items = [];
+    f.gaps.forEach(function (row) {
+      items.push({ key: 'gap:' + row.activity.id, source: 'gap', title: 'Name an owner for ' + (row.activity.name || 'an activity'), detail: 'This activity has nobody accountable.', owner: a.consultantName || '' });
+    });
+    f.many.forEach(function (row) {
+      items.push({ key: 'many:' + row.activity.id, source: 'overlap', title: 'Pick one owner for ' + (row.activity.name || 'an activity'), detail: row.owners.map(function (o) { return personName(o.person); }).join(' and ') + ' are all marked as owner.', owner: a.consultantName || '' });
+    });
+    f.pairs.forEach(function (pair) {
+      var key = 'pair:' + [normKey(pair.a), normKey(pair.b)].sort().join('|');
+      items.push({ key: key, source: 'overlap', title: 'Separate the work ' + pair.a + ' and ' + pair.b + ' share', detail: 'Both are in ' + pair.shared.join(', ') + '.', owner: a.consultantName || '' });
+    });
+    f.side.forEach(function (side) {
+      items.push({ key: 'side:' + normKey(side.activity), source: 'overlap', title: 'Give ' + side.activity + ' a real home', detail: side.person + ' owns it as ' + side.pct + '% of a larger seat.', owner: side.person });
+    });
+    f.over.forEach(function (s) {
+      items.push({ key: 'over:' + s.person.id, source: 'overload', title: 'Bring ' + personName(s.person) + ' under a full week', detail: 'The map has them at ' + s.total + '% of the week.', owner: s.person.manager || a.consultantName || '' });
+    });
+    f.thin.forEach(function (s) {
+      items.push({ key: 'thin:' + s.person.id, source: 'overload', title: 'Give ' + personName(s.person) + ' one main seat', detail: 'They are on ' + s.count + ' activities, and none is 40% or more of the week.', owner: s.person.manager || a.consultantName || '' });
+    });
+    a.people.forEach(function (p) {
+      if (!p.recommendation) return;
+      var verb = p.recommendation === 'keep' ? 'Keep ' + personName(p) + ' and do the next step' : p.recommendation === 'coach' ? 'Coach ' + personName(p) : p.recommendation === 'reassign' ? 'Change the seat for ' + personName(p) : 'Decide who should hold ' + (p.role || personName(p) + '’s seat');
+      items.push({
+        key: 'rec:' + p.id,
+        source: 'recommendation',
+        title: verb,
+        detail: [p.reasoning, p.actionPlan].filter(function (s) { return String(s || '').trim(); }).join(' '),
+        clientTitle: firstSentence(p.roleAdjustments) || ('Next step for ' + personName(p)),
+        clientDetail: [p.roleAdjustments, p.actionPlan].filter(function (s) { return String(s || '').trim(); }).join(' '),
+        owner: p.manager || a.consultantName || ''
+      });
+    });
+    futureSnapshot(a).seats.forEach(function (row) {
+      if (!row.open) return;
+      items.push({ key: 'seat:' + row.seat.id, source: 'gap', title: 'Fill the open seat: ' + row.title, detail: row.items.length ? 'Work waiting: ' + row.items.map(function (item) { return item.name + ' ' + item.pct + '%'; }).join(', ') + '.' : 'The seat has no activities yet.', clientTitle: 'Hire for ' + row.title, clientDetail: row.items.length ? row.items.map(function (item) { return item.name + ' (' + item.pct + '% of the week)'; }).join(', ') : '', owner: a.consultantName || '' });
+    });
+    return items.map(function (item) {
+      return {
+        id: uid('do'),
+        key: item.key,
+        source: item.source,
+        title: item.title,
+        detail: item.detail || '',
+        clientTitle: item.clientTitle || '',
+        clientDetail: item.clientDetail || '',
+        owner: item.owner || '',
+        dueDate: '',
+        status: 'open'
+      };
+    });
+  }
+  function buildActions() {
+    var a = active();
+    if (!a) return;
+    var suggested = suggestActions(a);
+    var byKey = {};
+    a.actions.forEach(function (item) { if (item.key) byKey[item.key] = item; });
+    var added = 0;
+    suggested.forEach(function (item) {
+      var prev = byKey[item.key];
+      if (prev) {
+        prev.title = item.title;
+        prev.detail = item.detail;
+        prev.clientTitle = item.clientTitle;
+        prev.clientDetail = item.clientDetail;
+        prev.source = item.source;
+        return;
+      }
+      a.actions.push(item);
+      added++;
+    });
+    touch(a);
+    renderActions();
+    setActionMsg(added ? 'Added ' + added + (added === 1 ? ' action.' : ' actions.') : 'The list already had these. The wording was refreshed.');
+    scheduleSave();
+  }
+  function pruneActions() {
+    var a = active();
+    if (!a) return;
+    var live = {};
+    suggestActions(a).forEach(function (item) { live[item.key] = true; });
+    var before = a.actions.length;
+    a.actions = a.actions.filter(function (item) {
+      if (!item.key || item.source === 'manual') return true;
+      if (item.status === 'doing' || item.status === 'done') return true;
+      return !!live[item.key];
+    });
+    touch(a);
+    renderActions();
+    var dropped = before - a.actions.length;
+    setActionMsg(dropped ? 'Removed ' + dropped + ' open items that are no longer true.' : 'Nothing open was ready to remove.');
+    scheduleSave();
+  }
+  function renderActions() {
+    var root = document.getElementById('view-actions');
+    var a = active();
+    clear(root);
+    if (!a) return;
+    root.appendChild(h('div', { class: 'eyebrow', text: 'Action plan' }));
+    root.appendChild(h('h2', null, 'What happens ', h('em', { text: 'next.' })));
+    root.appendChild(h('p', { class: 'lede', text: 'Build the list from the gaps, the overlaps, the overloads, and the recommendations. Give each line an owner, a date, and a status. Set the day you will look again.' }));
+    root.appendChild(h('div', { class: 'card' },
+      h('h3', { text: 'Look again in 30, 60, or 90 days' }),
+      h('div', { class: 'seg', id: 'horizon' },
+        ['30', '60', '90'].map(function (days) {
+          return h('button', { type: 'button', class: a.reassessHorizon === days ? 'on' : '', onclick: function () {
+            a.reassessHorizon = days;
+            a.reassessDate = addDays(todayISO(), Number(days));
+            touch(a);
+            renderActions();
+            scheduleSave();
+          } }, days + ' days');
+        })
+      ),
+      h('div', { class: 'fields', style: 'margin-top:12px;max-width:280px' },
+        field('Reassessment date', h('input', { type: 'date', value: /^\d{4}-\d{2}-\d{2}$/.test(a.reassessDate) ? a.reassessDate : '', oninput: function (e) { a.reassessDate = e.target.value; a.reassessHorizon = ''; touch(a); scheduleSave(); } }))
+      ),
+      h('p', { class: 'hint', text: a.reassessDate ? 'Come back on ' + formatDate(a.reassessDate) + '.' : 'Pick a horizon, or type the date.' })
+    ));
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-primary', onclick: buildActions }, 'Build from this assessment'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () {
+        a.actions.push({ id: uid('do'), key: '', source: 'manual', title: '', detail: '', clientTitle: '', clientDetail: '', owner: a.consultantName || '', dueDate: '', status: 'open' });
+        touch(a); renderActions(); scheduleSave();
+      } }, 'Add your own'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: pruneActions }, 'Remove fixed items')
+    ));
+    root.appendChild(h('p', { class: 'msg', id: 'actionMsg' }));
+    if (!a.actions.length) {
+      root.appendChild(h('div', { class: 'empty' },
+        h('h3', { text: 'Nothing on the list yet' }),
+        h('p', { class: 'hint', text: 'Build it from what this assessment already found. You can edit every line after that, and add your own.' })
+      ));
+    }
+    a.actions.forEach(function (item) {
+      root.appendChild(h('div', { class: 'action-line' },
+        h('div', {},
+          h('div', { class: 'src', text: sourceLabel(item.source) }),
+          h('input', { type: 'text', value: item.title, 'aria-label': 'Action', placeholder: 'What will be done', oninput: function (e) { item.title = e.target.value; touch(a); scheduleSave(); } }),
+          h('textarea', { style: 'margin-top:6px;min-height:60px', text: item.detail, placeholder: 'The detail, for the working list.', oninput: function (e) { item.detail = e.target.value; touch(a); scheduleSave(); } })
+        ),
+        field('Owner', textInput(item.owner, 'Who owns this', function (e) { item.owner = e.target.value; touch(a); scheduleSave(); })),
+        field('Due', h('input', { type: 'date', value: /^\d{4}-\d{2}-\d{2}$/.test(item.dueDate) ? item.dueDate : '', oninput: function (e) { item.dueDate = e.target.value; touch(a); scheduleSave(); } })),
+        field('Status', (function () {
+          var sel = h('select', { 'aria-label': 'Status', onchange: function (e) { item.status = e.target.value; touch(a); scheduleSave(); } });
+          [['open', 'Not started'], ['doing', 'In progress'], ['done', 'Done']].forEach(function (opt) {
+            sel.appendChild(h('option', { value: opt[0], selected: item.status === opt[0] ? 'selected' : false, text: opt[1] }));
+          });
+          return sel;
+        })()),
+        h('button', { type: 'button', class: 'remove-btn', 'aria-label': 'Remove action', onclick: function () { a.actions = a.actions.filter(function (row) { return row.id !== item.id; }); touch(a); renderActions(); scheduleSave(); } }, '×')
+      ));
+    });
+    root.appendChild(h('p', { class: 'hint', text: 'The working list can name a keep, coach, reassign, or replace call. The client report uses the role adjustments and the next steps instead, and it leaves out pay and private notes.' }));
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: exportActionsCsv }, 'Download CSV'),
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { printIntent.kind = 'actions'; doPrint(companyName(a) + ' action plan'); } }, 'Print the action plan')
+    ));
+    root.appendChild(progressCard(a));
+    root.appendChild(h('div', { class: 'btn-row' },
+      h('button', { type: 'button', class: 'btn-secondary', onclick: function () { show('future'); } }, '← Future org'),
+      h('button', { type: 'button', class: 'btn-primary', onclick: function () { printIntent.report = 'owner'; show('export'); } }, 'Client report →')
+    ));
+  }
+  function csvCell(value) {
+    var s = value == null ? '' : String(value);
+    if (/[",\r\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+  function exportActionsCsv() {
+    var a = active();
+    if (!a) return;
+    var lines = [['Name', 'Notes', 'Assignee', 'Due Date', 'Section', 'Status'].map(csvCell).join(',')];
+    if (a.reassessDate) {
+      lines.push(['Reassess the team', 'Check the changes from this assessment' + (a.reassessHorizon ? ' (' + a.reassessHorizon + ' days).' : '.'), a.consultantName || '', a.reassessDate, 'Reassessment', 'Not started'].map(csvCell).join(','));
+    }
+    a.actions.forEach(function (item) {
+      if (!String(item.title || '').trim()) return;
+      lines.push([item.title, item.detail || '', item.owner || '', item.dueDate || '', sourceLabel(item.source), statusLabel(item.status)].map(csvCell).join(','));
+    });
+    downloadBlob('\uFEFF' + lines.join('\r\n') + '\r\n', slug(a.companyName) + '-action-plan.csv', 'text/csv;charset=utf-8');
+    setActionMsg('Downloaded a CSV. The columns are Name, Notes, Assignee, Due Date, Section, and Status.');
+  }
+  function progressCard(a) {
+    var card = h('div', { class: 'card' },
+      h('h3', { text: 'Progress since a prior assessment' }),
+      h('p', { class: 'hint', text: 'Open an older JSON export of this client. This assessment stays as it is. The comparison is by name, so a later visit can be a new file.' }),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn-secondary', onclick: function () { document.getElementById('priorFile').click(); } }, 'Open a prior assessment'),
+        a.prior ? h('button', { type: 'button', class: 'btn-secondary', onclick: function () { a.prior = null; touch(a); renderActions(); scheduleSave(); } }, 'Clear the comparison') : null
+      ),
+      h('input', { class: 'file-input', type: 'file', id: 'priorFile', accept: 'application/json,.json', onchange: onPriorFile }),
+      h('p', { class: 'msg', id: 'progressMsg' })
+    );
+    if (a.prior && a.prior.assessment) card.appendChild(progressBody(a, a.prior));
+    else card.appendChild(h('p', { class: 'hint', text: 'No prior file yet. After the next visit, open this one and compare.' }));
+    return card;
+  }
+  function onPriorFile(inputOrEvent) {
+    var input = inputOrEvent && inputOrEvent.target ? inputOrEvent.target : inputOrEvent;
+    var file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(String(reader.result || ''));
+        var raw = data && data.assessment ? data.assessment : data;
+        if (!raw || (!raw.people && !raw.activities && !raw.companyName)) throw new Error('bad');
+        if (data && data.app && data.app !== 'structure-team-assessment') throw new Error('bad');
+        var copy = JSON.parse(JSON.stringify(raw));
+        copy.prior = null;
+        copy._nested = true;
+        var item = normalizeAssessment(copy);
+        var a = active();
+        a.prior = { importedAt: new Date().toISOString(), label: companyName(item), assessment: item };
+        touch(a);
+        renderActions();
+        setProgressMsg('Comparing with ' + companyName(item) + (item.assessmentDate ? ' from ' + formatDate(item.assessmentDate) : '') + '.');
+        scheduleSave();
+      } catch (e) { setProgressMsg('That file is not an assessment this page can compare.'); }
+    };
+    reader.readAsText(file);
+  }
+  function gapNameSet(assessment) {
+    var set = {};
+    findings(assessment).gaps.forEach(function (row) {
+      var key = normKey(row.activity.name);
+      if (key) set[key] = row.activity.name || 'Untitled';
+    });
+    return set;
+  }
+  function progressBody(current, priorWrap) {
+    var prior = priorWrap.assessment;
+    var thenGaps = gapNameSet(prior);
+    var nowGaps = gapNameSet(current);
+    var closed = [], still = [], opened = [];
+    Object.keys(thenGaps).forEach(function (key) { (nowGaps[key] ? still : closed).push(thenGaps[key]); });
+    Object.keys(nowGaps).forEach(function (key) { if (!thenGaps[key]) opened.push(nowGaps[key]); });
+    var thenOver = {}, nowOver = {};
+    findings(prior).over.forEach(function (s) { thenOver[normKey(s.person.name)] = personName(s.person); });
+    findings(current).over.forEach(function (s) { nowOver[normKey(s.person.name)] = personName(s.person); });
+    var overFixed = Object.keys(thenOver).filter(function (key) { return !nowOver[key]; }).map(function (key) { return thenOver[key]; });
+    var overNew = Object.keys(nowOver).filter(function (key) { return !thenOver[key]; }).map(function (key) { return nowOver[key]; });
+    var thenPeople = {};
+    prior.people.forEach(function (p) { var key = normKey(p.name); if (key) thenPeople[key] = p; });
+    var recChanges = [];
+    var loadChanges = [];
+    var nowByName = {};
+    derive(current).people.forEach(function (s) { nowByName[normKey(s.person.name)] = s; });
+    var thenByName = {};
+    derive(prior).people.forEach(function (s) { thenByName[normKey(s.person.name)] = s; });
+    Object.keys(nowByName).forEach(function (key) {
+      var now = nowByName[key];
+      var then = thenByName[key];
+      if (!then) return;
+      if ((then.person.recommendation || '') !== (now.person.recommendation || '') && (then.person.recommendation || now.person.recommendation)) {
+        recChanges.push(personName(now.person) + ': ' + (recLabel(then.person.recommendation) || 'no call') + ' → ' + (recLabel(now.person.recommendation) || 'no call'));
+      }
+      if (Math.abs((then.total || 0) - (now.total || 0)) >= 10) {
+        loadChanges.push(personName(now.person) + ' ' + then.total + '% → ' + now.total + '%');
+      }
+    });
+    var addedPeople = current.people.filter(function (p) { return normKey(p.name) && !thenPeople[normKey(p.name)]; }).map(personName);
+    var gonePeople = prior.people.filter(function (p) { return normKey(p.name) && !nowByName[normKey(p.name)]; }).map(personName);
+    var box = h('div', {});
+    box.appendChild(h('p', { text: 'Prior file: ' + companyName(prior) + (prior.assessmentDate ? ', ' + formatDate(prior.assessmentDate) : '') + '.' }));
+    function line(text) { box.appendChild(h('p', { class: 'hint', text: text })); }
+    line('Gaps closed: ' + (closed.length ? closed.join(', ') : 'none') + '.');
+    line('Gaps still open: ' + (still.length ? still.join(', ') : 'none') + '.');
+    line('New gaps: ' + (opened.length ? opened.join(', ') : 'none') + '.');
+    line('Overloads resolved: ' + (overFixed.length ? overFixed.join(', ') : 'none') + '.');
+    line('New overloads: ' + (overNew.length ? overNew.join(', ') : 'none') + '.');
+    line(recChanges.length ? 'Calls that changed: ' + recChanges.join('; ') + '.' : 'No keep, coach, reassign, or replace call changed.');
+    line(loadChanges.length ? 'Load moved by 10 points or more: ' + loadChanges.join('; ') + '.' : 'No one’s load moved by 10 points or more.');
+    if (addedPeople.length) line('People added since then: ' + addedPeople.join(', ') + '.');
+    if (gonePeople.length) line('People in the prior file who are not here: ' + gonePeople.join(', ') + '.');
+    return box;
+  }
+  function paperActions(a, clientSafe) {
+    var wrap = h('div', { class: 'report-block' });
+    var rows = a.actions.filter(function (item) { return String(item.title || '').trim(); });
+    if (!rows.length) {
+      wrap.appendChild(h('p', { text: 'No actions yet.' }));
+      return wrap;
+    }
+    rows.forEach(function (item) {
+      var title = item.title;
+      var detail = item.detail || '';
+      if (clientSafe && item.source === 'recommendation') {
+        if (!item.clientTitle && !item.clientDetail) return;
+        title = item.clientTitle || 'Next step';
+        detail = item.clientDetail || '';
+      }
+      wrap.appendChild(h('div', { class: 'avoid' },
+        h('p', {}, h('strong', { text: title })),
+        h('p', { class: 'hint', text: [item.owner ? 'Owner: ' + item.owner : '', item.dueDate ? 'Due ' + formatDate(item.dueDate) : '', statusLabel(item.status)].filter(Boolean).join(' · ') }),
+        detail ? h('p', { text: detail }) : null
+      ));
+    });
+    return wrap;
+  }
+  function renderActionPaper(a) {
+    var paper = h('article', { class: 'paper' });
+    paper.appendChild(paperHeader('Action plan', a));
+    paper.appendChild(h('h2', { text: 'What happens next' }));
+    paper.appendChild(h('p', { text: 'Working list for ' + companyName(a) + '. This copy is for the structure team.' }));
+    if (a.reassessDate) paper.appendChild(h('p', { text: 'Reassess on ' + formatDate(a.reassessDate) + (a.reassessHorizon ? ' (' + a.reassessHorizon + ' days).' : '.') }));
+    paper.appendChild(paperActions(a, false));
+    paper.appendChild(h('div', { class: 'paper-foot' }, h('span', { text: 'Growth needs structure. We build it.' }), h('span', { text: 'structure' })));
+    return paper;
+  }
+  function renderRolesPaper(a) {
+    var paper = h('article', { class: 'paper' });
+    var snap = futureSnapshot(a);
+    var open = snap.seats.filter(function (row) { return row.open; });
+    paper.appendChild(paperHeader('Open seats', a));
+    paper.appendChild(h('h2', { text: 'Roles to fill' }));
+    paper.appendChild(h('p', { text: 'Each seat lists the work it would own and a rough percent of the week. Use it as the start of a job description.' }));
+    if (!open.length) paper.appendChild(h('p', { text: 'No open seats on the future org.' }));
+    open.forEach(function (row) {
+      var block = h('div', { class: 'seat-block open' },
+        h('div', { class: 'kicker-red', text: 'Open seat' }),
+        h('h3', { text: row.title }),
+        h('p', { text: row.total ? 'About ' + row.total + '% of a week.' : 'No time assigned yet.' })
+      );
+      if (!row.items.length) block.appendChild(h('p', { text: 'No activities on this seat yet.' }));
+      row.items.forEach(function (item) { block.appendChild(h('p', { text: item.name + ' · ' + item.pct + '% of the week' })); });
+      block.appendChild(h('p', { class: 'hint', text: 'Role clarity: ' + ROLE_CLARITY_URL }));
+      block.appendChild(h('p', { class: 'hint', text: 'Hiring: ' + HIRING_URL }));
+      paper.appendChild(block);
+    });
+    paper.appendChild(h('div', { class: 'paper-foot' }, h('span', { text: 'Growth needs structure. We build it.' }), h('span', { text: 'structure' })));
+    return paper;
+  }
+  function renderClientReport(a) {
+    var f = findings(a);
+    var snap = futureSnapshot(a);
+    var paper = h('article', { class: 'paper' });
+    paper.appendChild(paperHeader('Owner report', a));
+    paper.appendChild(h('h2', { text: companyName(a) }));
+    paper.appendChild(h('p', { text: 'How the work is organized today, the seats to build next, and the actions that follow. Prepared for the owner.' }));
+    paper.appendChild(h('h3', { text: 'Where the work is stuck' }));
+    var any = false;
+    if (f.gaps.length) { any = true; paper.appendChild(h('p', { text: 'No owner: ' + f.gaps.map(function (row) { return row.activity.name || 'Untitled'; }).join(', ') + '.' })); }
+    if (f.many.length) { any = true; paper.appendChild(h('p', { text: 'More than one owner: ' + f.many.map(function (row) { return row.activity.name || 'Untitled'; }).join(', ') + '.' })); }
+    if (f.over.length) { any = true; paper.appendChild(h('p', { text: 'Over a full week: ' + f.over.map(function (s) { return personName(s.person) + ' at ' + s.total + '%'; }).join(', ') + '.' })); }
+    if (f.thin.length) { any = true; paper.appendChild(h('p', { text: 'Spread too thin: ' + f.thin.map(function (s) { return personName(s.person); }).join(', ') + '.' })); }
+    if (!any) paper.appendChild(h('p', { text: 'Every activity has one owner, and nobody is over a full week.' }));
+    paper.appendChild(h('h3', { text: 'The organization you are building' }));
+    if (!snap.seats.length) paper.appendChild(h('p', { text: 'The future seats have not been drawn yet.' }));
+    snap.seats.forEach(function (row) {
+      var block = h('div', { class: 'seat-block' + (row.open ? ' open' : '') },
+        row.open ? h('div', { class: 'kicker-red', text: 'Open seat' }) : h('div', { class: 'paper-kicker', text: 'Seat' }),
+        h('h3', { text: row.title }),
+        h('p', { text: (row.open ? 'Nobody in this seat yet.' : personName(row.person)) + (row.total ? ' · ' + row.total + '% of the week.' : '') })
+      );
+      if (row.items.length) block.appendChild(h('p', { text: row.items.map(function (item) { return item.name + ' (' + item.pct + '%)'; }).join(', ') }));
+      else block.appendChild(h('p', { class: 'hint', text: 'No activities assigned yet.' }));
+      if (row.open) {
+        block.appendChild(h('p', { class: 'hint', text: 'Role clarity tool: ' + ROLE_CLARITY_URL }));
+        block.appendChild(h('p', { class: 'hint', text: 'Hiring tool: ' + HIRING_URL }));
+      }
+      paper.appendChild(block);
+    });
+    if (snap.unassigned.length) paper.appendChild(h('p', { text: 'Still unassigned: ' + snap.unassigned.map(function (act) { return act.name || 'Untitled'; }).join(', ') + '.' }));
+    paper.appendChild(h('h3', { text: 'Action plan' }));
+    if (a.reassessDate) paper.appendChild(h('p', { text: 'Reassess on ' + formatDate(a.reassessDate) + (a.reassessHorizon ? ', ' + a.reassessHorizon + ' days from when that date was set.' : '.') }));
+    paper.appendChild(paperActions(a, true));
+    paper.appendChild(h('div', { class: 'paper-foot' }, h('span', { text: 'Growth needs structure. We build it.' }), h('span', { text: 'structure' })));
+    return paper;
+  }
+  function openTour() {
+    tourStep = 0;
+    paintTour();
+  }
+  function paintTour() {
+    var root = document.getElementById('tour');
+    if (!root) return;
+    root.hidden = false;
+    clear(root);
+    var step = TOUR[tourStep];
+    root.appendChild(h('div', { class: 'tour-card', role: 'dialog', 'aria-labelledby': 'tourTitle' },
+      h('div', { class: 'eyebrow', text: 'A short look · ' + (tourStep + 1) + ' of ' + TOUR.length }),
+      h('h2', { id: 'tourTitle', text: step[0] }),
+      h('p', { class: 'lede', text: step[1] }),
+      h('div', { class: 'btn-row' },
+        tourStep ? h('button', { type: 'button', class: 'btn-secondary', onclick: function () { tourStep -= 1; paintTour(); } }, 'Back') : null,
+        h('button', { type: 'button', class: 'btn-secondary', onclick: closeTour }, 'Skip'),
+        h('button', { type: 'button', class: 'btn-primary', onclick: function () {
+          if (tourStep >= TOUR.length - 1) closeTour();
+          else { tourStep += 1; paintTour(); }
+        } }, tourStep >= TOUR.length - 1 ? 'Done' : 'Next')
+      )
+    ));
+  }
+  function closeTour() {
+    var root = document.getElementById('tour');
+    if (root) { root.hidden = true; clear(root); }
+    try { localStorage.setItem(TOUR_KEY, '1'); } catch (e) {}
+  }
+
   window.addEventListener('beforeprint', function () {
     if (!active()) return;
     var onExport = document.getElementById('view-export').classList.contains('active');
@@ -1893,10 +3536,12 @@
   });
 
   loadDB();
+  if (SELF_BOOT) document.body.classList.add('employee-mode');
   var current = active();
-  show(current ? (current.view || 'map') : 'home');
+  show(SELF_BOOT ? 'self' : (current ? (current.view || 'map') : 'home'));
   loading = false;
-  setSavePill(current ? 'Saved' : 'Saved in this browser', 'saved');
+  setSavePill(SELF_BOOT ? 'On this computer only' : (current ? 'Saved' : 'Saved in this browser'), 'saved');
+  if (!SELF_BOOT && !localStorage.getItem(TOUR_KEY)) openTour();
 
   window.loadSample = loadSample;
   window.startAssessment = startAssessment;
